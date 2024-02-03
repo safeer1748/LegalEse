@@ -1,0 +1,25 @@
+{
+  "users": [
+    {
+      "id": "efd2",
+      "username": "safeer123",
+      "email": "safeer123@gmail.com",
+      "password": "pakistan",
+      "role": "admin"
+    },
+    {
+      "id": "8b90",
+      "username": "safeer1",
+      "email": "safeer1@gmail.com",
+      "password": "123456",
+      "role": "lawyer"
+    },
+    {
+      "id": "6f70",
+      "username": "zubair",
+      "email": "zubair@gmail.com",
+      "password": "zubair",
+      "role": "client"
+    }
+  ]
+}
