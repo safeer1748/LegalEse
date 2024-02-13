@@ -52,7 +52,7 @@ const Login = () => {
               if (user[0].role === "admin") {
                 navigate(`/Admin/${user[0].username}`);
               } else if (user[0].role === "lawyer") {
-                navigate(`/Lawyer/${user[0].username}`);
+                navigate(`/Lawyer/${user[0].username}/Dashbord`);
               } else if (user[0].role === "client") {
                 navigate(`/Client/${user[0].username}`);
               }

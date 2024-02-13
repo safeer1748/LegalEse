@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 import { IoNotifications } from "react-icons/io5";
 import { HiOutlineMenuAlt2 } from "react-icons/hi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const Lawyer_Navbar = ({ handleToggleSidebar }) => {
-    let username=localStorage.getItem('username')
   const [toggleProfileDropdown, setToggleProfileDropdown] = useState(true);
   const handleToggleProfileDropdown = () => {
     setToggleProfileDropdown(!toggleProfileDropdown);
   };
+  const handleLogout=()=>{
+    localStorage.removeItem('username')
+    localStorage.removeItem('role')
+    localStorage.removeItem('login')
+  }
   return (
     <div>
       <div className="flex justify-end w-full">
@@ -22,7 +26,7 @@ const Lawyer_Navbar = ({ handleToggleSidebar }) => {
                   data-drawer-toggle="logo-sidebar"
                   aria-controls="logo-sidebar"
                   type="button"
-                  className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                  className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg xl:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
                 >
                   <HiOutlineMenuAlt2 size={25} />
                 </button>
@@ -88,7 +92,7 @@ const Lawyer_Navbar = ({ handleToggleSidebar }) => {
               <li>
                 <Link
                 onClick={handleToggleProfileDropdown}
-                  to={`/Lawyer/${username}`}
+                  to="Dashbord"
                   className="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
                 >
                   Dashboard
@@ -106,11 +110,11 @@ const Lawyer_Navbar = ({ handleToggleSidebar }) => {
               </li>
               <li>
                 <Link
-                onClick={handleToggleProfileDropdown}
-                  to="#"
+                onClick={()=>{handleToggleProfileDropdown(); handleLogout();}}
+                to='/login'
                   className="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
                 >
-                  Sign out
+                  Log out
                 </Link>
               </li>
             </ul>

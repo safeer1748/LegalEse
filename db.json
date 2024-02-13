@@ -19,7 +19,61 @@
       "username": "zubair",
       "email": "zubair@gmail.com",
       "password": "zubair",
-      "role": "client"
+      "role": "lawyer"
+    }
+  ],
+  "clients": [
+    {
+      "name": "safeer",
+      "mobile": "031805",
+      "email": "safeer123@gmail.com",
+      "gender": "male",
+      "userId": "safeer1"
+    },
+    {
+      "name": "ali",
+      "mobile": "03159765",
+      "email": "ali123@gmail.com",
+      "gender": "male",
+      "userId": "safeer1"
+    },
+    {
+      "name": "fatma",
+      "mobile": "031345505",
+      "email": "fatma123@gmail.com",
+      "gender": "female",
+      "userId": "safeer1"
+    },
+    {
+      "name": "zubair",
+      "mobile": "0318054455",
+      "email": "zubair123@gmail.com",
+      "gender": "male",
+      "userId": "zubair"
+    },
+    {
+      "id": "c0b4",
+      "name": "hazam",
+      "mobile": "233439843",
+      "email": "hazam123@gmail.com",
+      "gender": "male",
+      "userId": "safeer1"
+    },
+    {
+      "id": "0e8d",
+      "name": "noor",
+      "mobile": "238748374",
+      "email": "noor@gmail.com",
+      "gender": "female",
+      "userId": "safeer1"
+    },
+    {
+      "id": "cc82",
+      "name": "urooj",
+      "mobile": "4u4859859485",
+      "email": "urooj@gmail.com",
+      "gender": "female",
+      "userId": "zubair"
     }
   ]
 }

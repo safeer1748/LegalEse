@@ -4,9 +4,8 @@ import { FaHandshake } from "react-icons/fa";
 import { ImHammer2 } from "react-icons/im";
 import { LuCalendarDays } from "react-icons/lu";
 import { HiOutlineMail } from "react-icons/hi";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 const Lawyer_Sidebar = ({ toggleSidebar, handleToggleSidebar }) => {
-  let username = localStorage.getItem("username");
   const [toggleAppoinmentDropdown, setToggleAppoinmentDropdown] =
     useState(true);
   const handleToggleAppoinmentDropdown = () => {
@@ -17,8 +16,8 @@ const Lawyer_Sidebar = ({ toggleSidebar, handleToggleSidebar }) => {
       {/* Sidebar */}
       <aside
         id="logo-sidebar"
-        className={`fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-300 sm:translate-x-0 ${
-          toggleSidebar ? "ttranslate-x-[-100%]" : "translate-x-0"
+        className={`fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-300 xl:translate-x-0 ${
+          toggleSidebar ? "translate-x-[-100%]" : "translate-x-0"
         } `}
         aria-label="Sidebar"
       >
@@ -27,7 +26,7 @@ const Lawyer_Sidebar = ({ toggleSidebar, handleToggleSidebar }) => {
             <li>
               <Link
                 onClick={handleToggleSidebar}
-                to={`/Lawyer/${username}`}
+                to="Dashbord"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <MdHome
@@ -40,7 +39,7 @@ const Lawyer_Sidebar = ({ toggleSidebar, handleToggleSidebar }) => {
             <li>
               <Link
                 onClick={handleToggleSidebar}
-                to={`/Lawyer/${username}/Manage_Client`}
+                to="Manage_Client"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <FaHandshake
@@ -53,7 +52,7 @@ const Lawyer_Sidebar = ({ toggleSidebar, handleToggleSidebar }) => {
             <li>
               <Link
                 onClick={handleToggleSidebar}
-                to={`/Lawyer/${username}/Manage_Cases`}
+
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <ImHammer2
@@ -101,7 +100,7 @@ const Lawyer_Sidebar = ({ toggleSidebar, handleToggleSidebar }) => {
                 <li>
                   <Link
                     onClick={handleToggleSidebar}
-                    to={`/Lawyer/${username}/Appoinments_List`}
+                  
                     className="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                   >
                     Record List
@@ -110,7 +109,7 @@ const Lawyer_Sidebar = ({ toggleSidebar, handleToggleSidebar }) => {
                 <li>
                   <Link
                     onClick={handleToggleSidebar}
-                    to={`/Lawyer/${username}/Appoinment_Request`}
+                    
                     className="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                   >
                     Request
@@ -121,7 +120,7 @@ const Lawyer_Sidebar = ({ toggleSidebar, handleToggleSidebar }) => {
             <li>
               <Link
                 onClick={handleToggleSidebar}
-                to={`/Lawyer/${username}/Inbox`}
+                
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <HiOutlineMail
@@ -134,6 +133,7 @@ const Lawyer_Sidebar = ({ toggleSidebar, handleToggleSidebar }) => {
           </ul>
         </div>
       </aside>
+      <Outlet/>
     </div>
   );
 };
