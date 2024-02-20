@@ -3,21 +3,15 @@ import Lawyer from '../Lawyer'
 import React, { useEffect, useState } from "react";
 import { FaRegEye, FaRegEdit, FaRegTrashAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
-const Manage_Client = () => {
+const Manage_appoinment = () => {
   let username = localStorage.getItem("username");
-  const [genderDropdown, setGenderDropdown] = useState(false);
   const [data, setData] = useState([]);
   const [records, setRecords] = useState([]);
-
-  const handleGenderDropdown = () => {
-    setGenderDropdown(!genderDropdown);
-  };
-
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/clients?userId=${username}`)
+      .get(`http://localhost:8000/appoinments?userId=${username}`)
       .then((res) => {
-        let array=res.data
+        let array = res.data;
         array.reverse();
         setData(array);
         setRecords(array);
@@ -31,22 +25,11 @@ const Manage_Client = () => {
     );
   };
 
-  const showMale = () => {
-    setRecords(data.filter((f) => f.gender === "male"));
-  };
-
-  const showFemale = () => {
-    setRecords(data.filter((f) => f.gender === "female"));
-  };
-
-  const showBoth = () => {
-    setRecords(data);
-  };
   const handleDelete = (id) => {
     const confirm = window.confirm("Click OK to Delete");
     if (confirm) {
       axios
-        .delete("http://localhost:8000/clients/" + id)
+        .delete("http://localhost:8000/appoinments/" + id)
         .then((res) => {
           location.reload();
         })
@@ -59,7 +42,7 @@ const Manage_Client = () => {
     if (confirm) {
       records.map((d, i) =>
         axios
-          .delete("http://localhost:8000/clients/" + d.id)
+          .delete("http://localhost:8000/appoinments/" + d.id)
           .then((res) => {
             location.reload();
           })
@@ -110,7 +93,7 @@ const Manage_Client = () => {
                   </div>
                   <div className="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
                     <Link
-                      to={`/Lawyer/${username}/Add_Client`}
+                      to={`/Lawyer/${username}/Add_appoinment`}
                       type="button"
                       className="flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
                     >
@@ -127,98 +110,23 @@ const Manage_Client = () => {
                           d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
                         />
                       </svg>
-                      Add Client
+                      Add Appoinment
                     </Link>
                     <div className="flex flex-row-reverse items-center  gap-3  w-full md:w-auto relative">
                       <button
-                        onClick={handleDeleteAll}
+                       onClick={handleDeleteAll}
                         className="w-full md:w-auto flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800 py-2 px-4 text-sm font-medium focus:outline-none rounded-lg focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                         type="button"
                       >
                         delete all
                       </button>
-                      <div className="flex flex-col space-y-12">
-                        <button
-                          onClick={handleGenderDropdown}
-                          id="dropdownDelayButton"
-                          data-dropdown-toggle="dropdownDelay"
-                          data-dropdown-delay="500"
-                          data-dropdown-trigger="hover"
-                          className="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                          type="button"
-                        >
-                          Gender
-                          <svg
-                            className="w-2.5 h-2.5 ms-3"
-                            aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 10 6"
-                          >
-                            <path
-                              stroke="currentColor"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                              d="m1 1 4 4 4-4"
-                            />
-                          </svg>
-                        </button>
-
-                        {/* <!-- Gender Dropdown menu --> */}
-                        <div
-                          id="dropdownDelay"
-                          className={`${
-                            !genderDropdown ? "hidden" : ""
-                          } fixed right-30  md:right-48  z-50 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700`}
-                        >
-                          <ul
-                            className="py-2 text-sm text-gray-700 dark:text-gray-200"
-                            aria-labelledby="dropdownDelayButton"
-                          >
-                            <li className="cursor-pointer">
-                              <a
-                                onClick={() => {
-                                  showMale();
-                                  handleGenderDropdown();
-                                }}
-                                className="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
-                              >
-                                male
-                              </a>
-                            </li>
-                            <li className="cursor-pointer">
-                              <a
-                                onClick={() => {
-                                  showFemale();
-                                  handleGenderDropdown();
-                                }}
-                                className="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
-                              >
-                                female
-                              </a>
-                            </li>
-                            <li className="cursor-pointer">
-                              <a
-                                onClick={() => {
-                                  showBoth();
-                                  handleGenderDropdown();
-                                }}
-                                className="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
-                              >
-                                Both
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </div>
                 <div className="overflow-x-auto">
                   {records.length === 0 ? (
                     <div className="flex justify-center my-6 font-semibold">
-                      <span>you have no client</span>
+                      <span>you have no Appoinment</span>
                     </div>
                   ) : (
                     <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -234,7 +142,10 @@ const Manage_Client = () => {
                             Email
                           </th>
                           <th scope="col" className="px-4 py-3">
-                            Gender
+                            Date
+                          </th>
+                          <th scope="col" className="px-4 py-3">
+                            Time
                           </th>
                           <th
                             scope="col"
@@ -246,7 +157,7 @@ const Manage_Client = () => {
                       </thead>
                       <tbody>
                         {records.map((d, i) => (
-                          <tr key={i} className="border-b  border-gray-300 ">
+                          <tr key={i} className="border-b  border-gray-300">
                             <th
                               scope="row"
                               className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -255,10 +166,11 @@ const Manage_Client = () => {
                             </th>
                             <td className="px-4 py-3">{d.mobile}</td>
                             <td className="px-4 py-3">{d.email}</td>
-                            <td className="px-4 py-3">{d.gender}</td>
+                            <td className="px-4 py-3">{d.date}</td>
+                            <td className="px-4 py-3">{d.time}</td>
                             <td className="px-4 py-3 mt-1 flex items-center justify-end space-x-3">
                               <Link
-                                to={`/Lawyer/${username}/View_Client/${d.id}`}
+                                to={`/Lawyer/${username}/View_appoinment/${d.id}`}
                               >
                                 <button>
                                   <FaRegEye
@@ -268,7 +180,7 @@ const Manage_Client = () => {
                                 </button>
                               </Link>
                               <Link
-                                to={`/Lawyer/${username}/Edit_Client/${d.id}`}
+                                to={`/Lawyer/${username}/Edit_appoinment/${d.id}`}
                               >
                                 <button>
                                   <FaRegEdit
@@ -277,8 +189,8 @@ const Manage_Client = () => {
                                   />
                                 </button>
                               </Link>
-                              <Link onClick={() => handleDelete(d.id)}>
-                                <button>
+                              <Link>
+                                <button onClick={() => handleDelete(d.id)}>
                                   <FaRegTrashAlt
                                     size={16}
                                     className="hover:text-red-600"
@@ -301,4 +213,4 @@ const Manage_Client = () => {
   );
 };
 
-export default Manage_Client;
+export default Manage_appoinment;

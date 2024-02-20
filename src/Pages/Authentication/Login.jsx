@@ -48,7 +48,6 @@ const Login = () => {
               localStorage.setItem("username", user[0].username);
               localStorage.setItem("role", user[0].role);
               localStorage.setItem("login", true);
-              alert("login Successfully");
               if (user[0].role === "admin") {
                 navigate(`/Admin/${user[0].username}`);
               } else if (user[0].role === "lawyer") {

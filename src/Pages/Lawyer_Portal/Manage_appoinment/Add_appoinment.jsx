@@ -1,0 +1,281 @@
+import axios from "axios";
+import Lawyer from "../Lawyer";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
+const Add_appoinment = () => {
+  let username = localStorage.getItem("username");
+  const navigate = useNavigate();
+  const [clientType, setClientType] = useState("existing client");
+  const [datePickerValue, setDatePickerValue] = useState(new Date());
+  const [existingClient, setexistingClient] = useState([]);
+  const [formData, setFormData] = useState({
+    name: "",
+    mobile: "",
+    email: "",
+    date: "",
+    time: "",
+    userId: username,
+  });
+  const [errors, setErrors] = useState({});
+  const [valid, setValid] = useState(true);
+
+  // Set Date and Time
+  const handleDateTime = async () => {
+    let onlyDate = datePickerValue.toLocaleDateString();
+
+    let value = datePickerValue.toLocaleTimeString();
+    value = value.replaceAll(":", " ");
+    let result = value.split(" ");
+    let onlyTime = `${result[0]}:${result[1]}${result[3]}`;
+    formData.date = onlyDate;
+    formData.time = onlyTime;
+  };
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    let isValid = true;
+    let validationErrors = {};
+
+    // name Validation
+    if (formData.name === "" || formData.name === null) {
+      isValid = false;
+      validationErrors.name = "Name required";
+    }
+
+    // mobile number Validation
+    if (formData.mobile === "" || formData.mobile === null) {
+      isValid = false;
+      validationErrors.mobile = "Mobile Number required";
+    } else if (!/^[0-9]{11}$/.test(formData.mobile)) {
+      isValid = false;
+      validationErrors.mobile = "Mobile number must be 11 digits";
+    }
+
+    // email Validation
+    if (formData.email === "" || formData.email === null) {
+      isValid = false;
+      validationErrors.email = "email required";
+    } else if (
+      !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(formData.email)
+    ) {
+      isValid = false;
+      validationErrors.email = "email is not valid";
+    }
+
+    setErrors(validationErrors);
+    setValid(isValid);
+    if (Object.keys(validationErrors).length === 0) {
+      await handleDateTime();
+      await axios
+        .post(`http://localhost:8000/appoinments?userId=${username}`, formData)
+        .then((res) => {
+          navigate(`/Lawyer/${username}/Manage_appoinment`);
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8000/clients?userId=${username}`)
+      .then((res) => {
+        let array = res.data;
+        array.reverse();
+        setexistingClient(res.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  //get the name, mobile number and email of existing client
+  const getSelectedClient = (e) => {
+    e.preventDefault()
+    let selected = existingClient.find((f) => f.name === e.target.value);
+    setFormData({ ...formData,name:e.target.value, mobile: selected.mobile, email:selected.email })
+  };
+
+  // set field based on radio button
+  const handleRadio=(e)=>{
+    setClientType(e.target.value)
+    setFormData({ ...formData, mobile:'', email:'' })
+  }
+  return (
+    <div>
+      <Lawyer />
+      <section className="bg-white dark:bg-gray-900">
+        <div className="py-8 mt-16 xl:mt-0 px-4 w-full mx-auto max-w-2xl lg:py-28">
+          <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
+            Add a new Appoinment
+          </h2>
+          <form onSubmit={handleSubmit}>
+            <fieldset className="flex gap-4">
+              <legend className="sr-only">Clients Type</legend>
+
+              <div className="flex items-center mb-5">
+                <input
+                  onClick={handleRadio}
+                  id="client-option-1"
+                  type="radio"
+                  name="client"
+                  value="existing client"
+                  className="w-4 h-4 border-gray-500 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
+                  // checked={clientType === "existing client"}
+                  defaultChecked
+                />
+                <label
+                  htmlFor="client-option-1"
+                  className="block ms-2  text-sm font-medium text-gray-900 dark:text-gray-300"
+                >
+                  Existing Client
+                </label>
+              </div>
+
+              <div className="flex items-center mb-5">
+                <input
+                  onClick={handleRadio}
+                  id="client-option-2"
+                  type="radio"
+                  name="client"
+                  value="new client"
+                  className="w-4 h-4 border-gray-500 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
+                />
+                <label
+                  htmlFor="client-option-2"
+                  className="block ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                >
+                  New Client
+                </label>
+              </div>
+            </fieldset>
+
+            <div className="grid gap-4 sm:grid-cols-2 sm:gap-10">
+              <div className="sm:col-span-2">
+                <label
+                  htmlFor="name"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Client Name
+                </label>
+                {clientType === "existing client" ? (
+                  <select
+                    name="existing-client-name"
+                    id="existing-client-name"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    onChange={getSelectedClient}
+                  >
+                    <option selected disabled value="Choose Client">
+                      Choose Client
+                    </option>
+                    {existingClient.map((d, i) => (
+                      <option key={i}>{d.name}</option>
+                    ))}
+                  </select>
+                ) : (
+                  <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    placeholder="Full Name"
+                    required=""
+                    onChange={(e) =>
+                      setFormData({ ...formData, name: e.target.value })
+                    }
+                  />
+                )}
+
+                <div className="text-red-600">
+                  {valid ? <></> : <span>{errors.name}</span>}
+                </div>
+              </div>
+              <div className="w-full">
+                <label
+                  htmlFor="number"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Mobile
+                </label>
+                <input
+                  type="text"
+                  name="number"
+                  id="number"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  placeholder="03XXXXXXXXX"
+                  required=""
+                  value={formData.mobile}
+                  onChange={(e) =>
+                    setFormData({ ...formData, mobile: e.target.value })
+                  }
+                />
+                <div className="text-red-600">
+                  {valid ? <></> : <span>{errors.mobile}</span>}
+                </div>
+              </div>
+              <div className="w-full">
+                <label
+                  htmlFor="email"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Email
+                </label>
+                <input
+                  type="text"
+                  name="email"
+                  id="email"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  placeholder="abc@gmail.com"
+                  required=""
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
+                />
+                <div className="text-red-600">
+                  {valid ? <></> : <span>{errors.email}</span>}
+                </div>
+              </div>
+
+              <div className="w-full">
+                <label
+                  htmlFor="date"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Date
+                </label>
+                <DatePicker
+                  showIcon
+                  toggleCalendarOnIconClick
+                  dateFormat="M/d/yyyy h:mm aa"
+                  timeInputLabel="Time:"
+                  showTimeInput
+                  minDate={new Date()}
+                  showMonthDropdown
+                  className="bg-gray-50 z-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  selected={datePickerValue}
+                  onChange={(dateTime) => setDatePickerValue(dateTime)}
+                />
+              </div>
+            </div>
+            <div className="flex gap-3">
+              <button
+                type="submit"
+                className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-blue-800"
+              >
+                Add Appoinment
+              </button>
+              <Link to={`/Lawyer/${username}/Manage_appoinment`}>
+                <button className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-gray-600 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-gray-800">
+                  Cancel
+                </button>
+              </Link>
+            </div>
+          </form>
+        </div>
+      </section>
+    </div>
+  );
+};
+export default Add_appoinment;

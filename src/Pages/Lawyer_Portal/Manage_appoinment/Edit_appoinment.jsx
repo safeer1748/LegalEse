@@ -1,38 +1,67 @@
 import axios from "axios";
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import Lawyer from "../Lawyer";
-const Add_Client = () => {
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+const Edit_appoinment = () => {
+  let { id } = useParams();
   const navigate = useNavigate();
   let username = localStorage.getItem("username");
+
+  const [datePickerValue, setDatePickerValue] = useState(new Date());
+
+
   const [formData, setFormData] = useState({
     name: "",
     mobile: "",
     email: "",
-    gender: "male",
+    date: "",
+    time: "",
+    status: "Pending",
     userId: username,
   });
+
   const [errors, setErrors] = useState({});
   const [valid, setValid] = useState(true);
+
+    // Set Date and Time 
+    const handleDateTime = async () => {
+      let onlyDate = datePickerValue.toLocaleDateString();
+  
+      let value = datePickerValue.toLocaleTimeString();
+      value = value.replaceAll(":", " ");
+      let result = value.split(" ");
+      let onlyTime = `${result[0]}:${result[1]}${result[3]}`;
+      formData.date = onlyDate;
+      formData.time = onlyTime;
+    };
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8000/appoinments/" + id)
+      .then((res) => {
+        setFormData(res.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     let isValid = true;
     let validationErrors = {};
-    
+
     // name Validation
     if (formData.name === "" || formData.name === null) {
       isValid = false;
       validationErrors.name = "Name required";
-    } 
+    }
 
     // mobile number Validation
     if (formData.mobile === "" || formData.mobile === null) {
       isValid = false;
       validationErrors.mobile = "Mobile Number required";
-    } else if (
-      !/^[0-9]{11}$/.test(formData.mobile)
-    ) {
+    } else if (!/^[0-9]{11}$/.test(formData.mobile)) {
       isValid = false;
       validationErrors.mobile = "Mobile number must be 11 digits";
     }
@@ -50,25 +79,27 @@ const Add_Client = () => {
 
     setErrors(validationErrors);
     setValid(isValid);
+
     if (Object.keys(validationErrors).length === 0) {
+      await handleDateTime();
       await axios
-        .post(`http://localhost:8000/clients?userId=${username}`, formData)
+        .put("http://localhost:8000/appoinments/" + id, formData)
         .then((res) => {
-          navigate(`/Lawyer/${username}/Manage_Client`);
+          navigate(`/Lawyer/${username}/Manage_appoinment`);
         })
         .catch((err) => console.log(err));
     }
   };
   return (
     <div>
-      <Lawyer/>
+      <Lawyer />
       <section className="bg-white dark:bg-gray-900">
         <div className="py-8 mt-16 xl:mt-0 px-4 w-full mx-auto max-w-2xl lg:py-28">
           <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
-            Add a new Client
+            Update Appoinment
           </h2>
           <form onSubmit={handleSubmit}>
-            <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
+            <div className="grid gap-4 sm:grid-cols-2 sm:gap-10">
               <div className="sm:col-span-2">
                 <label
                   htmlFor="name"
@@ -83,13 +114,14 @@ const Add_Client = () => {
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   placeholder="Full Name"
                   required=""
+                  value={formData.name}
                   onChange={(e) =>
                     setFormData({ ...formData, name: e.target.value })
                   }
                 />
-                 <div className="text-red-600">
-                    {valid ? <></> : <span>{errors.name}</span>}
-                  </div>
+                <div className="text-red-600">
+                  {valid ? <></> : <span>{errors.name}</span>}
+                </div>
               </div>
               <div className="w-full">
                 <label
@@ -103,15 +135,16 @@ const Add_Client = () => {
                   name="number"
                   id="number"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  placeholder="03XXXXXXXXX"
+                  placeholder="xxxxxxxxxxxx"
                   required=""
+                  value={formData.mobile}
                   onChange={(e) =>
                     setFormData({ ...formData, mobile: e.target.value })
                   }
                 />
-                 <div className="text-red-600">
-                    {valid ? <></> : <span>{errors.mobile}</span>}
-                  </div>
+                <div className="text-red-600">
+                  {valid ? <></> : <span>{errors.mobile}</span>}
+                </div>
               </div>
               <div className="w-full">
                 <label
@@ -127,32 +160,33 @@ const Add_Client = () => {
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   placeholder="abc@gmail.com"
                   required=""
+                  value={formData.email}
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
                   }
                 />
                 <div className="text-red-600">
-                    {valid ? <></> : <span>{errors.email}</span>}
-                  </div>
+                  {valid ? <></> : <span>{errors.email}</span>}
+                </div>
               </div>
-              <div>
+              <div className="w-full">
                 <label
-                  htmlFor="category"
+                  htmlFor="date"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
-                  Gender
+                  Date
                 </label>
-                <select
-                  onChange={(e) =>
-                    setFormData({ ...formData, gender: e.target.value })
-                  }
-                  id="category"
-                  value={formData.gender}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                >
-                  <option>male</option>
-                  <option>female</option>
-                </select>
+                <DatePicker
+                  showIcon
+                  dateFormat="M/d/yyyy h:mm aa"
+                  timeInputLabel="Time:"
+                  showTimeInput
+                  minDate={new Date()}
+                  showMonthDropdown
+                  className="bg-gray-50 z-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  selected={datePickerValue}
+                  onChange={(date) => setDatePickerValue(date)}
+                />
               </div>
             </div>
             <div className="flex gap-3">
@@ -160,9 +194,9 @@ const Add_Client = () => {
                 type="submit"
                 className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-blue-800"
               >
-                Add Client
+                Update
               </button>
-              <Link to={`/Lawyer/${username}/Manage_Client`}>
+              <Link to={`/Lawyer/${username}/Manage_appoinment`}>
                 <button className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-gray-600 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-gray-800">
                   Cancel
                 </button>
@@ -175,4 +209,4 @@ const Add_Client = () => {
   );
 };
 
-export default Add_Client;
+export default Edit_appoinment;

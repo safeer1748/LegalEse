@@ -3,6 +3,7 @@ import { IoNotifications } from "react-icons/io5";
 import { HiOutlineMenuAlt2 } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
 const Lawyer_Navbar = ({ handleToggleSidebar }) => {
+  let username = localStorage.getItem("username");
   const [toggleProfileDropdown, setToggleProfileDropdown] = useState(true);
   const handleToggleProfileDropdown = () => {
     setToggleProfileDropdown(!toggleProfileDropdown);
@@ -16,7 +17,7 @@ const Lawyer_Navbar = ({ handleToggleSidebar }) => {
     <div>
       <div className="flex justify-end w-full">
         {/* Navbar */}
-        <nav className="fixed top-0 z-50 w-full bg-white border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700">
+        <nav className="fixed top-0 z-40 w-full bg-white border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700">
           <div className="px-3 py-3 lg:px-5 lg:pl-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center justify-start rtl:justify-end self-start">
@@ -92,7 +93,7 @@ const Lawyer_Navbar = ({ handleToggleSidebar }) => {
               <li>
                 <Link
                 onClick={handleToggleProfileDropdown}
-                  to="Dashbord"
+                  to={`/Lawyer/${username}/Dashbord`}
                   className="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
                 >
                   Dashboard

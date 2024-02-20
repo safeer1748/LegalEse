@@ -83,7 +83,6 @@ const Signup = () => {
        axios
         .post("http://localhost:8000/users", formData)
         .then((response) => {
-          alert("Account Created Successfully");
           navigate("/Login");
         })
         .catch((err) => console.log(err));

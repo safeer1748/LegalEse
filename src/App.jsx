@@ -10,6 +10,12 @@ import Lawyer from "./Pages/Lawyer_Portal/Lawyer";
 import Manage_Client from "./Pages/Lawyer_Portal/Manage_Client/Manage_Client";
 import Dashbord from "./Pages/Lawyer_Portal/Dashbord/Dashbord";
 import Add_Client from "./Pages/Lawyer_Portal/Manage_Client/Add_Client";
+import View_Client from "./Pages/Lawyer_Portal/Manage_Client/View_Client";
+import Edit_Client from "./Pages/Lawyer_Portal/Manage_Client/Edit_Client";
+import Manage_appoinment from "./Pages/Lawyer_Portal/Manage_appoinment/Manage_appoinment";
+import Add_appoinment from "./Pages/Lawyer_Portal/Manage_appoinment/Add_appoinment";
+import View_appoinment from "./Pages/Lawyer_Portal/Manage_appoinment/View_appoinment";
+import Edit_appoinment from "./Pages/Lawyer_Portal/Manage_appoinment/Edit_appoinment";
 const App = () => {
   return (
     <div>
@@ -20,11 +26,58 @@ const App = () => {
           <Route exact path="/Signup" element={<Signup />} />
           <Route exact path="/ChangePassword" element={<ForgotPassword />} />
           <Route exact path="/Admin/:username" element={<Admin />} />
-          <Route exact path="/Lawyer/:username" element={<Lawyer />}>
-          <Route exact path="Dashbord" element={<Dashbord/>}/>
-          <Route exact path="Manage_Client" element={<Manage_Client/>} />
-          <Route exact path="Add_Client" element={<Add_Client/>} />
-          </Route>
+
+          {/* Lawyer Portal */}
+          <Route exact path="/Lawyer/:username" element={<Lawyer />} />
+          <Route
+            exact
+            path="/Lawyer/:username/Dashbord"
+            element={<Dashbord />}
+          />
+
+          {/* Manage_Clients */}
+          <Route
+            exact
+            path="/Lawyer/:username/Manage_Client"
+            element={<Manage_Client />}
+          />
+          <Route
+            exact
+            path="/Lawyer/:username/Add_Client"
+            element={<Add_Client />}
+          />
+          <Route
+            exact
+            path="/Lawyer/:username/View_Client/:id"
+            element={<View_Client />}
+          />
+          <Route
+            exact
+            path="/Lawyer/:username/Edit_Client/:id"
+            element={<Edit_Client />}
+          />
+
+          {/* Manage_Appoinments */}
+          <Route
+            exact
+            path="/Lawyer/:username/Manage_appoinment"
+            element={<Manage_appoinment />}
+          />
+          <Route
+            exact
+            path="/Lawyer/:username/Add_appoinment"
+            element={<Add_appoinment />}
+          />
+          <Route
+            exact
+            path="/Lawyer/:username/View_appoinment/:id"
+            element={<View_appoinment />}
+          />
+          <Route
+            exact
+            path="/Lawyer/:username/Edit_appoinment/:id"
+            element={<Edit_appoinment />}
+          />
           <Route exact path="/Client/:username" element={<Client />} />
         </Routes>
       </BrowserRouter>
