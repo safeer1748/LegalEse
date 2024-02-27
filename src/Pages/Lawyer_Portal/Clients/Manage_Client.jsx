@@ -246,7 +246,7 @@ const Manage_Client = () => {
                       </thead>
                       <tbody>
                         {records.map((d, i) => (
-                          <tr key={i} className="border-b  border-gray-300 ">
+                          <tr key={i} className="border-b  border-gray-300 align-middle">
                             <th
                               scope="row"
                               className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -256,7 +256,7 @@ const Manage_Client = () => {
                             <td className="px-4 py-3">{d.mobile}</td>
                             <td className="px-4 py-3">{d.email}</td>
                             <td className="px-4 py-3">{d.gender}</td>
-                            <td className="px-4 py-3 mt-1 flex items-center justify-end space-x-3">
+                            <td className="px-4 py-3 flex items-center justify-end space-x-3">
                               <Link
                                 to={`/Lawyer/${username}/View_Client/${d.id}`}
                               >

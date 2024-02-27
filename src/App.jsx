@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./Pages/Home/Home";
 import Login from "./Pages/Authentication/Login";
@@ -7,23 +7,28 @@ import ForgotPassword from "./Pages/Authentication/ForgotPassword";
 import Admin from "./Pages/Admin_Portal/Admin";
 import Client from "./Pages/Client_portal/Client";
 import Lawyer from "./Pages/Lawyer_Portal/Lawyer";
-import Manage_Client from "./Pages/Lawyer_Portal/Manage_Client/Manage_Client";
 import Dashbord from "./Pages/Lawyer_Portal/Dashbord/Dashbord";
-import Add_Client from "./Pages/Lawyer_Portal/Manage_Client/Add_Client";
-import View_Client from "./Pages/Lawyer_Portal/Manage_Client/View_Client";
-import Edit_Client from "./Pages/Lawyer_Portal/Manage_Client/Edit_Client";
-import Manage_appoinment from "./Pages/Lawyer_Portal/Manage_appoinment/Manage_appoinment";
-import Add_appoinment from "./Pages/Lawyer_Portal/Manage_appoinment/Add_appoinment";
-import View_appoinment from "./Pages/Lawyer_Portal/Manage_appoinment/View_appoinment";
-import Edit_appoinment from "./Pages/Lawyer_Portal/Manage_appoinment/Edit_appoinment";
+import Manage_Client from "./Pages/Lawyer_Portal/Clients/Manage_Client";
+import Add_Client from "./Pages/Lawyer_Portal/Clients/Add_Client";
+import View_Client from "./Pages/Lawyer_Portal/Clients/View_Client";
+import Edit_Client from "./Pages/Lawyer_Portal/Clients/Edit_Client";
+import Manage_appoinment from "./Pages/Lawyer_Portal/Appoinments/Manage_appoinment";
+import Add_appoinment from "./Pages/Lawyer_Portal/Appoinments/Add_appoinment";
+import View_appoinment from "./Pages/Lawyer_Portal/Appoinments/View_appoinment";
+import Edit_appoinment from "./Pages/Lawyer_Portal/Appoinments/Edit_appoinment";
+import Manage_Case from "./Pages/Lawyer_Portal/Cases/Manage_Case";
+import Add_Case from "./Pages/Lawyer_Portal/Cases/Add_Case";
+import View_case from "./Pages/Lawyer_Portal/Cases/View_case";
+import Edit_Case from "./Pages/Lawyer_Portal/Cases/Edit_Case";
+
 const App = () => {
   return (
     <div>
       <BrowserRouter>
         <Routes>
-          <Route exact path="/" element={<Home />} />
-          <Route exact path="/Login" element={<Login />} />
-          <Route exact path="/Signup" element={<Signup />} />
+          <Route exact path="/" element={<Home/>} />
+          <Route exact path="/Login" element={<Login/>} />
+          <Route exact path="/Signup" element={<Signup/>} />
           <Route exact path="/ChangePassword" element={<ForgotPassword />} />
           <Route exact path="/Admin/:username" element={<Admin />} />
 
@@ -77,6 +82,27 @@ const App = () => {
             exact
             path="/Lawyer/:username/Edit_appoinment/:id"
             element={<Edit_appoinment />}
+          />
+                {/* Manage_Cases */}
+          <Route
+            exact
+            path="/Lawyer/:username/Manage_cases"
+            element={<Manage_Case/>}
+          />
+          <Route
+            exact
+            path="/Lawyer/:username/Add_Case"
+            element={<Add_Case />}
+          />
+          <Route
+            exact
+            path="/Lawyer/:username/View_Case/:id"
+            element={<View_case />}
+          />
+          <Route
+            exact
+            path="/Lawyer/:username/Edit_Case/:id"
+            element={<Edit_Case />}
           />
           <Route exact path="/Client/:username" element={<Client />} />
         </Routes>

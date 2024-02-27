@@ -3,7 +3,6 @@ import { MdHome } from "react-icons/md";
 import { FaHandshake } from "react-icons/fa";
 import { ImHammer2 } from "react-icons/im";
 import { LuCalendarDays } from "react-icons/lu";
-import { HiOutlineMail } from "react-icons/hi";
 import { Link, Outlet } from "react-router-dom";
 const Lawyer_Sidebar = ({ toggleSidebar, handleToggleSidebar }) => {
   let username = localStorage.getItem("username");
@@ -52,6 +51,7 @@ const Lawyer_Sidebar = ({ toggleSidebar, handleToggleSidebar }) => {
             </li>
             <li>
               <Link
+              to={`/Lawyer/${username}/Manage_Cases`}
                 onClick={handleToggleSidebar}
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
@@ -116,19 +116,6 @@ const Lawyer_Sidebar = ({ toggleSidebar, handleToggleSidebar }) => {
                   </Link>
                 </li>
               </ul>
-            </li>
-            <li>
-              <Link
-                onClick={handleToggleSidebar}
-                
-                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-              >
-                <HiOutlineMail
-                  size={25}
-                  className="text-gray-500 transition duration-75 group-hover:text-black"
-                />
-                <span className="flex-1 ms-3 whitespace-nowrap">Inbox</span>
-              </Link>
             </li>
           </ul>
         </div>

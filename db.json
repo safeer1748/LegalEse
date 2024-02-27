@@ -1,120 +1,84 @@
 {
   "users": [
     {
-      "id": "efd2",
-      "username": "safeer123",
-      "email": "safeer123@gmail.com",
-      "password": "pakistan",
-      "role": "admin"
+      "id": "5ec1",
+      "username": "test01",
+      "email": "test01@gmail.com",
+      "password": "test01",
+      "role": "lawyer",
+      "license_num": "001231"
     },
     {
-      "id": "8b90",
-      "username": "safeer1",
-      "email": "safeer1@gmail.com",
-      "password": "123456",
-      "role": "lawyer"
-    },
-    {
-      "id": "6f70",
-      "username": "zubair",
-      "email": "zubair@gmail.com",
-      "password": "zubair",
-      "role": "lawyer"
-    },
-    {
-      "id": "5f97",
-      "username": "safeerkhan",
-      "email": "safeer@gmail.com",
-      "password": "khan1748",
-      "role": "client"
-    },
-    {
-      "id": "d858",
-      "username": "zubair12",
-      "email": "gihah12451@seosnaps.com",
-      "password": "zubair123",
-      "role": "client"
+      "id": "b32f",
+      "username": "test02",
+      "email": "test02@gmail.com",
+      "password": "test02",
+      "role": "lawyer",
+      "license_num": "001232"
     }
   ],
   "clients": [
     {
-      "id": "0805",
-      "name": "safeer",
-      "mobile": "03314600963",
-      "email": "safeer123@gmail.com",
+      "id": "f96a",
+      "name": "client1",
+      "mobile": "03124567891",
+      "email": "client1@gmail.com",
       "gender": "male",
-      "userId": "zubair"
-    },
-    {
-      "id": "6e9e",
-      "name": "urooj",
-      "mobile": "48985859859",
-      "email": "urooj@gmail.com",
-      "gender": "female",
-      "userId": "zubair"
-    },
-    {
-      "id": "1637",
-      "name": "safeer",
-      "mobile": "03180522996",
-      "email": "safeer@gmail.com",
-      "gender": "male",
-      "userId": "safeer1"
-    },
-    {
-      "id": "3b5a",
-      "name": "zubair",
-      "mobile": "03455021772",
-      "email": "zubair@gmail.com",
-      "gender": "male",
-      "userId": "safeer1"
-    },
-    {
-      "id": "c5b5",
-      "name": "safeer khan",
-      "mobile": "03314600963",
-      "email": "safeer@gmail.com",
-      "gender": "male",
-      "userId": "safeer1"
-    },
-    {
-      "id": "d9f9",
-      "name": "urooj",
-      "mobile": "03180522996",
-      "email": "urooj@gmail.com",
-      "gender": "female",
-      "userId": "safeer1"
+      "userId": "test01"
     }
   ],
   "cases": [],
   "appoinments": [
     {
-      "id": "a1a0",
-      "name": "safeer muhammad",
-      "mobile": "03314600963",
-      "email": "safeer@gmail.com",
-      "date": "2/29/2024",
-      "time": "4:56PM",
-      "status": "Pending",
-      "userId": "safeer1"
+      "id": "8692",
+      "name": "client1",
+      "mobile": "03124567891",
+      "email": "client1@gmail.com",
+      "date": "2/27/2024",
+      "time": "9:40PM",
+      "userId": "test01"
+    }
+  ],
+  "lawyer_license": [
+    {
+      "id": "1",
+      "license": "001231"
     },
     {
-      "id": "9889",
-      "name": "haris",
-      "mobile": "03180522996",
-      "email": "haris@gmail.com",
-      "date": "2/20/2024",
-      "time": "8:51PM",
-      "userId": "safeer1"
+      "id": "2",
+      "license": "001232"
     },
     {
-      "id": "d30f",
-      "name": "safeer khan",
-      "mobile": "03314600963",
-      "email": "safeer@gmail.com",
-      "date": "3/28/2024",
-      "time": "12:59AM",
-      "userId": "safeer1"
+      "id": "3",
+      "license": "001233"
+    },
+    {
+      "id": "4",
+      "license": "001234"
+    },
+    {
+      "id": "5",
+      "license": "001235"
+    },
+    {
+      "id": "6",
+      "license": "001236"
+    },
+    {
+      "id": "7",
+      "license": "001237"
+    },
+    {
+      "id": "8",
+      "license": "001238"
+    },
+    {
+      "id": "9",
+      "license": "001239"
+    },
+    {
+      "id": "10",
+      "license": "001240"
     }
   ]
 }

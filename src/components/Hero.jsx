@@ -1,6 +1,5 @@
 import React from 'react'
-import { Link } from "react-router-dom";
-const Hero = () => {
+const Hero = ({handleSignupModal}) => {
   return (
     <div>
       <section className="bg-white dark:bg-gray-900">
@@ -14,14 +13,13 @@ const Hero = () => {
               Cases, Clients, Appointments and much more. It also help the
               Client to book Appointment with lawyer.{" "}
             </p>
-            <Link to="/Signup">
               <button
+              onClick={handleSignupModal}
                 type="button"
-                className="text-white bg-black hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                className="text-white sm:hidden bg-black hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
-                Get started
+                Signup
               </button>
-            </Link>
           </div>
           <div className="hidden lg:mt-0 lg:col-span-5 lg:flex">
             <img src="src\assets\heroimage.svg" alt="mockup" />

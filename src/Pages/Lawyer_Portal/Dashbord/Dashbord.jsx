@@ -4,7 +4,7 @@ const Dashbord = () => {
   return (
     <div>
       <Lawyer/>
-        <div className="p-4 pt-24 sm:ml-64 bg-black">
+        <div className="p-4 pt-24 sm:ml-64">
         <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
           <div className="grid grid-cols-3 gap-4 mb-4">
             <div className="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
@@ -18,9 +18,9 @@ const Dashbord = () => {
                 >
                   <path
                     stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
                     d="M9 1v16M1 9h16"
                   />
                 </svg>
@@ -37,9 +37,9 @@ const Dashbord = () => {
                 >
                   <path
                     stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
                     d="M9 1v16M1 9h16"
                   />
                 </svg>
@@ -56,9 +56,9 @@ const Dashbord = () => {
                 >
                   <path
                     stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
                     d="M9 1v16M1 9h16"
                   />
                 </svg>
@@ -76,9 +76,9 @@ const Dashbord = () => {
               >
                 <path
                   stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
                   d="M9 1v16M1 9h16"
                 />
               </svg>
@@ -95,9 +95,9 @@ const Dashbord = () => {
               >
                 <path
                   stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
                   d="M9 1v16M1 9h16"
                 />
               </svg>
