@@ -1,6 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Lawyer from '../Lawyer'
 const Dashbord = () => {
+  useEffect(()=>{
+    sessionStorage.removeItem("userRole")
+  })
   return (
     <div>
       <Lawyer/>

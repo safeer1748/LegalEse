@@ -152,6 +152,7 @@ const Login = () => {
                   Don’t have an account yet?{" "}
                   <Link
                     to="/Signup"
+                    onClick={()=>sessionStorage.setItem("userRole","client")}
                     className="font-medium text-blue-600 hover:underline dark:text-primary-500"
                   >
                     Sign up

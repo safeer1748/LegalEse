@@ -10,11 +10,12 @@ const Signup = () => {
     password: "",
     role: "",
   });
+
   const [confirmPassword, setConfirmPassword] = useState();
   const [errors, setErrors] = useState({});
   const [valid, setValid] = useState(true);
   useEffect(() => {
-    setUserRole(localStorage.getItem("userRole"));
+    setUserRole(sessionStorage.getItem("userRole"));
     if (userRole === "lawyer") {
       setFormData({ ...formData, license_num: "" });
     }
@@ -25,36 +26,39 @@ const Signup = () => {
     let validationErrors = {};
 
     // Licence Number Validation
-    if (formData.license_num === "" || formData.license_num === null) {
-      isValid = false;
-      validationErrors.license_num = "license number required";
-    } else {
-      await axios
-        .get(
-          `http://localhost:8000/lawyer_license?license=${formData.license_num}`
-        )
-        .then((response) => {
-          let user = response.data;
-          if (Object.keys(user).length === 0) {
-            isValid = false;
-            validationErrors.license_num = "wrong license number";
-          }
-        })
-        .catch((err) => console.log(err));
+    if (userRole === "lawyer") {
+      if (formData.license_num === "" || formData.license_num === null) {
+        isValid = false;
+        validationErrors.license_num = "license number required";
+      } else {
+        await axios
+          .get(
+            `http://localhost:9000/lawyer_license?license=${formData.license_num}`
+          )
+          .then((response) => {
+            let user = response.data;
+            if (Object.keys(user).length === 0) {
+              isValid = false;
+              validationErrors.license_num = "wrong license number";
+            }
+          })
+          .catch((err) => console.log(err));
 
-      await axios
-        .get(`http://localhost:8000/users?license_num=${formData.license_num}`)
-        .then((response) => {
-          let user = response.data;
-          if (Object.keys(user).length !== 0) {
-            isValid = false;
-            validationErrors.license_num =
-              "account is already created by this license number";
-          }
-        })
-        .catch((err) => console.log(err));
+        await axios
+          .get(
+            `http://localhost:8000/users?license_num=${formData.license_num}`
+          )
+          .then((response) => {
+            let user = response.data;
+            if (Object.keys(user).length !== 0) {
+              isValid = false;
+              validationErrors.license_num =
+                "account is already created by this license number";
+            }
+          })
+          .catch((err) => console.log(err));
+      }
     }
-
     // username Validation
     if (formData.username === "" || formData.username === null) {
       isValid = false;
@@ -118,7 +122,7 @@ const Signup = () => {
     // Add user in Database
     if (Object.keys(validationErrors).length === 0) {
       formData.role = userRole;
-      localStorage.removeItem("userRole");
+      sessionStorage.removeItem("userRole");
       await axios
         .post("http://localhost:8000/users", formData)
         .then((response) => {

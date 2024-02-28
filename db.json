@@ -15,6 +15,21 @@
       "password": "test02",
       "role": "lawyer",
       "license_num": "001232"
+    },
+    {
+      "id": "cee1",
+      "username": "test03",
+      "email": "test03@gmail.com",
+      "password": "test03",
+      "role": "lawyer",
+      "license_num": "001233"
+    },
+    {
+      "id": "4061",
+      "username": "test04",
+      "email": "test04@gmail.com",
+      "password": "test04",
+      "role": "client"
     }
   ],
   "clients": [
@@ -25,6 +40,14 @@
       "email": "client1@gmail.com",
       "gender": "male",
       "userId": "test01"
+    },
+    {
+      "id": "f529",
+      "name": "safeer",
+      "mobile": "03180522996",
+      "email": "safeer@gmail.com",
+      "gender": "male",
+      "userId": "test03"
     }
   ],
   "cases": [],
@@ -37,48 +60,6 @@
       "date": "2/27/2024",
       "time": "9:40PM",
       "userId": "test01"
-    }
-  ],
-  "lawyer_license": [
-    {
-      "id": "1",
-      "license": "001231"
-    },
-    {
-      "id": "2",
-      "license": "001232"
-    },
-    {
-      "id": "3",
-      "license": "001233"
-    },
-    {
-      "id": "4",
-      "license": "001234"
-    },
-    {
-      "id": "5",
-      "license": "001235"
-    },
-    {
-      "id": "6",
-      "license": "001236"
-    },
-    {
-      "id": "7",
-      "license": "001237"
-    },
-    {
-      "id": "8",
-      "license": "001238"
-    },
-    {
-      "id": "9",
-      "license": "001239"
-    },
-    {
-      "id": "10",
-      "license": "001240"
     }
   ]
 }
