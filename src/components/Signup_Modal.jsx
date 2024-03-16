@@ -61,7 +61,7 @@ const Signup_Modal = ({ handleSignupModal, toggleSignupModal}) => {
               <div className="flex gap-5 items-center justify-center p-4 md:p-5 dark:border-gray-600">
                 <Link to="/Signup"  >
                   <button
-                  onClick={()=>localStorage.setItem("userRole","lawyer")}
+                  onClick={()=>sessionStorage.setItem("userRole","lawyer")}
                     data-modal-hide="default-modal"
                     type="button"
                     className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-5 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -71,7 +71,7 @@ const Signup_Modal = ({ handleSignupModal, toggleSignupModal}) => {
                 </Link>
                 <Link to="/Signup" >
                   <button
-                  onClick={()=>localStorage.setItem("userRole","client")}
+                  onClick={()=>sessionStorage.setItem("userRole","client")}
                     data-modal-hide="default-modal"
                     type="button"
                     className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-5 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"

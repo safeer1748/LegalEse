@@ -16,7 +16,7 @@ import Manage_appoinment from "./Pages/Lawyer_Portal/Appoinments/Manage_appoinme
 import Add_appoinment from "./Pages/Lawyer_Portal/Appoinments/Add_appoinment";
 import View_appoinment from "./Pages/Lawyer_Portal/Appoinments/View_appoinment";
 import Edit_appoinment from "./Pages/Lawyer_Portal/Appoinments/Edit_appoinment";
-import Manage_Case from "./Pages/Lawyer_Portal/Cases/Manage_Case";
+import Manage_Cases from "./Pages/Lawyer_Portal/Cases/Manage_Cases";
 import Add_Case from "./Pages/Lawyer_Portal/Cases/Add_Case";
 import View_case from "./Pages/Lawyer_Portal/Cases/View_case";
 import Edit_Case from "./Pages/Lawyer_Portal/Cases/Edit_Case";
@@ -87,7 +87,7 @@ const App = () => {
           <Route
             exact
             path="/Lawyer/:username/Manage_cases"
-            element={<Manage_Case/>}
+            element={<Manage_Cases/>}
           />
           <Route
             exact
