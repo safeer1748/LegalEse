@@ -93,14 +93,14 @@ const Add_appoinment = () => {
   //get the name, mobile number and email of existing client
   const getSelectedClient = (e) => {
     e.preventDefault()
-    let selected = existingClient.find((f) => f.name === e.target.value);
-    setFormData({ ...formData,name:e.target.value, mobile: selected.mobile, email:selected.email })
+    let selected = existingClient.find((f) => f.email === e.target.value);
+    setFormData({ ...formData,email:e.target.value, mobile: selected.mobile, name:selected.name })
   };
 
   // set field based on radio button
   const handleRadio=(e)=>{
     setClientType(e.target.value)
-    setFormData({ ...formData, mobile:'', email:'' })
+    setFormData({ ...formData, mobile:'', name:'',email:'' })
   }
   return (
     <div>
@@ -154,10 +154,10 @@ const Add_appoinment = () => {
             <div className="grid gap-4 sm:grid-cols-2 sm:gap-10">
               <div className="sm:col-span-2">
                 <label
-                  htmlFor="name"
+                  htmlFor="email"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
-                  Client Name
+                  Email
                 </label>
                 {clientType === "existing client" ? (
                   <select
@@ -167,41 +167,65 @@ const Add_appoinment = () => {
                     onChange={getSelectedClient}
                   >
                     <option selected disabled value="Choose Client">
-                      Choose Client
+                      Choose Client Email
                     </option>
                     {existingClient.map((d, i) => (
-                      <option key={i}>{d.name}</option>
+                      <option key={i}>{d.email}</option>
                     ))}
                   </select>
                 ) : (
                   <input
                     type="text"
-                    name="name"
-                    id="name"
+                    name="email"
+                    id="email"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Full Name"
+                    placeholder="abc@gmail.com"
                     required=""
                     onChange={(e) =>
-                      setFormData({ ...formData, name: e.target.value })
+                      setFormData({ ...formData, email: e.target.value })
                     }
                   />
                 )}
 
+                <div className="text-red-600">
+                  {valid ? <></> : <span>{errors.email}</span>}
+                </div>
+              </div>
+              <div className="w-full">
+                <label
+                  htmlFor="name"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Name
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  id="name"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  placeholder="Your name"
+                  required=""
+                  disabled={clientType==="existing client"}
+                  value={formData.name}
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
+                />
                 <div className="text-red-600">
                   {valid ? <></> : <span>{errors.name}</span>}
                 </div>
               </div>
               <div className="w-full">
                 <label
-                  htmlFor="number"
+                  htmlFor="mobile"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Mobile
                 </label>
                 <input
                   type="text"
-                  name="number"
-                  id="number"
+                  name="mobile"
+                  id="mobile"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   placeholder="03XXXXXXXXX"
                   required=""
@@ -213,30 +237,6 @@ const Add_appoinment = () => {
                 />
                 <div className="text-red-600">
                   {valid ? <></> : <span>{errors.mobile}</span>}
-                </div>
-              </div>
-              <div className="w-full">
-                <label
-                  htmlFor="email"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Email
-                </label>
-                <input
-                  type="text"
-                  name="email"
-                  id="email"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  placeholder="abc@gmail.com"
-                  required=""
-                  disabled={clientType==="existing client"}
-                  value={formData.email}
-                  onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
-                />
-                <div className="text-red-600">
-                  {valid ? <></> : <span>{errors.email}</span>}
                 </div>
               </div>
 
