@@ -6,6 +6,7 @@ import { FaRegEye, FaRegEdit, FaRegTrashAlt } from "react-icons/fa";
 import { RiExpandUpDownFill } from "react-icons/ri";
 const Manage_Cases = () => {
   let username = localStorage.getItem("username");
+  const [statusDropdown, setStatusDropdown] = useState(false);
   const [data, setData] = useState([]);
   const [records, setRecords] = useState([]);
 
@@ -20,6 +21,21 @@ const Manage_Cases = () => {
       })
       .catch((err) => console.log(err));
   }, []);
+
+  const handleStatusDropdown = () => {
+    setStatusDropdown(!statusDropdown);
+  };
+
+  const showOpenStatus = () => {
+    setRecords(data.filter((f) => f.status === "open"));
+  };
+
+  const showClosedStatus = () => {
+    setRecords(data.filter((f) => f.status === "closed"));
+  };
+  const showBoth = () => {
+    setRecords(data);
+  };
 
   const searchFilter = (event) => {
     setRecords(
@@ -44,6 +60,19 @@ const Manage_Cases = () => {
       })
       .catch((err) => console.log(err));
   };
+
+  const handleDelete = (id) => {
+    const confirm = window.confirm("Click OK to Delete");
+    if (confirm) {
+      axios
+        .delete("http://localhost:8000/cases/" + id)
+        .then((res) => {
+          location.reload();
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
 
   const handleDeleteAll = () => {
     const confirm = window.confirm("Click OK to Delete All");
@@ -92,7 +121,7 @@ const Manage_Cases = () => {
                           type="text"
                           id="simple-search"
                           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                          placeholder="Search by Client Name"
+                          placeholder="Search"
                           onChange={searchFilter}
                         />
                       </div>
@@ -121,12 +150,87 @@ const Manage_Cases = () => {
                     </Link>
                     <div className="flex flex-row-reverse items-center  gap-3  w-full md:w-auto relative">
                       <button
-                      onClick={handleDeleteAll}
+                        onClick={handleDeleteAll}
                         className="w-full md:w-auto flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800 py-2 px-4 text-sm font-medium focus:outline-none rounded-lg focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                         type="button"
                       >
                         delete all
                       </button>
+                      <div className="flex flex-col space-y-12">
+                        <button
+                          onClick={handleStatusDropdown}
+                          id="dropdownDelayButton"
+                          data-dropdown-toggle="dropdownDelay"
+                          data-dropdown-delay="500"
+                          data-dropdown-trigger="hover"
+                          className="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                          type="button"
+                        >
+                          Status
+                          <svg
+                            className="w-2.5 h-2.5 ms-3"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 10 6"
+                          >
+                            <path
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="m1 1 4 4 4-4"
+                            />
+                          </svg>
+                        </button>
+
+                        {/* <!-- Status Dropdown menu --> */}
+                        <div
+                          id="dropdownDelay"
+                          className={`${
+                            !statusDropdown ? "hidden" : ""
+                          } fixed right-30  md:right-48  z-50 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700`}
+                        >
+                          <ul
+                            className="py-2 text-sm text-gray-700 dark:text-gray-200"
+                            aria-labelledby="dropdownDelayButton"
+                          >
+                            <li className="cursor-pointer">
+                              <a
+                                onClick={() => {
+                                  showOpenStatus();
+                                  handleStatusDropdown();
+                                }}
+                                className="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
+                              >
+                                Open
+                              </a>
+                            </li>
+                            <li className="cursor-pointer">
+                              <a
+                                onClick={() => {
+                                  showClosedStatus();
+                                  handleStatusDropdown();
+                                }}
+                                className="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
+                              >
+                                Closed
+                              </a>
+                            </li>
+                            <li className="cursor-pointer">
+                              <a
+                                onClick={() => {
+                                  showBoth();
+                                  handleStatusDropdown();
+                                }}
+                                className="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
+                              >
+                                Both
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -146,7 +250,7 @@ const Manage_Cases = () => {
                             Court Detail
                           </th>
                           <th scope="col" className="px-4 py-3">
-                            Date
+                            Date|Time
                           </th>
                           <th scope="col" className="px-4 py-3">
                             Status
@@ -170,7 +274,7 @@ const Manage_Cases = () => {
                               className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                             >
                               {d.client_name}
-                              <span className="pl-1 text-gray-500">
+                              <span className="pl-1 text-gray-500 font-normal">
                                 {d.client_role}
                               </span>
                               <div className="font-normal text-gray-500">
@@ -211,16 +315,21 @@ const Manage_Cases = () => {
                                 </p>
                               </div>
                             </td>
-                            <td className="px-4 py-3">{d.date}</td>
+                            <td className="px-4 py-3">
+                              <p>{d.date}</p>
+                              <p>{d.time}</p>
+                            </td>
                             <td
-                              className="px-4 py-3 cursor-pointer"
+                              className="px-4 py-3 cursor-pointer whitespace-nowrap"
                               onClick={() => handleStatus(d.id)}
                             >
                               {d.status}{" "}
                               <RiExpandUpDownFill className="inline" />
                             </td>
                             <td className="px-4 py-3 flex items-center justify-end space-x-3">
-                              <Link>
+                            <Link
+                                to={`/Lawyer/${username}/View_Case/${d.id}`}
+                              >
                                 <button>
                                   <FaRegEye
                                     size={16}
@@ -228,7 +337,9 @@ const Manage_Cases = () => {
                                   />
                                 </button>
                               </Link>
-                              <Link>
+                              <Link
+                                to={`/Lawyer/${username}/Edit_Case/${d.id}`}
+                              >
                                 <button>
                                   <FaRegEdit
                                     size={16}
@@ -237,7 +348,7 @@ const Manage_Cases = () => {
                                 </button>
                               </Link>
                               <Link>
-                                <button>
+                                <button onClick={() => handleDelete(d.id)}>
                                   <FaRegTrashAlt
                                     size={16}
                                     className="hover:text-red-600"

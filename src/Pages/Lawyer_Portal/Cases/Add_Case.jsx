@@ -20,6 +20,7 @@ const Add_Case = () => {
     court_number: "",
     judge_name: "",
     date: "",
+    time:"",
     status: "open",
     userId: username,
   });
@@ -47,10 +48,16 @@ const Add_Case = () => {
     });
   };
 
-  // Set Date
-  const handleDate = async () => {
-    let Date = datePickerValue.toLocaleDateString();
-    formData.date = Date;
+  // Set Date and Time
+  const handleDateTime = async () => {
+    let onlyDate = datePickerValue.toLocaleDateString();
+
+    let value = datePickerValue.toLocaleTimeString();
+    value = value.replaceAll(":", " ");
+    let result = value.split(" ");
+    let onlyTime = `${result[0]}:${result[1]}${result[3]}`;
+    formData.date = onlyDate;
+    formData.time = onlyTime;
   };
 
   const handleSubmit = async (e) => {
@@ -68,7 +75,7 @@ const Add_Case = () => {
       isValid = false;
       validationErrors.case_number = "case number required";
     }
-    // Case Number Validation
+    // Case Type Validation
     if (formData.case_type === "" || formData.case_type === null) {
       isValid = false;
       validationErrors.case_type = "case type required";
@@ -92,7 +99,7 @@ const Add_Case = () => {
     setErrors(validationErrors);
     setValid(isValid);
     if (Object.keys(validationErrors).length === 0) {
-      await handleDate();
+      await handleDateTime();
       await axios
         .post(`http://localhost:8000/cases?userId=${username}`, formData)
         .then((res) => {
@@ -216,8 +223,6 @@ const Add_Case = () => {
                   name="name"
                   id="name"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  placeholder="Client name"
-                  required=""
                   value={formData.client_name}
                   disabled
                 />
@@ -234,8 +239,6 @@ const Add_Case = () => {
                   name="case-no"
                   id="case-no"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  placeholder="xxxxxxxx"
-                  required=""
                   onChange={(e) =>
                     setFormData({ ...formData, case_number: e.target.value })
                   }
@@ -256,8 +259,6 @@ const Add_Case = () => {
                   name="case-type"
                   id="case-type"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  placeholder="murder"
-                  required=""
                   onChange={(e) =>
                     setFormData({ ...formData, case_type: e.target.value })
                   }
@@ -278,8 +279,6 @@ const Add_Case = () => {
                   name="court-branch"
                   id="court-branch"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  placeholder="high court taxila"
-                  required=""
                   onChange={(e) =>
                     setFormData({ ...formData, court_branch: e.target.value })
                   }
@@ -301,8 +300,6 @@ const Add_Case = () => {
                   name="court-no"
                   id="court-no"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  placeholder="xxxxxxxx"
-                  required=""
                   onChange={(e) =>
                     setFormData({ ...formData, court_number: e.target.value })
                   }
@@ -323,8 +320,6 @@ const Add_Case = () => {
                   name="judge-name"
                   id="judge-name"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  placeholder="Judge Name"
-                  required=""
                   onChange={(e) =>
                     setFormData({ ...formData, judge_name: e.target.value })
                   }
@@ -343,12 +338,14 @@ const Add_Case = () => {
                 <DatePicker
                   showIcon
                   toggleCalendarOnIconClick
-                  dateFormat="M/d/yyyy"
+                  dateFormat="M/d/yyyy h:mm aa"
+                  timeInputLabel="Time:"
+                  showTimeInput
                   minDate={new Date()}
                   showMonthDropdown
                   className="bg-gray-50 z-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   selected={datePickerValue}
-                  onChange={(date) => setDatePickerValue(date)}
+                  onChange={(dateTime) => setDatePickerValue(dateTime)}
                 />
               </div>
             </div>

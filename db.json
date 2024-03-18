@@ -30,6 +30,21 @@
       "email": "test04@gmail.com",
       "password": "test04",
       "role": "client"
+    },
+    {
+      "id": "54c3",
+      "username": "test05",
+      "email": "test05@gmail.com",
+      "password": "test05",
+      "role": "client"
+    },
+    {
+      "id": "075b",
+      "username": "test06",
+      "email": "test06@gmail.com",
+      "password": "test06",
+      "role": "lawyer",
+      "license_num": "001234"
     }
   ],
   "clients": [
@@ -58,7 +73,38 @@
       "userId": "test01"
     }
   ],
-  "cases": [],
+  "cases": [
+    {
+      "id": "8a79",
+      "client_role": "defendant",
+      "client_name": "client31",
+      "client_email": "client31@gmail.com",
+      "case_number": "00012",
+      "case_type": "civial",
+      "court_branch": "hight court taxila",
+      "court_number": "34567",
+      "judge_name": "ali muhammad",
+      "date": "3/18/2024",
+      "time": "12:31PM",
+      "status": "open",
+      "userId": "test01"
+    },
+    {
+      "id": "83c8",
+      "client_role": "petitioner",
+      "client_name": "client1",
+      "client_email": "client1@gmail.com",
+      "case_number": "487487",
+      "case_type": "cival",
+      "court_branch": "hig court islamabad",
+      "court_number": "3478347",
+      "judge_name": "muhammad ali",
+      "date": "3/18/2024",
+      "time": "12:32PM",
+      "status": "open",
+      "userId": "test01"
+    }
+  ],
   "appoinments": [
     {
       "id": "8692",

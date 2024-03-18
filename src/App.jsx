@@ -18,9 +18,8 @@ import View_appoinment from "./Pages/Lawyer_Portal/Appoinments/View_appoinment";
 import Edit_appoinment from "./Pages/Lawyer_Portal/Appoinments/Edit_appoinment";
 import Manage_Cases from "./Pages/Lawyer_Portal/Cases/Manage_Cases";
 import Add_Case from "./Pages/Lawyer_Portal/Cases/Add_Case";
-import View_case from "./Pages/Lawyer_Portal/Cases/View_case";
+import View_Case from "./Pages/Lawyer_Portal/Cases/View_case";
 import Edit_Case from "./Pages/Lawyer_Portal/Cases/Edit_Case";
-
 const App = () => {
   return (
     <div>
@@ -86,7 +85,7 @@ const App = () => {
                 {/* Manage_Cases */}
           <Route
             exact
-            path="/Lawyer/:username/Manage_cases"
+            path="/Lawyer/:username/Manage_Cases"
             element={<Manage_Cases/>}
           />
           <Route
@@ -97,7 +96,7 @@ const App = () => {
           <Route
             exact
             path="/Lawyer/:username/View_Case/:id"
-            element={<View_case />}
+            element={<View_Case/>}
           />
           <Route
             exact
