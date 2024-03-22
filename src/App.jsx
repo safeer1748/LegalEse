@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./Pages/Home/Home";
 import Login from "./Pages/Authentication/Login";
@@ -8,11 +8,11 @@ import Admin from "./Pages/Admin_Portal/Admin";
 import Client from "./Pages/Client_portal/Client";
 import Lawyer from "./Pages/Lawyer_Portal/Lawyer";
 import Dashbord from "./Pages/Lawyer_Portal/Dashbord/Dashbord";
-import Manage_Client from "./Pages/Lawyer_Portal/Clients/Manage_Client";
+import Manage_Clients from "./Pages/Lawyer_Portal/Clients/Manage_Clients";
 import Add_Client from "./Pages/Lawyer_Portal/Clients/Add_Client";
 import View_Client from "./Pages/Lawyer_Portal/Clients/View_Client";
 import Edit_Client from "./Pages/Lawyer_Portal/Clients/Edit_Client";
-import Manage_appoinment from "./Pages/Lawyer_Portal/Appoinments/Manage_appoinment";
+import Manage_appoinments from "./Pages/Lawyer_Portal/Appoinments/Manage_appoinments";
 import Add_appoinment from "./Pages/Lawyer_Portal/Appoinments/Add_appoinment";
 import View_appoinment from "./Pages/Lawyer_Portal/Appoinments/View_appoinment";
 import Edit_appoinment from "./Pages/Lawyer_Portal/Appoinments/Edit_appoinment";
@@ -42,8 +42,8 @@ const App = () => {
           {/* Manage_Clients */}
           <Route
             exact
-            path="/Lawyer/:username/Manage_Client"
-            element={<Manage_Client />}
+            path="/Lawyer/:username/Manage_Clients"
+            element={<Manage_Clients />}
           />
           <Route
             exact
@@ -64,8 +64,8 @@ const App = () => {
           {/* Manage_Appoinments */}
           <Route
             exact
-            path="/Lawyer/:username/Manage_appoinment"
-            element={<Manage_appoinment />}
+            path="/Lawyer/:username/Manage_appoinments"
+            element={<Manage_appoinments />}
           />
           <Route
             exact

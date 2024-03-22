@@ -54,7 +54,7 @@ const Add_Client = () => {
       await axios
         .post(`http://localhost:8000/clients?userId=${username}`, formData)
         .then((res) => {
-          navigate(`/Lawyer/${username}/Manage_Client`);
+          navigate(`/Lawyer/${username}/Manage_Clients`);
         })
         .catch((err) => console.log(err));
     }
@@ -129,24 +129,48 @@ const Add_Client = () => {
                     {valid ? <></> : <span>{errors.email}</span>}
                   </div>
               </div>
-              <div>
-                <label
-                  htmlFor="category"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Gender
-                </label>
-                <select
+              <div className="w-full">
+                <fieldset
+                  className="grid grid-cols-2"
                   onChange={(e) =>
                     setFormData({ ...formData, gender: e.target.value })
                   }
-                  id="category"
-                  value={formData.gender}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 >
-                  <option>male</option>
-                  <option>female</option>
-                </select>
+                  <legend className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                    Gender
+                  </legend>
+                  <div className="flex items-center mb-5">
+                    <input
+                      id="male"
+                      type="radio"
+                      name="gender"
+                      value="male"
+                      defaultChecked
+                      className="w-4 h-4 border-gray-500 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
+                    />
+                    <label
+                      htmlFor="male"
+                      className="block ms-2  text-sm text-gray-900 dark:text-gray-300"
+                    >
+                      Male
+                    </label>
+                  </div>
+                  <div className="flex items-center mb-5">
+                    <input
+                      id="female"
+                      type="radio"
+                      name="gender"
+                      value="female"
+                      className="w-4 h-4 border-gray-500 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
+                    />
+                    <label
+                      htmlFor="female"
+                      className="block ms-2  text-sm  text-gray-900 dark:text-gray-300"
+                    >
+                      Female
+                    </label>
+                  </div>
+                </fieldset>
               </div>
             </div>
             <div className="flex gap-3">
@@ -156,7 +180,7 @@ const Add_Client = () => {
               >
                 Add Client
               </button>
-              <Link to={`/Lawyer/${username}/Manage_Client`}>
+              <Link to={`/Lawyer/${username}/Manage_Clients`}>
                 <button className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-gray-600 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-gray-800">
                   Cancel
                 </button>

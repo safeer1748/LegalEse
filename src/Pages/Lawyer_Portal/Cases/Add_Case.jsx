@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
+import dayjs from 'dayjs';
 const Add_Case = () => {
   let username = localStorage.getItem("username");
   const navigate = useNavigate();
@@ -50,14 +50,12 @@ const Add_Case = () => {
 
   // Set Date and Time
   const handleDateTime = async () => {
-    let onlyDate = datePickerValue.toLocaleDateString();
-
-    let value = datePickerValue.toLocaleTimeString();
-    value = value.replaceAll(":", " ");
-    let result = value.split(" ");
-    let onlyTime = `${result[0]}:${result[1]}${result[3]}`;
-    formData.date = onlyDate;
-    formData.time = onlyTime;
+    let dateTime= dayjs(datePickerValue).format('DD-MMM-YYYY hh:mma')
+    let result = dateTime.split(" ");
+    let date=result[0]
+    let time=result[1]
+    formData.date = date;
+    formData.time = time;
   };
 
   const handleSubmit = async (e) => {
@@ -338,11 +336,12 @@ const Add_Case = () => {
                 <DatePicker
                   showIcon
                   toggleCalendarOnIconClick
-                  dateFormat="M/d/yyyy h:mm aa"
+                  dateFormat="dd-MMM-yyyy hh:mma"
                   timeInputLabel="Time:"
                   showTimeInput
                   minDate={new Date()}
                   showMonthDropdown
+                  shouldCloseOnSelect={false}
                   className="bg-gray-50 z-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   selected={datePickerValue}
                   onChange={(dateTime) => setDatePickerValue(dateTime)}

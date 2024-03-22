@@ -4,11 +4,13 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import dayjs from 'dayjs';
 const Edit_appoinment = () => {
   let { id } = useParams();
   const navigate = useNavigate();
   let username = localStorage.getItem("username");
-  const [datePickerValue, setDatePickerValue] = useState(new Date());
+  const [datePickerValue, setDatePickerValue] = useState();
+  const [datePickerDisabled, setDatePickerDisabled] = useState(true);
   const [formData, setFormData] = useState({
     name: "",
     mobile: "",
@@ -19,20 +21,16 @@ const Edit_appoinment = () => {
     userId: username,
   });
 
-  const [errors, setErrors] = useState({});
-  const [valid, setValid] = useState(true);
 
-    // Set Date and Time 
-    const handleDateTime = async () => {
-      let onlyDate = datePickerValue.toLocaleDateString();
-  
-      let value = datePickerValue.toLocaleTimeString();
-      value = value.replaceAll(":", " ");
-      let result = value.split(" ");
-      let onlyTime = `${result[0]}:${result[1]}${result[3]}`;
-      formData.date = onlyDate;
-      formData.time = onlyTime;
-    };
+  // Set Date and Time
+  const handleDateTime = async () => {
+    let dateTime= dayjs(datePickerValue).format('DD-MMM-YYYY hh:mma')
+    let result = dateTime.split(" ");
+    let date=result[0]
+    let time=result[1]
+    formData.date = date;
+    formData.time = time;
+  };
 
   useEffect(() => {
     axios
@@ -45,47 +43,17 @@ const Edit_appoinment = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let isValid = true;
-    let validationErrors = {};
 
-    // name Validation
-    if (formData.name === "" || formData.name === null) {
-      isValid = false;
-      validationErrors.name = "Name required";
-    }
-
-    // mobile number Validation
-    if (formData.mobile === "" || formData.mobile === null) {
-      isValid = false;
-      validationErrors.mobile = "Mobile Number required";
-    } else if (!/^[0-9]{11}$/.test(formData.mobile)) {
-      isValid = false;
-      validationErrors.mobile = "Mobile number must be 11 digits";
-    }
-
-    // email Validation
-    if (formData.email === "" || formData.email === null) {
-      isValid = false;
-      validationErrors.email = "email required";
-    } else if (
-      !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(formData.email)
-    ) {
-      isValid = false;
-      validationErrors.email = "email is not valid";
-    }
-
-    setErrors(validationErrors);
-    setValid(isValid);
-
-    if (Object.keys(validationErrors).length === 0) {
+    if (!datePickerDisabled) {
       await handleDateTime();
-      await axios
-        .put("http://localhost:8000/appoinments/" + id, formData)
-        .then((res) => {
-          navigate(`/Lawyer/${username}/Manage_appoinment`);
-        })
-        .catch((err) => console.log(err));
     }
+
+    await axios
+      .put("http://localhost:8000/appoinments/" + id, formData)
+      .then((res) => {
+        navigate(`/Lawyer/${username}/Manage_appoinments`);
+      })
+      .catch((err) => console.log(err));
   };
   return (
     <div>
@@ -108,15 +76,10 @@ const Edit_appoinment = () => {
                   type="text"
                   name="name"
                   id="name"
+                  disabled
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  value={formData.name}
-                  onChange={(e) =>
-                    setFormData({ ...formData, name: e.target.value })
-                  }
+                  placeholder={formData.name}
                 />
-                <div className="text-red-600">
-                  {valid ? <></> : <span>{errors.name}</span>}
-                </div>
               </div>
               <div className="w-full">
                 <label
@@ -129,15 +92,10 @@ const Edit_appoinment = () => {
                   type="text"
                   name="number"
                   id="number"
+                  disabled
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  value={formData.mobile}
-                  onChange={(e) =>
-                    setFormData({ ...formData, mobile: e.target.value })
-                  }
+                  placeholder={formData.mobile}
                 />
-                <div className="text-red-600">
-                  {valid ? <></> : <span>{errors.mobile}</span>}
-                </div>
               </div>
               <div className="w-full">
                 <label
@@ -150,15 +108,10 @@ const Edit_appoinment = () => {
                   type="text"
                   name="email"
                   id="email"
+                  disabled
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  value={formData.email}
-                  onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
+                  placeholder={formData.email}
                 />
-                <div className="text-red-600">
-                  {valid ? <></> : <span>{errors.email}</span>}
-                </div>
               </div>
               <div className="w-full">
                 <label
@@ -169,15 +122,27 @@ const Edit_appoinment = () => {
                 </label>
                 <DatePicker
                   showIcon
-                  dateFormat="M/d/yyyy h:mm aa"
+                  dateFormat="dd-MMM-yyyy hh:mma"
                   timeInputLabel="Time:"
                   showTimeInput
                   minDate={new Date()}
                   showMonthDropdown
+                  shouldCloseOnSelect={false}
                   className="bg-gray-50 z-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   selected={datePickerValue}
-                  onChange={(date) => setDatePickerValue(date)}
+                  disabled={datePickerDisabled}
+                  placeholderText={`${formData.date} ${formData.time}`}
+                  onChange={(dateTime) => setDatePickerValue(dateTime)}
                 />
+                <p
+                  className="bg-none text-sm text-blue-600 hover:underline dark:text-primary-500 cursor-pointer mt-1"
+                  onClick={() => {
+                    setDatePickerDisabled(false);
+                    setDatePickerValue(new Date());
+                  }}
+                >
+                  Change Date and Time
+                </p>
               </div>
             </div>
             <div className="flex gap-3">
@@ -187,7 +152,7 @@ const Edit_appoinment = () => {
               >
                 Update
               </button>
-              <Link to={`/Lawyer/${username}/Manage_appoinment`}>
+              <Link to={`/Lawyer/${username}/Manage_appoinments`}>
                 <button className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-gray-600 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-gray-800">
                   Cancel
                 </button>

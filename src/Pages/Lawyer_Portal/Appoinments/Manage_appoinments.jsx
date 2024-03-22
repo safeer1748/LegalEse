@@ -1,9 +1,9 @@
 import axios from "axios";
-import Lawyer from '../Lawyer'
+import Lawyer from "../Lawyer";
 import React, { useEffect, useState } from "react";
 import { FaRegEye, FaRegEdit, FaRegTrashAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
-const Manage_appoinment = () => {
+const Manage_appoinments = () => {
   let username = localStorage.getItem("username");
   const [data, setData] = useState([]);
   const [records, setRecords] = useState([]);
@@ -52,7 +52,7 @@ const Manage_appoinment = () => {
   };
   return (
     <div>
-       <Lawyer/>
+      <Lawyer />
       <div className="p-4 pt-24 xl:ml-64 bg-white">
         <div className="p-4 border-2 border-gray-300 border-dashed rounded-lg dark:border-gray-700">
           <section className="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
@@ -114,7 +114,7 @@ const Manage_appoinment = () => {
                     </Link>
                     <div className="flex flex-row-reverse items-center  gap-3  w-full md:w-auto relative">
                       <button
-                       onClick={handleDeleteAll}
+                        onClick={handleDeleteAll}
                         className="w-full md:w-auto flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800 py-2 px-4 text-sm font-medium focus:outline-none rounded-lg focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                         type="button"
                       >
@@ -142,10 +142,10 @@ const Manage_appoinment = () => {
                             Email
                           </th>
                           <th scope="col" className="px-4 py-3">
-                            Date
+                            Date Time
                           </th>
                           <th scope="col" className="px-4 py-3">
-                            Time
+                            Status
                           </th>
                           <th
                             scope="col"
@@ -157,18 +157,30 @@ const Manage_appoinment = () => {
                       </thead>
                       <tbody>
                         {records.map((d, i) => (
-                          <tr key={i} className="border-b  border-gray-300 align-middle">
+                          <tr
+                            key={i}
+                            className="border-b  border-gray-300 align-middle"
+                          >
                             <th
                               scope="row"
                               className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                             >
                               {d.name}
                             </th>
-                            <td className="px-4 py-3">{d.mobile}</td>
-                            <td className="px-4 py-3">{d.email}</td>
-                            <td className="px-4 py-3">{d.date}</td>
-                            <td className="px-4 py-3">{d.time}</td>
-                            <td className="px-4 py-3 flex items-center justify-end space-x-3">
+                            <td className="px-4 py-3 whitespace-nowrap">
+                              {d.mobile}
+                            </td>
+                            <td className="px-4 py-3 whitespace-nowrap">
+                              {d.email}
+                            </td>
+                            <td className="px-4 py-3 whitespace-nowrap ">
+                              <span className="mr-2">{d.date}</span>
+                              <span>{d.time}</span>
+                            </td>
+                            <td className="px-4 py-3 whitespace-nowrap">
+                              {d.status}
+                            </td>
+                            <td className="px-4 py-3 flex items-center justify-end space-x-3 whitespace-nowrap">
                               <Link
                                 to={`/Lawyer/${username}/View_appoinment/${d.id}`}
                               >
@@ -213,4 +225,4 @@ const Manage_appoinment = () => {
   );
 };
 
-export default Manage_appoinment;
+export default Manage_appoinments;

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import dayjs from 'dayjs';
 
 const Add_appoinment = () => {
   let username = localStorage.getItem("username");
@@ -17,6 +18,7 @@ const Add_appoinment = () => {
     email: "",
     date: "",
     time: "",
+    status:"open",
     userId: username,
   });
   const [errors, setErrors] = useState({});
@@ -24,16 +26,13 @@ const Add_appoinment = () => {
 
   // Set Date and Time
   const handleDateTime = async () => {
-    let onlyDate = datePickerValue.toLocaleDateString();
-
-    let value = datePickerValue.toLocaleTimeString();
-    value = value.replaceAll(":", " ");
-    let result = value.split(" ");
-    let onlyTime = `${result[0]}:${result[1]}${result[3]}`;
-    formData.date = onlyDate;
-    formData.time = onlyTime;
+    let dateTime= dayjs(datePickerValue).format('DD-MMM-YYYY hh:mma')
+    let result = dateTime.split(" ");
+    let date=result[0]
+    let time=result[1]
+    formData.date = date;
+    formData.time = time;
   };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -73,7 +72,7 @@ const Add_appoinment = () => {
       await axios
         .post(`http://localhost:8000/appoinments?userId=${username}`, formData)
         .then((res) => {
-          navigate(`/Lawyer/${username}/Manage_appoinment`);
+          navigate(`/Lawyer/${username}/Manage_appoinments`);
         })
         .catch((err) => console.log(err));
     }
@@ -244,11 +243,12 @@ const Add_appoinment = () => {
                 <DatePicker
                   showIcon
                   toggleCalendarOnIconClick
-                  dateFormat="M/d/yyyy h:mm aa"
+                  dateFormat="dd-MMM-yyyy hh:mma"
                   timeInputLabel="Time:"
                   showTimeInput
                   minDate={new Date()}
                   showMonthDropdown
+                  shouldCloseOnSelect={false}
                   className="bg-gray-50 z-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   selected={datePickerValue}
                   onChange={(dateTime) => setDatePickerValue(dateTime)}
@@ -262,7 +262,7 @@ const Add_appoinment = () => {
               >
                 Add Appoinment
               </button>
-              <Link to={`/Lawyer/${username}/Manage_appoinment`}>
+              <Link to={`/Lawyer/${username}/Manage_appoinments`}>
                 <button className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-gray-600 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-gray-800">
                   Cancel
                 </button>

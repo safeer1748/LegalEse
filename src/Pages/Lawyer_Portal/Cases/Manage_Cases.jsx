@@ -250,7 +250,7 @@ const Manage_Cases = () => {
                             Court Detail
                           </th>
                           <th scope="col" className="px-4 py-3">
-                            Date|Time
+                            Date Time
                           </th>
                           <th scope="col" className="px-4 py-3">
                             Status
@@ -315,7 +315,7 @@ const Manage_Cases = () => {
                                 </p>
                               </div>
                             </td>
-                            <td className="px-4 py-3">
+                            <td className="px-4 py-3 whitespace-nowrap">
                               <p>{d.date}</p>
                               <p>{d.time}</p>
                             </td>
@@ -326,7 +326,7 @@ const Manage_Cases = () => {
                               {d.status}{" "}
                               <RiExpandUpDownFill className="inline" />
                             </td>
-                            <td className="px-4 py-3 flex items-center justify-end space-x-3">
+                            <td className="px-4 py-3 flex items-center justify-end space-x-3 whitespace-nowrap">
                             <Link
                                 to={`/Lawyer/${username}/View_Case/${d.id}`}
                               >

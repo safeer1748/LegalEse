@@ -25,7 +25,7 @@ const View_Client = () => {
       axios
         .delete('http://localhost:8000/clients/' + id)
         .then((res) => {
-            navigate(`/Lawyer/${username}/Manage_Client`)
+            navigate(`/Lawyer/${username}/Manage_Clients`)
         })
         .catch((err) => console.log(err));
     }
@@ -49,7 +49,7 @@ const View_Client = () => {
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                 Client Detail
               </h3>
-              <Link to={`/Lawyer/${username}/Manage_Client`} >
+              <Link to={`/Lawyer/${username}/Manage_Clients`} >
                 <button
                   type="button"
                   className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"

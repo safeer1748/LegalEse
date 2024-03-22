@@ -49,14 +49,6 @@
   ],
   "clients": [
     {
-      "id": "f96a",
-      "name": "client1",
-      "mobile": "03124567891",
-      "email": "client1@gmail.com",
-      "gender": "male",
-      "userId": "test01"
-    },
-    {
       "id": "f529",
       "name": "safeer",
       "mobile": "03180522996",
@@ -65,63 +57,106 @@
       "userId": "test03"
     },
     {
-      "id": "8ef4",
-      "name": "client3",
+      "id": "3ad1",
+      "name": "Safeer",
       "mobile": "03314600963",
-      "email": "client3@gmail.com",
+      "email": "client1@gmail.com",
+      "gender": "male",
+      "userId": "test01"
+    },
+    {
+      "id": "a36e",
+      "name": "alisha",
+      "mobile": "03314600963",
+      "email": "alisha@gmail.com",
+      "gender": "female",
+      "userId": "test01"
+    },
+    {
+      "id": "d83a",
+      "name": "client4",
+      "mobile": "03200522996",
+      "email": "client4@gmail.com",
       "gender": "male",
       "userId": "test01"
     }
   ],
   "cases": [
     {
-      "id": "8a79",
-      "client_role": "defendant",
-      "client_name": "client31",
-      "client_email": "client31@gmail.com",
-      "case_number": "00012",
-      "case_type": "civial",
-      "court_branch": "hight court taxila",
-      "court_number": "34567",
-      "judge_name": "ali muhammad",
-      "date": "3/18/2024",
-      "time": "12:31PM",
+      "id": "123b",
+      "client_role": "respondent",
+      "client_name": "Safeer",
+      "client_email": "client1@gmail.com",
+      "case_number": "23454",
+      "case_type": "dcdcd",
+      "court_branch": "3r32rcdc",
+      "court_number": "2e343",
+      "judge_name": "dcdcdcd",
+      "date": "22-Mar-2024",
+      "time": "03:15pm",
       "status": "open",
       "userId": "test01"
     },
     {
-      "id": "83c8",
-      "client_role": "petitioner",
-      "client_name": "client1",
-      "client_email": "client1@gmail.com",
-      "case_number": "487487",
-      "case_type": "cival",
-      "court_branch": "hig court islamabad",
-      "court_number": "3478347",
-      "judge_name": "muhammad ali",
-      "date": "3/18/2024",
-      "time": "12:32PM",
+      "id": "5c67",
+      "client_role": "respondent",
+      "client_name": "alisha",
+      "client_email": "alisha@gmail.com",
+      "case_number": "23432434",
+      "case_type": "vfvffbf",
+      "court_branch": "35454",
+      "court_number": "434",
+      "judge_name": "fgfgfgf",
+      "date": "22-Mar-2024",
+      "time": "03:17pm",
+      "status": "open",
+      "userId": "test01"
+    },
+    {
+      "id": "fb6e",
+      "client_role": "respondent",
+      "client_name": "client4",
+      "client_email": "client4@gmail.com",
+      "case_number": "243434",
+      "case_type": "dfvdfg",
+      "court_branch": "34323",
+      "court_number": "32434",
+      "judge_name": "fgfgfvf",
+      "date": "22-Mar-2024",
+      "time": "08:43pm",
       "status": "open",
       "userId": "test01"
     }
   ],
   "appoinments": [
     {
-      "id": "8692",
-      "name": "client1",
-      "mobile": "03124567891",
-      "email": "client1@gmail.com",
-      "date": "2/27/2024",
-      "time": "9:40PM",
+      "id": "fcef",
+      "name": "client4",
+      "mobile": "03200522996",
+      "email": "client4@gmail.com",
+      "date": "22-Mar-2024",
+      "time": "08:45pm",
+      "status": "open",
       "userId": "test01"
     },
     {
-      "id": "6d77",
-      "name": "client2",
-      "mobile": "03180522996",
-      "email": "client2@gmail.com",
-      "date": "3/28/2024",
-      "time": "8:38AM",
+      "id": "66d3",
+      "name": "alisha",
+      "mobile": "03314600963",
+      "email": "alisha@gmail.com",
+      "date": "23-Mar-2024",
+      "time": "08:45pm",
+      "status": "open",
+      "userId": "test01"
+    },
+    {
+      "id": "75fe",
+      "name": "Safeer",
+      "mobile": "03314600963",
+      "email": "client1@gmail.com",
+      "date": "22-Mar-2024",
+      "time": "08:45pm",
+      "status": "open",
       "userId": "test01"
     }
   ]

@@ -3,7 +3,7 @@ import { MdHome } from "react-icons/md";
 import { FaHandshake } from "react-icons/fa";
 import { ImHammer2 } from "react-icons/im";
 import { LuCalendarDays } from "react-icons/lu";
-import { Link, Outlet } from "react-router-dom";
+import { Link} from "react-router-dom";
 const Lawyer_Sidebar = ({ toggleSidebar, handleToggleSidebar }) => {
   let username = localStorage.getItem("username");
   const [toggleAppoinmentDropdown, setToggleAppoinmentDropdown] =
@@ -39,7 +39,7 @@ const Lawyer_Sidebar = ({ toggleSidebar, handleToggleSidebar }) => {
             <li>
               <Link
                 onClick={handleToggleSidebar}
-                to={`/Lawyer/${username}/Manage_Client`}
+                to={`/Lawyer/${username}/Manage_Clients`}
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <FaHandshake
@@ -100,7 +100,7 @@ const Lawyer_Sidebar = ({ toggleSidebar, handleToggleSidebar }) => {
                 <li>
                   <Link
                     onClick={handleToggleSidebar}
-                    to={`/Lawyer/${username}/Manage_appoinment`}
+                    to={`/Lawyer/${username}/Manage_appoinments`}
                     className="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                   >
                     Manage Appoinments

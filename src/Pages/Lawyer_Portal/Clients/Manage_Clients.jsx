@@ -3,7 +3,7 @@ import Lawyer from '../Lawyer'
 import React, { useEffect, useState } from "react";
 import { FaRegEye, FaRegEdit, FaRegTrashAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
-const Manage_Client = () => {
+const Manage_Clients = () => {
   let username = localStorage.getItem("username");
   const [genderDropdown, setGenderDropdown] = useState(false);
   const [data, setData] = useState([]);
@@ -301,4 +301,4 @@ const Manage_Client = () => {
   );
 };
 
-export default Manage_Client;
+export default Manage_Clients;
