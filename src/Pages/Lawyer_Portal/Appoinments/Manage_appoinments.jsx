@@ -54,10 +54,8 @@ const Manage_appoinments = () => {
     <div>
       <Lawyer />
       <div className="p-4 pt-24 xl:ml-64 bg-white">
-        <div className="p-4 border-2 border-gray-300 border-dashed rounded-lg dark:border-gray-700">
-          <section className="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
-            <div className="mx-auto max-w-screen-xl px-2">
-              <div className="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+        <div className=" border-2 border-gray-300 border-dashed rounded-lg dark:border-gray-700">
+          <section className="bg-gray-50 shadow-md dark:bg-gray-900 m-4">
                 <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
                   <div className="w-full md:w-1/1">
                     <form className="flex items-center">
@@ -216,8 +214,6 @@ const Manage_appoinments = () => {
                     </table>
                   )}
                 </div>
-              </div>
-            </div>
           </section>
         </div>
       </div>

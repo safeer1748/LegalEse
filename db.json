@@ -1,161 +1,67 @@
 {
   "users": [
     {
-      "id": "5ec1",
+      "id": "01dc",
       "username": "test01",
       "email": "test01@gmail.com",
       "password": "test01",
       "role": "lawyer",
       "license_num": "001231"
-    },
-    {
-      "id": "b32f",
-      "username": "test02",
-      "email": "test02@gmail.com",
-      "password": "test02",
-      "role": "lawyer",
-      "license_num": "001232"
-    },
-    {
-      "id": "cee1",
-      "username": "test03",
-      "email": "test03@gmail.com",
-      "password": "test03",
-      "role": "lawyer",
-      "license_num": "001233"
-    },
-    {
-      "id": "4061",
-      "username": "test04",
-      "email": "test04@gmail.com",
-      "password": "test04",
-      "role": "client"
-    },
-    {
-      "id": "54c3",
-      "username": "test05",
-      "email": "test05@gmail.com",
-      "password": "test05",
-      "role": "client"
-    },
-    {
-      "id": "075b",
-      "username": "test06",
-      "email": "test06@gmail.com",
-      "password": "test06",
-      "role": "lawyer",
-      "license_num": "001234"
     }
   ],
   "clients": [
     {
-      "id": "f529",
-      "name": "safeer",
+      "id": "a1a5",
+      "name": "client1",
       "mobile": "03180522996",
-      "email": "safeer@gmail.com",
-      "gender": "male",
-      "userId": "test03"
-    },
-    {
-      "id": "3ad1",
-      "name": "Safeer",
-      "mobile": "03314600963",
       "email": "client1@gmail.com",
       "gender": "male",
       "userId": "test01"
     },
     {
-      "id": "a36e",
-      "name": "alisha",
+      "id": "58e6",
+      "name": "client2",
       "mobile": "03314600963",
-      "email": "alisha@gmail.com",
+      "email": "client2@gmail.com",
       "gender": "female",
-      "userId": "test01"
-    },
-    {
-      "id": "d83a",
-      "name": "client4",
-      "mobile": "03200522996",
-      "email": "client4@gmail.com",
-      "gender": "male",
       "userId": "test01"
     }
   ],
   "cases": [
     {
-      "id": "123b",
-      "client_role": "respondent",
-      "client_name": "Safeer",
-      "client_email": "client1@gmail.com",
-      "case_number": "23454",
-      "case_type": "dcdcd",
-      "court_branch": "3r32rcdc",
-      "court_number": "2e343",
-      "judge_name": "dcdcdcd",
-      "date": "22-Mar-2024",
-      "time": "03:15pm",
-      "status": "open",
-      "userId": "test01"
-    },
-    {
-      "id": "5c67",
-      "client_role": "respondent",
-      "client_name": "alisha",
-      "client_email": "alisha@gmail.com",
-      "case_number": "23432434",
-      "case_type": "vfvffbf",
-      "court_branch": "35454",
-      "court_number": "434",
-      "judge_name": "fgfgfgf",
-      "date": "22-Mar-2024",
-      "time": "03:17pm",
-      "status": "open",
-      "userId": "test01"
-    },
-    {
-      "id": "fb6e",
-      "client_role": "respondent",
-      "client_name": "client4",
-      "client_email": "client4@gmail.com",
-      "case_number": "243434",
-      "case_type": "dfvdfg",
-      "court_branch": "34323",
+      "id": "d72a",
+      "client_role": "petitioner",
+      "client_name": "client2",
+      "client_email": "client2@gmail.com",
+      "case_number": "47584758",
+      "case_type": "murder",
+      "court_branch": "civial court taxila",
       "court_number": "32434",
-      "judge_name": "fgfgfvf",
-      "date": "22-Mar-2024",
-      "time": "08:43pm",
+      "judge_name": "ali khan",
+      "date": "24-Mar-2024",
+      "time": "11:54am",
       "status": "open",
       "userId": "test01"
     }
   ],
   "appoinments": [
     {
-      "id": "fcef",
-      "name": "client4",
-      "mobile": "03200522996",
-      "email": "client4@gmail.com",
-      "date": "22-Mar-2024",
-      "time": "08:45pm",
-      "status": "open",
-      "userId": "test01"
-    },
-    {
-      "id": "66d3",
-      "name": "alisha",
-      "mobile": "03314600963",
-      "email": "alisha@gmail.com",
-      "date": "23-Mar-2024",
-      "time": "08:45pm",
-      "status": "open",
-      "userId": "test01"
-    },
-    {
-      "id": "75fe",
-      "name": "Safeer",
-      "mobile": "03314600963",
+      "id": "a243",
+      "name": "client1",
+      "mobile": "03180522996",
       "email": "client1@gmail.com",
-      "date": "22-Mar-2024",
-      "time": "08:45pm",
+      "date": "23-Mar-2024",
+      "time": "11:53am",
+      "status": "open",
+      "userId": "test01"
+    },
+    {
+      "id": "a1a9",
+      "name": "client2",
+      "mobile": "03314600963",
+      "email": "client2@gmail.com",
+      "date": "24-Mar-2024",
+      "time": "05:53pm",
       "status": "open",
       "userId": "test01"
     }

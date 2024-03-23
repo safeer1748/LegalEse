@@ -13,7 +13,7 @@ const LawyerDashbordCards = ({
   let totalAppoinment = Object.keys(appoinmentRecords).length;
   let username = localStorage.getItem("username");
   return (
-    <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-10 mb-4">
+    <div className="grid sm:grid-cols-3 gap-10 mb-4">
       <Link
         to={`/Lawyer/${username}/Manage_Clients`}
         className="flex items-center justify-between h-24 p-4 border-2 border-dashed border-gray-300  rounded bg-gray-50 dark:bg-gray-800"

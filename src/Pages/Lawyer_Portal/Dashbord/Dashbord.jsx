@@ -52,7 +52,7 @@ const Dashbord = () => {
   return (
     <div>
       <Lawyer />
-      <div className="p-4 pt-24 sm:ml-64">
+      <div className="p-4 pt-24 xl:ml-64 bg-white">
         <DashbordCards
           clientRecords={clientRecords}
           caseRecords={caseRecords}
