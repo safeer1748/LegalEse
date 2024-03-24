@@ -17,7 +17,6 @@ const Edit_appoinment = () => {
     email: "",
     date: "",
     time: "",
-    status: "Pending",
     userId: username,
   });
 

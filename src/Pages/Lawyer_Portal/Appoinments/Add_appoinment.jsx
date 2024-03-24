@@ -18,7 +18,6 @@ const Add_appoinment = () => {
     email: "",
     date: "",
     time: "",
-    status:"open",
     userId: username,
   });
   const [errors, setErrors] = useState({});

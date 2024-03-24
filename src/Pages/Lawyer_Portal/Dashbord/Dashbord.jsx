@@ -29,16 +29,31 @@ const Dashbord = () => {
       })
       .catch((err) => console.log(err));
   }, []);
+
+  const changeAppoinmentStatus=async (data)=>{
+    await data.map(async (d,i)=>{
+      if(dayjs().isAfter(d.date,'day')){
+        d.status='closed'
+        await axios
+        .put("http://localhost:8000/appoinments/" + d.id, data[i])
+        .then((res) => {})
+        .catch((err) => console.log(err));
+      }
+    })
+    setAppoinmentRecords(data)
+  }
+
   useEffect(() => {
     axios
       .get(`http://localhost:8000/appoinments?userId=${username}`)
       .then((res) => {
         let array = res.data;
         array.reverse();
-        setAppoinmentRecords(array);
+        changeAppoinmentStatus(array)
       })
       .catch((err) => console.log(err));
   }, []);
+
   useEffect(() => {
     axios
       .get(`http://localhost:8000/clients?userId=${username}`)
