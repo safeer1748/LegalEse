@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import Lawyer from "../Lawyer";
+import Lawyer_Bars from "../Lawyer_Bars";
 import { Link } from "react-router-dom";
 import { FaRegEye, FaRegEdit, FaRegTrashAlt } from "react-icons/fa";
 import { RiExpandUpDownFill } from "react-icons/ri";
@@ -89,7 +89,7 @@ const Manage_Cases = () => {
   };
   return (
     <div>
-      <Lawyer />
+      <Lawyer_Bars />
       <div className="p-4 pt-24 xl:ml-64 bg-white">
         <div className="border-2 border-gray-300 border-dashed rounded-lg dark:border-gray-700">
           <section className="bg-gray-50 shadow-md dark:bg-gray-900 m-4">

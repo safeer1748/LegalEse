@@ -1,5 +1,5 @@
 import axios from "axios";
-import Lawyer from "../Lawyer";
+import Lawyer_Bars from "../Lawyer_Bars";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 const View_Case = () => {
@@ -30,7 +30,7 @@ const View_Case = () => {
   };
   return (
     <div>
-      <Lawyer />
+      <Lawyer_Bars />
       <div className="h-screen my-10 sm:my-0 w-full flex items-center justify-center ">
         {/* <!-- Main modal --> */}
         <div

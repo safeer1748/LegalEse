@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Navbar from "../../components/Navbar";
-import Hero from "../../components/Hero";
-import Signup_Modal from "../../components/Signup_Modal";
+import Navbar from "./Navbar";
+import Hero from "./Hero";
+import Signup_Modal from "./Signup_Modal";
 const Home = () => {
   const [toggleSignupModal, setToggleSignupModal] = useState(false);
   const handleSignupModal = () => {

@@ -1,5 +1,5 @@
 import axios from "axios";
-import Lawyer from "../Lawyer";
+import Lawyer_Bars from "../Lawyer_Bars";
 import React, { useEffect, useState } from "react";
 import { FaRegEye, FaRegEdit, FaRegTrashAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
@@ -69,7 +69,7 @@ const Manage_appoinments = () => {
   };
   return (
     <div>
-      <Lawyer />
+      <Lawyer_Bars />
       <div className="p-4 pt-24 xl:ml-64 bg-white">
         <div className=" border-2 border-gray-300 border-dashed rounded-lg dark:border-gray-700">
           <section className="bg-gray-50 shadow-md dark:bg-gray-900 m-4">

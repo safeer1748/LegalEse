@@ -1,5 +1,5 @@
 import axios from "axios";
-import Lawyer from "../Lawyer";
+import Lawyer_Bars from "../Lawyer_Bars";
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
@@ -18,6 +18,7 @@ const Add_appoinment = () => {
     email: "",
     date: "",
     time: "",
+    status:"open",
     userId: username,
   });
   const [errors, setErrors] = useState({});
@@ -45,13 +46,16 @@ const Add_appoinment = () => {
     }
 
     // mobile number Validation
-    if (formData.mobile === "" || formData.mobile === null) {
+     if (formData.mobile === "" || formData.mobile === null) {
       isValid = false;
       validationErrors.mobile = "Mobile Number required";
-    } else if (!/^[0-9]{11}$/.test(formData.mobile)) {
+    } else if (
+      !/^03\d{9}$/.test(formData.mobile)
+    ) {
       isValid = false;
-      validationErrors.mobile = "Mobile number must be 11 digits";
+      validationErrors.mobile = "Mobile number must be 11 digits and first two must be 03";
     }
+
 
     // email Validation
     if (formData.email === "" || formData.email === null) {
@@ -102,7 +106,7 @@ const Add_appoinment = () => {
   }
   return (
     <div>
-      <Lawyer />
+      <Lawyer_Bars />
       <section className="bg-white dark:bg-gray-900">
         <div className="py-8 mt-16 xl:mt-0 px-4 w-full mx-auto max-w-2xl lg:py-28">
           <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">

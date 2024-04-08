@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Lawyer from "../Lawyer";
+import Lawyer_Bars from "../Lawyer_Bars";
 import DashbordCards from "./DashbordCards";
 import TodayCases from "./TodayCases";
 import TodayAppoinments from "./TodayAppoinments";
@@ -66,7 +66,7 @@ const Dashbord = () => {
   }, []);
   return (
     <div>
-      <Lawyer />
+      <Lawyer_Bars />
       <div className="p-4 pt-24 xl:ml-64 bg-white">
         <DashbordCards
           clientRecords={clientRecords}

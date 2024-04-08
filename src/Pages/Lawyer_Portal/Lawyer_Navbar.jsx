@@ -1,18 +1,30 @@
-import React, { useState } from "react";
-import { IoNotifications } from "react-icons/io5";
+import React, { useEffect,useState } from "react";
 import { HiOutlineMenuAlt2 } from "react-icons/hi";
-import { Link, useNavigate } from "react-router-dom";
-const Lawyer_Navbar = ({ handleToggleSidebar }) => {
+import { Link } from "react-router-dom";
+import  axios  from "axios";
+const Lawyer_Navbar = ({handleToggleSidebar }) => {
   let username = localStorage.getItem("username");
   const [toggleProfileDropdown, setToggleProfileDropdown] = useState(true);
+  const [userImg, setUserImg] = useState('');
   const handleToggleProfileDropdown = () => {
     setToggleProfileDropdown(!toggleProfileDropdown);
   };
-  const handleLogout=()=>{
-    localStorage.removeItem('username')
-    localStorage.removeItem('role')
-    localStorage.removeItem('login')
-  }
+  const handleLogout = () => {
+    localStorage.removeItem("username");
+    localStorage.removeItem("role");
+    localStorage.removeItem("login");
+  };
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8000/users?username=${username}`)
+      .then((res) => {
+        const data = res.data[0];
+        if (data.profile.profile_img_url) {
+          setUserImg(data.profile.profile_img_url);
+        }
+      })
+      .catch((err) => console.log(err));
+  }, []);
   return (
     <div>
       <div className="flex justify-end w-full">
@@ -43,26 +55,28 @@ const Lawyer_Navbar = ({ handleToggleSidebar }) => {
                 </Link>
               </div>
               <div className="flex items-end flex-col">
-                <div className="flex items-center ms-3 gap-3">
-                  <IoNotifications
-                    size={25}
-                    className="text-gray-500 transition duration-75 hover:text-black cursor-pointer"
-                  />
-                  <div>
-                    <button
-                      onClick={handleToggleProfileDropdown}
-                      type="button"
-                      className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-                      aria-expanded="false"
-                      data-dropdown-toggle="dropdown-user"
-                    >
+                <div>
+                  <button
+                    onClick={handleToggleProfileDropdown}
+                    type="button"
+                    className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                    aria-expanded="false"
+                    data-dropdown-toggle="dropdown-user"
+                  >
+                    {userImg ? (
                       <img
-                        className="w-8 h-8 rounded-full"
-                        src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                        className="w-8 h-8 object-cover object-top rounded-full"
+                        src={userImg}
                         alt="user photo"
                       />
-                    </button>
-                  </div>
+                    ) : (
+                      <img
+                        className="w-8 h-8 object-cover object-top rounded-full"
+                        src="/src/assets/profile_img.jpg"
+                        alt="user photo"
+                      />
+                    )}
+                  </button>
                 </div>
               </div>
             </div>
@@ -83,16 +97,16 @@ const Lawyer_Navbar = ({ handleToggleSidebar }) => {
             >
               <li>
                 <Link
-                onClick={handleToggleProfileDropdown}
-                  to="#"
+                  onClick={handleToggleProfileDropdown}
+                  to={`/Lawyer/${username}/Profile`}
                   className="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
                 >
-                  Profile
+                  Profile Settings
                 </Link>
               </li>
               <li>
                 <Link
-                onClick={handleToggleProfileDropdown}
+                  onClick={handleToggleProfileDropdown}
                   to={`/Lawyer/${username}/Dashbord`}
                   className="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
                 >
@@ -102,7 +116,7 @@ const Lawyer_Navbar = ({ handleToggleSidebar }) => {
 
               <li>
                 <Link
-                onClick={handleToggleProfileDropdown}
+                  onClick={handleToggleProfileDropdown}
                   to="#"
                   className="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
                 >
@@ -111,8 +125,11 @@ const Lawyer_Navbar = ({ handleToggleSidebar }) => {
               </li>
               <li>
                 <Link
-                onClick={()=>{handleToggleProfileDropdown(); handleLogout();}}
-                to='/login'
+                  onClick={() => {
+                    handleToggleProfileDropdown();
+                    handleLogout();
+                  }}
+                  to="/login"
                   className="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
                 >
                   Logout

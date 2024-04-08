@@ -1,5 +1,5 @@
 import axios from "axios";
-import Lawyer from "../Lawyer";
+import Lawyer_Bars from "../Lawyer_Bars";
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
@@ -108,7 +108,7 @@ const Add_Case = () => {
   };
   return (
     <div>
-      <Lawyer />
+      <Lawyer_Bars />
       <section className="bg-white dark:bg-gray-900">
         <div className="py-8 mt-16 xl:mt-0 px-4 w-full mx-auto max-w-2xl lg:py-28">
           <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">

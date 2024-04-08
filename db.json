@@ -1,7 +1,60 @@
 {
   "users": [
     {
+      "profile": {
+        "profile_img_url": "blob:http://localhost:5173/94dcd800-6021-413e-bb63-77ca85cdf58b",
+        "availability": "available",
+        "name": "lawyer1",
+        "mobile": "03314600963",
+        "about": "nice to meet you",
+        "specialization": [
+          "Corporate Law",
+          "Criminal Law",
+          "Labor Law",
+          "Property Law"
+        ],
+        "address": "1f/16 wahcantt",
+        "location_url": "https://maps.app.goo.gl/48marQH3BMdUJU5J9"
+      },
       "id": "01dc",
+      "username": "test01",
+      "email": "test01@gmail.com",
+      "password": "test01",
+      "role": "lawyer",
+      "license_num": "001231"
+    },
+    {
+      "id": "6259",
+      "username": "test02",
+      "email": "test02@gmail.com",
+      "password": "test02",
+      "role": "lawyer",
+      "license_num": "001232",
+      "profile": {
+        "profile_img_url": "",
+        "availability": "",
+        "name": "",
+        "mobile": "",
+        "about": "",
+        "specialization": [],
+        "address": "",
+        "location_url": ""
+      }
+    },
+    {
+      "id": "01dc",
+      "profile": {
+        "profile_img_url": "",
+        "availability": "available",
+        "name": "safeer",
+        "mobile": "03345678901",
+        "about": "hello",
+        "specialization": [
+          "Criminal Law"
+        ],
+        "address": "home town",
+        "location_url": "https://maps.app.goo.gl/rh9C8iZr1mLG3BFp9"
+      },
       "username": "test01",
       "email": "test01@gmail.com",
       "password": "test01",
@@ -25,6 +78,14 @@
       "email": "client2@gmail.com",
       "gender": "female",
       "userId": "test01"
+    },
+    {
+      "id": "da45",
+      "name": "client01",
+      "mobile": "03314600963",
+      "email": "client1@gmail.com",
+      "gender": "male",
+      "userId": "test02"
     }
   ],
   "cases": [
@@ -42,6 +103,21 @@
       "time": "11:54am",
       "status": "open",
       "userId": "test01"
+    },
+    {
+      "id": "66f3",
+      "client_role": "petitioner",
+      "client_name": "client01",
+      "client_email": "client1@gmail.com",
+      "case_number": "8378374",
+      "case_type": "fjvjf",
+      "court_branch": "fjbvjfvj",
+      "court_number": "398934",
+      "judge_name": "jhfjhj",
+      "date": "25-Mar-2024",
+      "time": "09:00am",
+      "status": "open",
+      "userId": "test02"
     }
   ],
   "appoinments": [
@@ -62,7 +138,7 @@
       "email": "client1@gmail.com",
       "date": "25-Mar-2024",
       "time": "02:41pm",
-      "status": "open",
+      "status": "closed",
       "userId": "test01"
     },
     {
@@ -72,6 +148,26 @@
       "email": "client2@gmail.com",
       "date": "24-Mar-2024",
       "time": "10:14am",
+      "status": "closed",
+      "userId": "test01"
+    },
+    {
+      "id": "0072",
+      "name": "client01",
+      "mobile": "03314600963",
+      "email": "client1@gmail.com",
+      "date": "25-Mar-2024",
+      "time": "09:11am",
+      "status": "closed",
+      "userId": "test02"
+    },
+    {
+      "id": "bbad",
+      "name": "haris",
+      "mobile": "03180522996",
+      "email": "haris@gmail.com",
+      "date": "08-Apr-2024",
+      "time": "06:13am",
       "status": "open",
       "userId": "test01"
     }

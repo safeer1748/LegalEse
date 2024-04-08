@@ -4,9 +4,7 @@ import Home from "./Pages/Home/Home";
 import Login from "./Pages/Authentication/Login";
 import Signup from "./Pages/Authentication/Signup";
 import ForgotPassword from "./Pages/Authentication/ForgotPassword";
-import Admin from "./Pages/Admin_Portal/Admin";
 import Client from "./Pages/Client_portal/Client";
-import Lawyer from "./Pages/Lawyer_Portal/Lawyer";
 import Dashbord from "./Pages/Lawyer_Portal/Dashbord/Dashbord";
 import Manage_Clients from "./Pages/Lawyer_Portal/Clients/Manage_Clients";
 import Add_Client from "./Pages/Lawyer_Portal/Clients/Add_Client";
@@ -20,6 +18,7 @@ import Manage_Cases from "./Pages/Lawyer_Portal/Cases/Manage_Cases";
 import Add_Case from "./Pages/Lawyer_Portal/Cases/Add_Case";
 import View_Case from "./Pages/Lawyer_Portal/Cases/View_case";
 import Edit_Case from "./Pages/Lawyer_Portal/Cases/Edit_Case";
+import Profile from "./Pages/Lawyer_Portal/Profile/Profile";
 const App = () => {
   return (
     <div>
@@ -29,10 +28,7 @@ const App = () => {
           <Route exact path="/Login" element={<Login/>} />
           <Route exact path="/Signup" element={<Signup/>} />
           <Route exact path="/ChangePassword" element={<ForgotPassword />} />
-          <Route exact path="/Admin/:username" element={<Admin />} />
-
           {/* Lawyer Portal */}
-          <Route exact path="/Lawyer/:username" element={<Lawyer />} />
           <Route
             exact
             path="/Lawyer/:username/Dashbord"
@@ -102,6 +98,11 @@ const App = () => {
             exact
             path="/Lawyer/:username/Edit_Case/:id"
             element={<Edit_Case />}
+          />
+          <Route
+            exact
+            path="/Lawyer/:username/Profile"
+            element={<Profile/>}
           />
           <Route exact path="/Client/:username" element={<Client />} />
         </Routes>
