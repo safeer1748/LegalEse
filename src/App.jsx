@@ -18,7 +18,9 @@ import Manage_Cases from "./Pages/Lawyer_Portal/Cases/Manage_Cases";
 import Add_Case from "./Pages/Lawyer_Portal/Cases/Add_Case";
 import View_Case from "./Pages/Lawyer_Portal/Cases/View_case";
 import Edit_Case from "./Pages/Lawyer_Portal/Cases/Edit_Case";
-import Profile from "./Pages/Lawyer_Portal/Profile/Profile";
+import Profile_Settings from "./Pages/Lawyer_Portal/Profile/Profile_Settings";
+import Profile_Preview from "./Pages/Lawyer_Portal/Profile/Profile_Preview";
+import ChangePassword from "./Pages/Authentication/ChangePassword";
 const App = () => {
   return (
     <div>
@@ -27,7 +29,8 @@ const App = () => {
           <Route exact path="/" element={<Home/>} />
           <Route exact path="/Login" element={<Login/>} />
           <Route exact path="/Signup" element={<Signup/>} />
-          <Route exact path="/ChangePassword" element={<ForgotPassword />} />
+          <Route exact path="/ForgotPassword" element={<ForgotPassword />} />
+          <Route exact path="/ChangePassword" element={<ChangePassword/>} />
           {/* Lawyer Portal */}
           <Route
             exact
@@ -102,7 +105,12 @@ const App = () => {
           <Route
             exact
             path="/Lawyer/:username/Profile"
-            element={<Profile/>}
+            element={<Profile_Settings/>}
+          />
+           <Route
+            exact
+            path="/Profile_Preview/:username"
+            element={<Profile_Preview/>}
           />
           <Route exact path="/Client/:username" element={<Client />} />
         </Routes>

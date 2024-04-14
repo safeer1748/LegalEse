@@ -5,7 +5,7 @@ import  axios  from "axios";
 const Lawyer_Navbar = ({handleToggleSidebar }) => {
   let username = localStorage.getItem("username");
   const [toggleProfileDropdown, setToggleProfileDropdown] = useState(true);
-  const [userImg, setUserImg] = useState('');
+  const [userImg, setUserImg] = useState();
   const handleToggleProfileDropdown = () => {
     setToggleProfileDropdown(!toggleProfileDropdown);
   };
@@ -19,8 +19,8 @@ const Lawyer_Navbar = ({handleToggleSidebar }) => {
       .get(`http://localhost:8000/users?username=${username}`)
       .then((res) => {
         const data = res.data[0];
-        if (data.profile.profile_img_url) {
-          setUserImg(data.profile.profile_img_url);
+        if (data.profile.profile_img) {
+          setUserImg(data.profile.profile_img);
         }
       })
       .catch((err) => console.log(err));
@@ -117,7 +117,7 @@ const Lawyer_Navbar = ({handleToggleSidebar }) => {
               <li>
                 <Link
                   onClick={handleToggleProfileDropdown}
-                  to="#"
+                  to="/ChangePassword"
                   className="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
                 >
                   Change Password

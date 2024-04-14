@@ -4,11 +4,11 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Specialization from "./Specialization";
 import Profile_img from "./Profile_img";
-const Profile = () => {
+const Profile_Settings = () => {
   let username = localStorage.getItem("username");
   const [formData, setFormData] = useState({
     profile: {
-      profile_img_url: "",
+      profile_img:"",
       availability: "available",
       name: "",
       mobile: "",
@@ -30,7 +30,6 @@ const Profile = () => {
         }else{
           setFormData({...formData,...data})
         }
-        console.log(formData.profile.profile_img_url)
       })
       .catch((err) => console.log(err));
   }, []);
@@ -39,7 +38,6 @@ const Profile = () => {
     e.preventDefault();
     let isValid = true;
     let validationErrors = {};
-    
     // name Validation
     if (formData.profile.name === "" || formData.profile.name === null) {
       isValid = false;
@@ -99,7 +97,7 @@ const Profile = () => {
 
   return (
     <div>
-      <Lawyer_Bars/>
+      <Lawyer_Bars profile_img={formData.profile.profile_img}/>
       <section className="bg-white dark:bg-gray-900">
         <div className="py-8 mt-16 xl:mt-0 px-4 w-full mx-auto max-w-2xl lg:py-28">
           <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
@@ -107,7 +105,7 @@ const Profile = () => {
           </h2>
           <form onSubmit={handleSubmit}>
             <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
-              <div className="sm:col-span-2 flex-col">
+              <div className="sm:col-span-2">
               <Profile_img formData={formData} setFormData={setFormData}/>
               </div>
               <div className="sm:col-span-2">
@@ -132,12 +130,12 @@ const Profile = () => {
                       type="radio"
                       name="availability"
                       value="available"
-                      defaultChecked={formData.profile.availability === "available"}
-                      className="w-4 h-4 border-gray-500 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
+                      checked={formData.profile.availability === "available"}
+                      className="w-4 h-4 border-gray-500 cursor-pointer focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
                     />
                     <label
                       htmlFor="available"
-                      className="block ms-2  text-sm text-gray-900 dark:text-gray-300"
+                      className="block ms-2 cursor-pointer  text-sm text-gray-900 dark:text-gray-300"
                     >
                       Available
                     </label>
@@ -148,14 +146,14 @@ const Profile = () => {
                       type="radio"
                       name="availability"
                       value="not available"
-                      defaultChecked={
+                      checked={
                         formData.profile.availability === "not available"
                       }
-                      className="w-4 h-4 border-gray-500 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
+                      className="w-4 h-4 border-gray-500 cursor-pointer focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
                     />
                     <label
                       htmlFor="not available"
-                      className="block ms-2  text-sm text-gray-900 dark:text-gray-300"
+                      className="block ms-2  cursor-pointer text-sm text-gray-900 dark:text-gray-300"
                     >
                       Not Available
                     </label>
@@ -303,8 +301,8 @@ const Profile = () => {
               >
                 Save
               </button>
-              <Link to={``}>
-                <button className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-blue-800">
+              <Link to={`/Profile_Preview/${username}`} target="_blank">
+                <button type="button" className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-blue-800">
                   Preview
                 </button>
               </Link>
@@ -316,4 +314,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default Profile_Settings;

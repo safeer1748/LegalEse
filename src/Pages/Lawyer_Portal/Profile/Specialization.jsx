@@ -35,12 +35,12 @@ const Specialization = ({formData,setFormData}) => {
               checked={formData.profile.specialization.includes(
                 specialization.label
               )}
-              className="w-3 h-3 border-gray-400 "
+              className="w-3 h-3 border-gray-400 cursor-pointer"
               onChange={handleCheckboxChange}
             />
             <label
               htmlFor={specialization.id}
-              className="text-sm pl-2 text-gray-900"
+              className="text-sm pl-2 text-gray-900 cursor-pointer"
             >
               {specialization.label}
             </label>
