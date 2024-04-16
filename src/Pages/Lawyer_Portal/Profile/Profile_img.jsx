@@ -7,33 +7,45 @@ const Profile_img = ({ formData, setFormData}) => {
         return false;
       }
       let reader = new FileReader();
-      reader.onload = (e) => {
-        setFormData({
-          ...formData,
-          profile: { ...formData.profile, profile_img: e.target.result },
-        });
-      };
       reader.readAsDataURL(e.target.files[0]);
+      reader.onload = (e) => {
+        let image_url=e.target.result
+        let image=document.createElement("img")
+        image.src=image_url
+        image.onload=(e)=>{
+          let canvas=document.createElement("canvas")
+          let ratio=500/e.target.width
+          canvas.width=500
+          canvas.height=e.target.height * ratio
+          const context=canvas.getContext("2d")
+          context.drawImage(image,0,0,canvas.width,canvas.height)
+          let new_image_url=context.canvas.toDataURL("image/jpeg",100)
+          setFormData({
+            ...formData,
+            profile: { ...formData.profile, profile_img: new_image_url},
+          });
+        }
+      };
     }
   };
   return (
     <div>
       {formData.profile.profile_img ? (
         <img
-          className="object-cover object-top w-40 h-40"
+          className="object-cover rounded-full object-top w-32 h-32"
           src={formData.profile.profile_img}
           alt="Profile Image"
         />
       ) : (
         <img
-          className="object-cover w-40 h-40"
+          className="object-cover rounded-full w-32 h-32"
           src="/src/assets/profile_img.jpg"
           alt="Profile Image"
         />
       )}
       <label
         htmlFor="input_file"
-        className="inline-flex items-center w-40 px-8 text-center py-2.5 mt-2 sm:mt-4 text-sm font-medium text-white bg-gray-900 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-gray-700"
+        className="inline-flex justify-center w-32 py-2.5 mt-2 sm:mt-4 text-sm font-medium text-white bg-gray-900 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-gray-700"
       >
         Change Image
       </label>
