@@ -22,7 +22,7 @@ const Navbar = ({handleSignupModal}) => {
             <Link to="/Login">
               <button
                 type="button"
-                className="text-black hover:text-white border border-black hover:bg-gray-700 hover:border-gray-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                className="text-black hover:text-white border border-black hover:bg-gray-800 hover:border-gray-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
                 Login
               </button>
@@ -30,7 +30,7 @@ const Navbar = ({handleSignupModal}) => {
               <button
                onClick={handleSignupModal}
                 type="button"
-                className="text-white hidden sm:flex bg-black hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                className="text-white hidden sm:flex bg-black hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
                 Signup
               </button>

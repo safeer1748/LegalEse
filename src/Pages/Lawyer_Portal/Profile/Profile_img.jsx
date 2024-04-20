@@ -2,10 +2,10 @@ import React from "react";
 const Profile_img = ({ formData, setFormData}) => {
   const uploadImage = (e) => {
     if (e.target.files && e.target.files[0]) {
-      if (e.target.files[0].size > 5e6) {
-        window.alert("Please upload a file smaller than 5 MB");
-        return false;
-      }
+      // if (e.target.files[0].size > 8e6) {
+      //   window.alert("Please upload a file smaller than 8 MB");
+      //   return false;
+      // }
       let reader = new FileReader();
       reader.readAsDataURL(e.target.files[0]);
       reader.onload = (e) => {

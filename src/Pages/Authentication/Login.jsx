@@ -51,7 +51,7 @@ const Login = () => {
               if (user[0].role === "lawyer") {
                 navigate(`/Lawyer/${user[0].username}/Dashbord`);
               } else if (user[0].role === "client") {
-                navigate(`/Client/${user[0].username}`);
+                navigate(`/Client/${user[0].username}/Explore`);
               }
             } else {
               isValid = false;

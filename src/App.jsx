@@ -4,7 +4,6 @@ import Home from "./Pages/Home/Home";
 import Login from "./Pages/Authentication/Login";
 import Signup from "./Pages/Authentication/Signup";
 import ForgotPassword from "./Pages/Authentication/ForgotPassword";
-import Client from "./Pages/Client_portal/Client";
 import Dashbord from "./Pages/Lawyer_Portal/Dashbord/Dashbord";
 import Manage_Clients from "./Pages/Lawyer_Portal/Clients/Manage_Clients";
 import Add_Client from "./Pages/Lawyer_Portal/Clients/Add_Client";
@@ -21,6 +20,7 @@ import Edit_Case from "./Pages/Lawyer_Portal/Cases/Edit_Case";
 import Profile_Settings from "./Pages/Lawyer_Portal/Profile/Profile_Settings";
 import Profile_Preview from "./Pages/Lawyer_Portal/Profile/Profile_Preview";
 import ChangePassword from "./Pages/Authentication/ChangePassword";
+import Explore_Profile from "./Pages/Client_portal/Explore/Explore_Profile";
 const App = () => {
   return (
     <div>
@@ -112,7 +112,10 @@ const App = () => {
             path="/Profile_Preview/:username"
             element={<Profile_Preview/>}
           />
-          <Route exact path="/Client/:username" element={<Client />} />
+          
+          {/* Client Portal */}
+          <Route exact path="/Client/:username/Explore" element={<Explore_Profile/>} />
+
         </Routes>
       </BrowserRouter>
     </div>

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { Label } from "flowbite-react";
 const Profile_Preview = () => {
   const [data, setData] = useState({});
   let { username } = useParams();
+  let userId = localStorage.getItem("username");
   useEffect(() => {
     axios
       .get(`http://localhost:8000/users?username=${username}`)
@@ -19,18 +19,18 @@ const Profile_Preview = () => {
   }, []);
   return (
     <div>
-      <section className="w-full p-6 xl:p-12 md:flex justify-between">
-        <div className="md:w-3/4">
-          <div className="flex flex-col md:flex-row gap-5 items-center">
+      <section className="w-full p-8 md:p-12 md:flex justify-between">
+        <div className="md:w-3/4 w-full">
+          <div className="flex flex-col md:flex-row gap-5 items-center relative">
             {data.profile_img ? (
               <img
-                className="object-cover rounded-full object-top w-32 h-32"
+                className="object-cover object-top w-32 h-32 "
                 src={data.profile_img}
                 alt="Profile Image"
               />
             ) : (
               <img
-                className="object-cover rounded-full  w-32 h-32"
+                className="object-cover   w-32 h-32"
                 src="/src/assets/profile_img.jpg"
                 alt="Profile Image"
               />
@@ -41,14 +41,14 @@ const Profile_Preview = () => {
                   data.availability === "available"
                     ? "bg-lime-600"
                     : "bg-red-600"
-                } px-3 rounded-xl text-white text-sm`}
+                } px-3 rounded-xl text-white text-xs md:absolute top-0`}
               >
                 {data.availability}
               </label>
               <label className="block font-medium text-2xl text-gray-900 text-center">
                 {data.name}
               </label>
-              <label className="block font-medium text-gray-600">
+              <label className="block text-gray-500">
                 @{username}
               </label>
             </div>
@@ -64,7 +64,7 @@ const Profile_Preview = () => {
                 data.specialization.map((specialization, index) => (
                   <label
                     key={index}
-                    className="inline-block items-center bg-gray-100 border border-gray-300 rounded px-2 py-1 mr-3 mt-3 text-sm font-medium text-gray-900 "
+                    className="inline-block items-center bg-gray-100 border border-gray-300 rounded px-2 py-1 mr-3 mt-3 text-sm text-gray-900 "
                   >
                     {specialization}
                   </label>
@@ -77,7 +77,7 @@ const Profile_Preview = () => {
             <a
               href={data.location_url}
               target="_blank"
-              class="inline-flex items-center mt-5 px-5 py-2.5 text-sm font-medium text-center text-white bg-gray-900 rounded-lg hover:bg-gray-800"
+              class="inline-flex items-center mt-5 px-5 py-2.5 text-sm font-medium text-center text-white bg-black rounded-lg hover:bg-gray-800"
             >
               Google Map Location
               <svg
@@ -98,10 +98,17 @@ const Profile_Preview = () => {
             </a>
           </div>
         </div>
-        <div className=" md:ml-12 w-full md:w-1/4 mt-5 md:mt-0 ">
-          <button className=" w-full h-10 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
-            Book Appoinment
-          </button>
+        <div className=" md:ml-12 w-full md:w-1/4 mt-5 md:mt-0">
+          <a href={data.location_url} target="_blank">
+            <button
+              disabled={
+                data.availability === "not available" || username === userId
+              }
+              className={`w-full h-10 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300`}
+            >
+              Book Appoinment
+            </button>
+          </a>
         </div>
       </section>
     </div>
