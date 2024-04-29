@@ -4,10 +4,10 @@ const Profile_Card = ({profileData}) => {
   return (
     <div>
       <section className="bg-white dark:bg-gray-900">
-        <div className="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6 ">
+        <div className="p-6 mx-auto max-w-screen-xl">
           <div className="grid gap-12 mb-6 lg:mb-16 md:grid-cols-2">
             {profileData.map((d, i) => (
-              <Link key={i} to={`/Profile_Preview/${d.username}`} target="_blank">
+              <Link key={i} to={`/Profile_Preview/${d.username}`}>
                 <div className="bg-gray-50 rounded-lg shadow-md flex flex-col border relative border-gray-300 dark:bg-gray-800 dark:border-gray-700">
                   <img
                     className="w-32 h-32 object-cover object-top m-3"

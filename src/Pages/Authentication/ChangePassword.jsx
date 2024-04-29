@@ -54,7 +54,7 @@ const ChangePassword = () => {
             .put("http://localhost:8000/users/" + data.id, data)
             .then((response) => {
               alert('password change successfully')
-              navigate(`/Lawyer/${username}/Dashbord`);
+              location.reload()
             })
             .catch((err) => console.log(err));
           }

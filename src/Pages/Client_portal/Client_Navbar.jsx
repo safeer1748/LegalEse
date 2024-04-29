@@ -1,17 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { HiOutlineMenuAlt2 } from "react-icons/hi";
 import { Link } from "react-router-dom";
-import axios from "axios";
 const Client_Navbar = () => {
   let username = localStorage.getItem("username");
-  const [toggleProfileDropdown, setToggleProfileDropdown] = useState(true);
   const [toggleHamburger, setToggleHamburger] = useState(false);
-  const [userImg, setUserImg] = useState("");
   const handleToggleHamburger = () => {
     setToggleHamburger(!toggleHamburger);
-  };
-  const handleToggleProfileDropdown = () => {
-    setToggleProfileDropdown(!toggleProfileDropdown);
   };
   const handleLogout = () => {
     localStorage.removeItem("username");
@@ -19,8 +13,8 @@ const Client_Navbar = () => {
     localStorage.removeItem("login");
   };
   return (
-    <nav className="bg-white dark:bg-gray-900 border-b border-gray-300">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+    <nav className={`bg-white dark:bg-gray-900 border-b border-gray-300`}>
+      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto py-4 px-6">
         <Link to="/" className="flex ms-2 md:me-24">
           <img
             src="\src\assets\logo.svg"
@@ -32,75 +26,6 @@ const Client_Navbar = () => {
           </span>
         </Link>
         <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-          <button
-            onClick={handleToggleProfileDropdown}
-            type="button"
-            className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-            id="user-menu-button"
-            aria-expanded="false"
-            data-dropdown-toggle="user-dropdown"
-            data-dropdown-placement="bottom"
-          >
-            <span className="sr-only">Open user menu</span>
-            {userImg ? (
-              <img
-                className="w-8 h-8 object-cover object-top rounded-full"
-                src={userImg}
-                alt="user photo"
-              />
-            ) : (
-              <img
-                className="w-8 h-8 object-cover object-top rounded-full"
-                src="/src/assets/profile_img.jpg"
-                alt="user photo"
-              />
-            )}
-          </button>
-          {/* Profile Dropdown */}
-          <div
-            id="dropdown"
-            className={`${
-              toggleProfileDropdown ? "hidden" : "block"
-            } z-50 mt-16 mr-4 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 fixed top-0 right-0`}
-          >
-            <div className="flex justify-center">
-              <ul
-                className="py-2 px-2 text-sm text-gray-700 dark:text-gray-200"
-                aria-labelledby="dropdownDefaultButton"
-              >
-                <li>
-                  <Link
-                    onClick={handleToggleProfileDropdown}
-                    to={`/Lawyer/${username}/Profile`}
-                    className="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >
-                    Profile Settings
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    onClick={handleToggleProfileDropdown}
-                    to="/ChangePassword"
-                    className="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >
-                    Change Password
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    onClick={() => {
-                      handleToggleProfileDropdown();
-                      handleLogout();
-                    }}
-                    to="/login"
-                    className="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >
-                    Logout
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
           <button
           onClick={handleToggleHamburger}
             data-collapse-toggle="navbar-user"
@@ -127,54 +52,49 @@ const Client_Navbar = () => {
             </svg>
           </button>
         </div>
-        {/* <div
-          className={`${!toggleHamburger ? "hidden" : ""} items-center justify-between w-full md:flex md:w-auto md:order-1`}
+        <div
+          className={`${!toggleHamburger ? "hidden" : ""} items-center justify-between w-full md:flex md:w-auto md:order-2`}
           id="navbar-user"
         >
-          <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+          <ul className="flex fixed z-50 w-full flex-col font-medium p-4 md:p-0 md:static mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
             <li>
-              <a
-                href="#"
-                className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500"
-                aria-current="page"
-              >
-                Home
-              </a>
+            <Link
+                    to={`/Client/${username}/Explore`}
+                    className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                  >
+                    Explore
+                  </Link>
             </li>
             <li>
               <a
                 href="#"
                 className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
               >
-                About
+                Appoinments
               </a>
             </li>
             <li>
-              <a
-                href="#"
-                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-              >
-                Services
-              </a>
+            <Link
+                    to="/ChangePassword"
+                    target="_blank"
+                    className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                  >
+                    Change Password
+                  </Link>
             </li>
             <li>
-              <a
-                href="#"
-                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-              >
-                Pricing
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-              >
-                Contact
-              </a>
+            <Link
+                    onClick={() => {
+                      handleLogout();
+                    }}
+                    to="/login"
+                    className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                  >
+                    Logout
+                  </Link>
             </li>
           </ul>
-        </div> */}
+        </div>
       </div>
     </nav>
   );

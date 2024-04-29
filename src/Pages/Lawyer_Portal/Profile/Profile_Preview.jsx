@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import Client_Navbar from "../../Client_portal/Client_Navbar";
 const Profile_Preview = () => {
   const [data, setData] = useState({});
   let { username } = useParams();
+  let role = localStorage.getItem("role");
   let userId = localStorage.getItem("username");
   useEffect(() => {
     axios
@@ -19,18 +21,19 @@ const Profile_Preview = () => {
   }, []);
   return (
     <div>
-      <section className="w-full p-8 md:p-12 md:flex justify-between">
+      <div className={`${role==='lawyer'?'hidden':""}`}><Client_Navbar/></div>
+      <section className="w-full p-8 md:py-12 md:px-6 md:flex justify-between">
         <div className="md:w-3/4 w-full">
           <div className="flex flex-col md:flex-row gap-5 items-center relative">
             {data.profile_img ? (
               <img
-                className="object-cover object-top w-32 h-32 "
+                className="object-cover rounded-lg object-top w-32 h-32 "
                 src={data.profile_img}
                 alt="Profile Image"
               />
             ) : (
               <img
-                className="object-cover   w-32 h-32"
+                className="object-cover rounded-lg w-32 h-32"
                 src="/src/assets/profile_img.jpg"
                 alt="Profile Image"
               />
@@ -48,9 +51,7 @@ const Profile_Preview = () => {
               <label className="block font-medium text-2xl text-gray-900 text-center">
                 {data.name}
               </label>
-              <label className="block text-gray-500">
-                @{username}
-              </label>
+              <label className="block text-gray-500">@{username}</label>
             </div>
           </div>
           <div className="mt-5">
@@ -99,7 +100,7 @@ const Profile_Preview = () => {
           </div>
         </div>
         <div className=" md:ml-12 w-full md:w-1/4 mt-5 md:mt-0">
-          <a href={data.location_url} target="_blank">
+          <a>
             <button
               disabled={
                 data.availability === "not available" || username === userId

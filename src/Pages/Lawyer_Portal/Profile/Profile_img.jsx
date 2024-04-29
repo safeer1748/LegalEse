@@ -32,13 +32,13 @@ const Profile_img = ({ formData, setFormData}) => {
     <div>
       {formData.profile.profile_img ? (
         <img
-          className="object-cover rounded-full object-top w-32 h-32"
+          className="object-cover rounded-lg object-top w-32 h-32"
           src={formData.profile.profile_img}
           alt="Profile Image"
         />
       ) : (
         <img
-          className="object-cover rounded-full w-32 h-32"
+          className="object-cover rounded-lg w-32 h-32"
           src="/src/assets/profile_img.jpg"
           alt="Profile Image"
         />

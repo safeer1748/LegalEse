@@ -108,6 +108,7 @@ const Lawyer_Navbar = ({handleToggleSidebar }) => {
                 <Link
                   onClick={handleToggleProfileDropdown}
                   to="/ChangePassword"
+                  target="_blank"
                   className="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
                 >
                   Change Password
