@@ -21,6 +21,7 @@ import Profile_Settings from "./Pages/Lawyer_Portal/Profile/Profile_Settings";
 import Profile_Preview from "./Pages/Lawyer_Portal/Profile/Profile_Preview";
 import ChangePassword from "./Pages/Authentication/ChangePassword";
 import Explore_Profile from "./Pages/Client_portal/Explore/Explore_Profile";
+import Appoinments from "./Pages/Client_portal/Appoinments/Appoinments";
 const App = () => {
   return (
     <div>
@@ -115,7 +116,7 @@ const App = () => {
           
           {/* Client Portal */}
           <Route exact path="/Client/:username/Explore" element={<Explore_Profile/>} />
-
+          <Route exact path="/Client/:username/Appoinments" element={<Appoinments/>} />
         </Routes>
       </BrowserRouter>
     </div>

@@ -99,7 +99,7 @@ const Add_Case = () => {
     if (Object.keys(validationErrors).length === 0) {
       await handleDateTime();
       await axios
-        .post(`http://localhost:8000/cases?userId=${username}`, formData)
+        .post(`http://localhost:8000/cases`, formData)
         .then((res) => {
           navigate(`/Lawyer/${username}/Manage_Cases`);
         })

@@ -52,7 +52,7 @@ const Add_Client = () => {
     setValid(isValid);
     if (Object.keys(validationErrors).length === 0) {
       await axios
-        .post(`http://localhost:8000/clients?userId=${username}`, formData)
+        .post(`http://localhost:8000/clients`, formData)
         .then((res) => {
           navigate(`/Lawyer/${username}/Manage_Clients`);
         })

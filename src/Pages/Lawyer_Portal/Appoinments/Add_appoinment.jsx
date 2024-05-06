@@ -73,7 +73,7 @@ const Add_appoinment = () => {
     if (Object.keys(validationErrors).length === 0) {
       await handleDateTime();
       await axios
-        .post(`http://localhost:8000/appoinments?userId=${username}`, formData)
+        .post(`http://localhost:8000/appoinments`, formData)
         .then((res) => {
           navigate(`/Lawyer/${username}/Manage_appoinments`);
         })
