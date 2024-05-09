@@ -22,16 +22,17 @@ import Profile_Preview from "./Pages/Lawyer_Portal/Profile/Profile_Preview";
 import ChangePassword from "./Pages/Authentication/ChangePassword";
 import Explore_Profile from "./Pages/Client_portal/Explore/Explore_Profile";
 import Appoinments from "./Pages/Client_portal/Appoinments/Appoinments";
+import Appoinments_request from "./Pages/Lawyer_Portal/Appoinments_Request/Appoinments_request";
 const App = () => {
   return (
     <div>
       <BrowserRouter>
         <Routes>
-          <Route exact path="/" element={<Home/>} />
-          <Route exact path="/Login" element={<Login/>} />
-          <Route exact path="/Signup" element={<Signup/>} />
+          <Route exact path="/" element={<Home />} />
+          <Route exact path="/Login" element={<Login />} />
+          <Route exact path="/Signup" element={<Signup />} />
           <Route exact path="/ForgotPassword" element={<ForgotPassword />} />
-          <Route exact path="/ChangePassword" element={<ChangePassword/>} />
+          <Route exact path="/ChangePassword" element={<ChangePassword />} />
           {/* Lawyer Portal */}
           <Route
             exact
@@ -82,11 +83,11 @@ const App = () => {
             path="/Lawyer/:username/Edit_appoinment/:id"
             element={<Edit_appoinment />}
           />
-                {/* Manage_Cases */}
+          {/* Manage_Cases */}
           <Route
             exact
             path="/Lawyer/:username/Manage_Cases"
-            element={<Manage_Cases/>}
+            element={<Manage_Cases />}
           />
           <Route
             exact
@@ -96,27 +97,42 @@ const App = () => {
           <Route
             exact
             path="/Lawyer/:username/View_Case/:id"
-            element={<View_Case/>}
+            element={<View_Case />}
           />
           <Route
             exact
             path="/Lawyer/:username/Edit_Case/:id"
             element={<Edit_Case />}
           />
+          {/* Appoinments_Request */}
+          <Route
+            exact
+            path="/Lawyer/:username/Appoinments_Request"
+            element={<Appoinments_request/>}
+          />
+          {/* Profile */}
           <Route
             exact
             path="/Lawyer/:username/Profile"
-            element={<Profile_Settings/>}
+            element={<Profile_Settings />}
           />
-           <Route
+          <Route
             exact
             path="/Profile_Preview/:username"
-            element={<Profile_Preview/>}
+            element={<Profile_Preview />}
           />
-          
+
           {/* Client Portal */}
-          <Route exact path="/Client/:username/Explore" element={<Explore_Profile/>} />
-          <Route exact path="/Client/:username/Appoinments" element={<Appoinments/>} />
+          <Route
+            exact
+            path="/Client/:username/Explore"
+            element={<Explore_Profile />}
+          />
+          <Route
+            exact
+            path="/Client/:username/Appoinments"
+            element={<Appoinments />}
+          />
         </Routes>
       </BrowserRouter>
     </div>

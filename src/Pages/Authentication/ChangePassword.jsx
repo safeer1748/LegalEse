@@ -11,7 +11,7 @@ const ChangePassword = () => {
     newPassword: "",
     confirmPassword: "",
   });
-  const handleSubmit = async(e) => {
+  const handleSubmit = async(e) => { text-sm
     e.preventDefault();
     let isValid = true;
     let validationErrors = {};
@@ -104,7 +104,7 @@ const ChangePassword = () => {
                     })
                   }
                 />
-                <div className="text-red-600">
+                <div className="text-red-600 text-sm">
                   {valid ? <></> : <span>{errors.currentPassword}</span>}
                 </div>
               </div>
@@ -124,7 +124,7 @@ const ChangePassword = () => {
                     setFormData({ ...formData, newPassword: e.target.value })
                   }
                 />
-                <div className="text-red-600">
+                <div className="text-red-600 text-sm">
                   {valid ? <></> : <span>{errors.newPassword}</span>}
                 </div>
               </div>
@@ -147,7 +147,7 @@ const ChangePassword = () => {
                     })
                   }
                 />
-                <div className="text-red-600">
+                <div className="text-red-600 text-sm">
                   {valid ? <></> : <span>{errors.confirmPassword}</span>}
                 </div>
               </div>

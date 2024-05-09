@@ -224,28 +224,20 @@
       "email": "haris@gmail.com",
       "date": "07-May-2024",
       "time": "11:27pm",
-      "status": "open",
+      "status": "closed",
       "userId": "lawyer1"
-    }
-  ],
-  "appoinment_requests": [
-    {
-      "id": "7798",
-      "email": "client1@gmail.com",
-      "name": "safeer",
-      "mobile": "03314600963",
-      "description": "dsjdijdijidejdiejd",
-      "clientId": "client1",
-      "lawyerId": "lawyer2"
     },
     {
-      "id": "4bc8",
-      "email": "client1@gmail.com",
-      "name": "zubair",
+      "id": "cd34",
+      "name": "safeer",
       "mobile": "03314600963",
-      "description": "dcchduhidhid",
-      "clientId": "client1",
-      "lawyerId": "lawyer1"
+      "email": "client1@gmail.com",
+      "date": "09-May-2024",
+      "time": "12:39pm",
+      "status": "open",
+      "userId": "lawyer2",
+      "clientId": "client1"
     }
-  ]
+  ],
+  "appoinments_request": []
 }

@@ -45,9 +45,9 @@ const Book_AppoinmentModal = ({ toggleModal, handleToggleModal, email }) => {
     setValid(isValid);
     if (Object.keys(validationErrors).length === 0) {
       await axios
-        .post(`http://localhost:8000/appoinment_requests`, formData)
+        .post(`http://localhost:8000/appoinments_request`, formData)
         .then((res) => {
-          alert("request Send successfully");
+          alert("Request sent successfully");
           handleToggleModal();
         })
         .catch((err) => console.log(err));
@@ -134,7 +134,7 @@ const Book_AppoinmentModal = ({ toggleModal, handleToggleModal, email }) => {
                     }
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                   />
-                  <div className="text-red-600">
+                  <div className="text-red-600 text-sm">
                     {valid ? <></> : <span>{errors.name}</span>}
                   </div>
                 </div>
@@ -155,7 +155,7 @@ const Book_AppoinmentModal = ({ toggleModal, handleToggleModal, email }) => {
                     }
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                   />
-                  <div className="text-red-600">
+                  <div className="text-red-600 text-sm">
                     {valid ? <></> : <span>{errors.mobile}</span>}
                   </div>
                 </div>
@@ -176,7 +176,7 @@ const Book_AppoinmentModal = ({ toggleModal, handleToggleModal, email }) => {
                     }
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                   ></textarea>
-                  <div className="text-red-600">
+                  <div className="text-red-600 text-sm">
                     {valid ? <></> : <span>{errors.description}</span>}
                   </div>
                 </div>
@@ -184,7 +184,7 @@ const Book_AppoinmentModal = ({ toggleModal, handleToggleModal, email }) => {
                   type="submit"
                   className=" md:col-span-2 w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
-                  Send Appoinment Request
+                  Sent Appoinment Request
                 </button>
               </form>
             </div>

@@ -69,7 +69,7 @@ const Login = () => {
   };
   return (
     <div>
-      <section className="bg-gray-50 dark:bg-gray-900">
+      <section className="bg-gray-50 dark:bg-gray-900"> text-sm
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0 ">
           <Link
             to="/"
@@ -106,7 +106,7 @@ const Login = () => {
                       setFormData({ ...formData, email: e.target.value })
                     }
                   />
-                  <div className="text-red-600">
+                  <div className="text-red-600 text-sm">
                     {valid ? <></> : <span>{errors.email}</span>}
                   </div>
                 </div>
@@ -128,7 +128,7 @@ const Login = () => {
                       setFormData({ ...formData, password: e.target.value })
                     }
                   />
-                  <div className="text-red-600">
+                  <div className="text-red-600 text-sm">
                     {valid ? <></> : <span>{errors.password}</span>}
                   </div>
                 </div>

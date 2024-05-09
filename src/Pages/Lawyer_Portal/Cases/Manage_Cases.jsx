@@ -235,7 +235,7 @@ const Manage_Cases = () => {
                 <div className="overflow-x-auto">
                   {records.length === 0 ? (
                     <div className="flex justify-center my-6 font-semibold">
-                      <span>you have no case</span>
+                      <span>You have no case</span>
                     </div>
                   ) : (
                     <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">

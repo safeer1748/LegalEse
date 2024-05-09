@@ -81,7 +81,7 @@ const ForgotPassword = () => {
                     setFormData({ ...formData, email: e.target.value })
                   }
                 />
-                <div className="text-red-600">
+                <div className="text-red-600 text-sm">
                   {valid ? <></> : <span>{errors.email}</span>}
                 </div>
               </div>

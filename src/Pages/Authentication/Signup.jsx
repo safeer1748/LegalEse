@@ -202,7 +202,7 @@ const Signup = () => {
                       setFormData({ ...formData, license_num: e.target.value })
                     }
                   />
-                  <div className="text-red-600">
+                  <div className="text-red-600 text-sm">
                     {valid ? <></> : <span>{errors.license_num}</span>}
                   </div>
                 </div>
@@ -224,7 +224,7 @@ const Signup = () => {
                       setFormData({ ...formData, username: e.target.value })
                     }
                   />
-                  <div className="text-red-600">
+                  <div className="text-red-600 text-sm">
                     {valid ? <></> : <span>{errors.username}</span>}
                   </div>
                 </div>
@@ -246,7 +246,7 @@ const Signup = () => {
                       setFormData({ ...formData, email: e.target.value })
                     }
                   />
-                  <div className="text-red-600">
+                  <div className="text-red-600 text-sm">
                     {valid ? <></> : <span>{errors.email}</span>}
                   </div>
                 </div>
@@ -268,7 +268,7 @@ const Signup = () => {
                       setFormData({ ...formData, password: e.target.value })
                     }
                   />
-                  <div className="text-red-600">
+                  <div className="text-red-600 text-sm">
                     {valid ? <></> : <span>{errors.password}</span>}
                   </div>
                 </div>
@@ -288,7 +288,7 @@ const Signup = () => {
                     required=""
                     onChange={(e) => setConfirmPassword(e.target.value)}
                   />
-                  <div className="text-red-600">
+                  <div className="text-red-600 text-sm">
                     {valid ? <></> : <span>{errors.confirmPassword}</span>}
                   </div>
                 </div>
