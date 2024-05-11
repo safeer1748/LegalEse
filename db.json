@@ -234,7 +234,7 @@
       "email": "client1@gmail.com",
       "date": "09-May-2024",
       "time": "12:39pm",
-      "status": "open",
+      "status": "closed",
       "userId": "lawyer2",
       "clientId": "client1"
     }

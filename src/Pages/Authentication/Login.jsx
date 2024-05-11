@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +9,19 @@ const Login = () => {
   const [errors, setErrors] = useState({});
   const [valid, setValid] = useState(true);
   const navigate = useNavigate();
+useEffect(()=>{
+  let login=localStorage.getItem('login')
+  let role=localStorage.getItem('role')
+  let username=localStorage.getItem('username')
+  if(login){
+    if(role==='lawyer'){
+      navigate(`/Lawyer/${username}/Dashbord`)
+    } else if(role==='client'){
+      navigate(`/Client/${username}/Explore`)
+    }
+  }
+},[])
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     let isValid = true;
@@ -69,7 +82,7 @@ const Login = () => {
   };
   return (
     <div>
-      <section className="bg-gray-50 dark:bg-gray-900"> text-sm
+      <section className="bg-gray-50 dark:bg-gray-900">
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0 ">
           <Link
             to="/"

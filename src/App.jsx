@@ -23,115 +23,116 @@ import ChangePassword from "./Pages/Authentication/ChangePassword";
 import Explore_Profile from "./Pages/Client_portal/Explore/Explore_Profile";
 import Appoinments from "./Pages/Client_portal/Appoinments/Appoinments";
 import Appoinments_request from "./Pages/Lawyer_Portal/Appoinments_Request/Appoinments_request";
+import Protected from "./Protected";
 const App = () => {
   return (
     <div>
       <BrowserRouter>
         <Routes>
-          <Route exact path="/" element={<Home />} />
+          <Route exact path="/" element={ <Home />} />
           <Route exact path="/Login" element={<Login />} />
           <Route exact path="/Signup" element={<Signup />} />
           <Route exact path="/ForgotPassword" element={<ForgotPassword />} />
-          <Route exact path="/ChangePassword" element={<ChangePassword />} />
+          <Route exact path="/ChangePassword" element={ <Protected Page={ChangePassword}/>} Role='' />
           {/* Lawyer Portal */}
           <Route
             exact
             path="/Lawyer/:username/Dashbord"
-            element={<Dashbord />}
+            element={< Protected Page={Dashbord} Role='lawyer' />}
           />
 
           {/* Manage_Clients */}
           <Route
             exact
             path="/Lawyer/:username/Manage_Clients"
-            element={<Manage_Clients />}
+            element={< Protected Page={Manage_Clients} Role='lawyer' />}
           />
           <Route
             exact
             path="/Lawyer/:username/Add_Client"
-            element={<Add_Client />}
+            element={< Protected Page={Add_Client } Role='lawyer'/>}
           />
           <Route
             exact
             path="/Lawyer/:username/View_Client/:id"
-            element={<View_Client />}
+            element={< Protected Page={View_Client} Role='lawyer'  />}
           />
           <Route
             exact
             path="/Lawyer/:username/Edit_Client/:id"
-            element={<Edit_Client />}
+            element={< Protected Page={Edit_Client} Role='lawyer' />}
           />
 
           {/* Manage_Appoinments */}
           <Route
             exact
             path="/Lawyer/:username/Manage_appoinments"
-            element={<Manage_appoinments />}
+            element={< Protected Page={Manage_appoinments} Role='lawyer'  />}
           />
           <Route
             exact
             path="/Lawyer/:username/Add_appoinment"
-            element={<Add_appoinment />}
+            element={< Protected Page={Add_appoinment} Role='lawyer' />}
           />
           <Route
             exact
             path="/Lawyer/:username/View_appoinment/:id"
-            element={<View_appoinment />}
+            element={< Protected Page={View_appoinment} Role='lawyer'  />}
           />
           <Route
             exact
             path="/Lawyer/:username/Edit_appoinment/:id"
-            element={<Edit_appoinment />}
+            element={<  Protected Page={Edit_appoinment} Role='lawyer'  />}
           />
           {/* Manage_Cases */}
           <Route
             exact
             path="/Lawyer/:username/Manage_Cases"
-            element={<Manage_Cases />}
+            element={<  Protected Page={Manage_Cases} Role='lawyer'  />}
           />
           <Route
             exact
             path="/Lawyer/:username/Add_Case"
-            element={<Add_Case />}
+            element={< Protected Page={Add_Case} Role='lawyer'  />}
           />
           <Route
             exact
             path="/Lawyer/:username/View_Case/:id"
-            element={<View_Case />}
+            element={< Protected Page={View_Case} Role='lawyer'  />}
           />
           <Route
             exact
             path="/Lawyer/:username/Edit_Case/:id"
-            element={<Edit_Case />}
+            element={< Protected Page={Edit_Case} Role='lawyer'  />}
           />
           {/* Appoinments_Request */}
           <Route
             exact
             path="/Lawyer/:username/Appoinments_Request"
-            element={<Appoinments_request/>}
+            element={< Protected Page={Appoinments_request} Role='lawyer' />}
           />
-          {/* Profile */}
+          {/* Lawyer Profile */}
           <Route
             exact
             path="/Lawyer/:username/Profile"
-            element={<Profile_Settings />}
+            element={<  Protected Page={Profile_Settings} Role='lawyer'  />}
           />
           <Route
             exact
             path="/Profile_Preview/:username"
-            element={<Profile_Preview />}
+            element={< Protected Page={Profile_Preview} Role='' />}
           />
 
           {/* Client Portal */}
           <Route
             exact
             path="/Client/:username/Explore"
-            element={<Explore_Profile />}
+            element={<  Protected Page={Explore_Profile} Role='client' />}
           />
           <Route
             exact
             path="/Client/:username/Appoinments"
-            element={<Appoinments />}
+            element={<  Protected Page={Appoinments} Role='client' />}
           />
         </Routes>
       </BrowserRouter>

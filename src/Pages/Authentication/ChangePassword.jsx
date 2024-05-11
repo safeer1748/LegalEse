@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 const ChangePassword = () => {
-    let username = localStorage.getItem("username");
-    const navigate = useNavigate();
+  let username = localStorage.getItem("username");
   const [errors, setErrors] = useState({});
   const [valid, setValid] = useState(true);
   const [formData, setFormData] = useState({
@@ -11,7 +10,7 @@ const ChangePassword = () => {
     newPassword: "",
     confirmPassword: "",
   });
-  const handleSubmit = async(e) => { text-sm
+  const handleSubmit = async(e) => {
     e.preventDefault();
     let isValid = true;
     let validationErrors = {};
@@ -93,7 +92,7 @@ const ChangePassword = () => {
                   Current Password
                 </label>
                 <input
-                  type="text"
+                  type="password"
                   name="currentPassword"
                   id="currentPassword"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -116,7 +115,7 @@ const ChangePassword = () => {
                   New Password
                 </label>
                 <input
-                  type="text"
+                  type="password"
                   name="newPassword"
                   id="newPassword"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -136,7 +135,7 @@ const ChangePassword = () => {
                   Confirm Password
                 </label>
                 <input
-                  type="text"
+                  type="password"
                   name="confirmPassword"
                   id="confirmPassword"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
