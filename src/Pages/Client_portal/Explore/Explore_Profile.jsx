@@ -21,7 +21,6 @@ const Explore_Profile = () => {
 
   const handleShowAvaliable = () => {
     setShowAvaliable(!showAvaliable);
-    console.log(showAvaliable);
     if (showAvaliable === true) {
       setProfileData(
         profileData.filter((obj) => obj.profile.availability === "available")
