@@ -24,6 +24,7 @@ import Explore_Profile from "./Pages/Client_portal/Explore/Explore_Profile";
 import Appoinments from "./Pages/Client_portal/Appoinments/Appoinments";
 import Appoinments_request from "./Pages/Lawyer_Portal/Appoinments_Request/Appoinments_request";
 import Protected from "./Protected";
+import Manage_Users from "./Pages/Admin/Admin_Dashbord/Manage_Users";
 const App = () => {
   return (
     <div>
@@ -133,6 +134,12 @@ const App = () => {
             exact
             path="/Client/:username/Appoinments"
             element={<  Protected Page={Appoinments} Role='client' />}
+          />
+          {/* Admin Portal */}
+          <Route
+            exact
+            path="/Admin/:username/Manage_Users"
+            element={<  Protected Page={Manage_Users} Role='admin'/>}
           />
         </Routes>
       </BrowserRouter>

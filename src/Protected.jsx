@@ -6,7 +6,10 @@ const Protected = ({Page, Role}) => {
     useEffect(()=>{
         let login=localStorage.getItem('login')
         let role=localStorage.getItem('role')
-        if(!login){
+        if(role==='admin'){
+          Role=''
+        }
+        if(!login) {
             navigate('/Login')
         }
          else if( Role!=='' &&  role!==Role ){

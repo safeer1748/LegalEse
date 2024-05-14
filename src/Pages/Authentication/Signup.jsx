@@ -33,7 +33,7 @@ const Signup = () => {
       } else {
         await axios
           .get(
-            `http://localhost:9000/lawyer_license?license=${formData.license_num}`
+            `http://localhost:8000/lawyer_license?license=${formData.license_num}`
           )
           .then((response) => {
             let user = response.data;

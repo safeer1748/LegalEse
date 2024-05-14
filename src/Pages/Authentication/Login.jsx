@@ -18,6 +18,8 @@ useEffect(()=>{
       navigate(`/Lawyer/${username}/Dashbord`)
     } else if(role==='client'){
       navigate(`/Client/${username}/Explore`)
+    } else if(role==='admin'){
+      navigate(`/Admin/${username}/Manage_Users`)
     }
   }
 },[])
@@ -65,6 +67,8 @@ useEffect(()=>{
                 navigate(`/Lawyer/${user[0].username}/Dashbord`);
               } else if (user[0].role === "client") {
                 navigate(`/Client/${user[0].username}/Explore`);
+              } else if (user[0].role === "admin") {
+                navigate(`/Admin/${user[0].username}/Dashbord`);
               }
             } else {
               isValid = false;

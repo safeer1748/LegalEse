@@ -13,6 +13,8 @@ const Home = () => {
         navigate(`/Lawyer/${username}/Dashbord`)
       } else if(role==='client'){
         navigate(`/Client/${username}/Explore`)
+      } else if(role==='admin'){
+        navigate(`/Admin/${username}/Manage_Users`)
       }
     }
   },[])

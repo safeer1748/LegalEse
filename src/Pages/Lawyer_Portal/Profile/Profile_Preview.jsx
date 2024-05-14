@@ -37,7 +37,7 @@ const Profile_Preview = () => {
   };
   return (
     <div>
-      <div className={`${role === "lawyer" ? "hidden" : ""}`}>
+      <div className={`${role === 'lawyer'||'admin' ? "hidden" : ""}`}>
         <Client_Navbar />
       </div>
       <div>
@@ -127,7 +127,7 @@ const Profile_Preview = () => {
         <div className=" md:ml-12 w-full md:w-1/4 mt-5 md:mt-0">
           <button
             disabled={
-              data.availability === "not available" || username === userId
+              data.availability === "not available" || username === userId ||role==='admin'
             }
             onClick={() => {
               handleToggleModal();
