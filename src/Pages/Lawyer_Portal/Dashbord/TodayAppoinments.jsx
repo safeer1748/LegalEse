@@ -25,7 +25,7 @@ const TodayAppoinments = ({ data, selectedDate }) => {
         <div className="overflow-x-auto">
           {records.length === 0 ? (
             <div className="flex justify-center my-6 font-semibold">
-              <span>You have no Appoinment</span>
+              <span>No Appoinment Found</span>
             </div>
           ) : (
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">

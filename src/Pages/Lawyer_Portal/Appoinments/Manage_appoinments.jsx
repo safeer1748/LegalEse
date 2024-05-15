@@ -2,9 +2,10 @@ import axios from "axios";
 import Lawyer_Bars from "../Lawyer_Bars";
 import React, { useEffect, useState } from "react";
 import { FaRegEye, FaRegEdit, FaRegTrashAlt } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 const Manage_appoinments = () => {
-  let username = localStorage.getItem("username");
+  const {username}=useParams()
+  const role=localStorage.getItem('role')
   const [data, setData] = useState([]);
   const [records, setRecords] = useState([]);
   const [statusDropdown, setStatusDropdown] = useState(false);
@@ -69,8 +70,8 @@ const Manage_appoinments = () => {
   };
   return (
     <div>
-      <Lawyer_Bars />
-      <div className="p-4 pt-24 xl:ml-64 bg-white">
+     {role === "admin" ? "" : <Lawyer_Bars />}
+      <div className={`${role==='admin'?"":" xl:ml-64 pt-24 p-4 "}bg-white`}>
         <div className=" border-2 border-gray-300 border-dashed rounded-lg dark:border-gray-700">
           <section className="bg-gray-50 shadow-md dark:bg-gray-900 m-4">
             <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
@@ -110,7 +111,7 @@ const Manage_appoinments = () => {
                 <Link
                   to={`/Lawyer/${username}/Add_appoinment`}
                   type="button"
-                  className="flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+                  className={`${role==='admin'?'hidden':''} flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800`}
                 >
                   <svg
                     className="h-3.5 w-3.5 mr-2"
@@ -130,12 +131,12 @@ const Manage_appoinments = () => {
                 <div className="flex flex-row-reverse items-center  gap-3  w-full md:w-auto relative">
                   <button
                     onClick={handleDeleteAll}
-                    className="w-full md:w-auto flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800 py-2 px-4 text-sm font-medium focus:outline-none rounded-lg focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                    className={`${role==='admin'?'hidden':''} w-full md:w-auto flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800 py-2 px-4 text-sm font-medium focus:outline-none rounded-lg focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700`}
                     type="button"
                   >
                     delete all
                   </button>
-                  <div className="flex flex-col space-y-12">
+                  <div className="flex flex-col space-y-12 relative">
                     <button
                       onClick={handleStatusDropdown}
                       id="dropdownDelayButton"
@@ -168,7 +169,7 @@ const Manage_appoinments = () => {
                       id="dropdownDelay"
                       className={`${
                         !statusDropdown ? "hidden" : ""
-                      } fixed right-30  md:right-48  z-50 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700`}
+                      } absolute right-0  z-50 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700`}
                     >
                       <ul
                         className="py-2 text-sm text-gray-700 dark:text-gray-200"
@@ -216,7 +217,7 @@ const Manage_appoinments = () => {
             <div className="overflow-x-auto">
               {records.length === 0 ? (
                 <div className="flex justify-center my-6 font-semibold">
-                  <span>You have no Appoinment</span>
+                  <span>No Appoinment Found</span>
                 </div>
               ) : (
                 <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -239,7 +240,7 @@ const Manage_appoinments = () => {
                       </th>
                       <th
                         scope="col"
-                        className="px-4 py-3 flex items-center justify-end"
+                        className={`${role==='admin'?'hidden':''} px-4 py-3 flex items-center justify-end`}
                       >
                         Actions
                       </th>
@@ -269,7 +270,7 @@ const Manage_appoinments = () => {
                         <td className="px-4 py-3 whitespace-nowrap">
                           {d.status}
                         </td>
-                        <td className="px-4 py-3 flex items-center justify-end space-x-3 whitespace-nowrap">
+                        <td className={`${role==='admin'?'hidden':''} px-4 py-3 flex items-center justify-end space-x-3 whitespace-nowrap`}>
                           <Link
                             to={`/Lawyer/${username}/View_appoinment/${d.id}`}
                           >

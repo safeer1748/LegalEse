@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { FaRegTrashAlt, FaUser } from "react-icons/fa";
+import { LuCalendarDays } from "react-icons/lu";
 import { Link } from "react-router-dom";
 import Admin_Navbar from "../Admin_Navbar";
 const Manage_Users = () => {
@@ -21,7 +22,7 @@ const Manage_Users = () => {
 
   const searchFilter = (event) => {
     setRecords(
-      data.filter((f) => f.email.toLowerCase().includes(event.target.value))
+      data.filter((f) => f.username.toLowerCase().includes(event.target.value))
     );
   };
 
@@ -80,7 +81,7 @@ const Manage_Users = () => {
                       type="text"
                       id="simple-search"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                      placeholder="Search by email"
+                      placeholder="Search"
                       required=""
                       onChange={searchFilter}
                     />
@@ -152,12 +153,23 @@ const Manage_Users = () => {
                         <td className='px-4 py-3 flex items-center justify-end space-x-3'>
                           <Link
                             title="View Profile"
-                            target="_blank"
-                            to={`/Profile_Preview/${d.username}`}
+                            to={`/Lawyer_Profile/${d.username}`}
                             className={`${hideLawyerTable ? "hidden" : ""}`}
                           >
                             <button>
                               <FaUser
+                                size={16}
+                                className="hover:text-blue-600"
+                              />
+                            </button>
+                          </Link>
+                          <Link
+                            title="Appoinments"
+                            to={`/Client/${d.username}/Appoinments`}
+                            className={`${hideLawyerTable ? "" : "hidden"}`}
+                          >
+                            <button>
+                              <LuCalendarDays
                                 size={16}
                                 className="hover:text-blue-600"
                               />

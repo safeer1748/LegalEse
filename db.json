@@ -88,6 +88,14 @@
       "email": "client2@gmail.com",
       "password": "client2",
       "role": "client"
+    },
+    {
+      "id": "8719",
+      "username": "lawyer4",
+      "email": "lawyer4@gmail.com",
+      "password": "lawyer4",
+      "role": "lawyer",
+      "license_num": "001234"
     }
   ],
   "clients": [
@@ -98,6 +106,22 @@
       "email": "haris@gmail.com",
       "gender": "male",
       "userId": "lawyer1"
+    },
+    {
+      "id": "6e88",
+      "name": "safeer",
+      "mobile": "03314600963",
+      "email": "safeer@gmail.com",
+      "gender": "male",
+      "userId": "lawyer3"
+    },
+    {
+      "id": "3cba",
+      "name": "haris",
+      "mobile": "03314600963",
+      "email": "haris@gmail.com",
+      "gender": "male",
+      "userId": "lawyer3"
     }
   ],
   "cases": [
@@ -153,6 +177,21 @@
       "time": "08:12pm",
       "status": "open",
       "userId": "lawyer1"
+    },
+    {
+      "id": "e1cd",
+      "client_role": "petitioner",
+      "client_name": "safeer",
+      "client_email": "safeer@gmail.com",
+      "case_number": "132323",
+      "case_type": "murder",
+      "court_branch": "23234",
+      "court_number": "wqsws",
+      "judge_name": "sxwqe",
+      "date": "15-May-2024",
+      "time": "07:20pm",
+      "status": "closed",
+      "userId": "lawyer3"
     }
   ],
   "appoinments": [
@@ -236,6 +275,26 @@
       "status": "closed",
       "userId": "lawyer2",
       "clientId": "client1"
+    },
+    {
+      "id": "7486",
+      "name": "safeer",
+      "mobile": "03314600963",
+      "email": "safeer@gmail.com",
+      "date": "15-May-2024",
+      "time": "06:42pm",
+      "status": "open",
+      "userId": "lawyer3"
+    },
+    {
+      "id": "2f89",
+      "name": "haris",
+      "mobile": "03314600963",
+      "email": "haris@gmail.com",
+      "date": "15-May-2024",
+      "time": "07:07pm",
+      "status": "open",
+      "userId": "lawyer3"
     }
   ],
   "appoinments_request": [],

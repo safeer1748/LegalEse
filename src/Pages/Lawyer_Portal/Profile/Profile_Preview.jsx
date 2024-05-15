@@ -37,9 +37,7 @@ const Profile_Preview = () => {
   };
   return (
     <div>
-      <div className={`${role === 'lawyer'||'admin' ? "hidden" : ""}`}>
-        <Client_Navbar />
-      </div>
+      {role === "client" ? <Client_Navbar /> : ""}
       <div>
         <Book_AppoinmentModal
           toggleModal={toggleModal}
@@ -47,7 +45,7 @@ const Profile_Preview = () => {
           email={email}
         />
       </div>
-      <section className="w-full p-8 md:py-12 md:px-6 md:flex justify-between">
+      <section className={`w-full pt-6 px-6 md:flex justify-between`}>
         <div className="md:w-3/4 w-full">
           <div className="flex flex-col md:flex-row gap-5 items-center relative">
             {data.profile_img ? (
@@ -124,16 +122,26 @@ const Profile_Preview = () => {
             </a>
           </div>
         </div>
-        <div className=" md:ml-12 w-full md:w-1/4 mt-5 md:mt-0">
+        <div
+          className={`${
+            role === "admin" ? "hidden" : ""
+          } md:ml-12 w-full md:w-1/4 mt-5 md:mt-0`}
+        >
           <button
             disabled={
-              data.availability === "not available" || username === userId ||role==='admin'
+              data.availability === "not available" ||
+              username === userId ||
+              role === "admin"
             }
             onClick={() => {
               handleToggleModal();
               getEmail();
             }}
-            className={`${data.availability==='not available'?'bg-gray-400':'bg-blue-700 hover:bg-blue-800'} w-full h-10 text-sm font-medium text-center text-white rounded-lg focus:ring-4 focus:outline-none focus:ring-blue-300`}
+            className={`${
+              data.availability === "not available"
+                ? "bg-gray-400"
+                : "bg-blue-700 hover:bg-blue-800"
+            } w-full h-10 text-sm font-medium text-center text-white rounded-lg focus:ring-4 focus:outline-none focus:ring-blue-300`}
           >
             Book Appoinment
           </button>

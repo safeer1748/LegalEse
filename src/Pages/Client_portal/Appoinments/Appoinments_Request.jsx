@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 const Appoinments_Request = () => {
-  const userId = localStorage.getItem("username");
+  const {username}=useParams()
+  let role=localStorage.getItem('role')
   const [data, setData] = useState([]);
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/appoinments_request?clientId=${userId}`)
+      .get(`http://localhost:8000/appoinments_request?clientId=${username}`)
       .then((res) => {
         setData(res.data);
       })
@@ -25,7 +26,7 @@ const Appoinments_Request = () => {
   };
   return (
     <div className="p-6 w-full mt-6">
-      <h1 className="font-medium text-xl text-gray-900 text-center">
+      <h1 className="font-medium text-xl text-gray-900">
         Sent Appoinments Request
       </h1>
       <div className=" border-2 border-gray-300 border-dashed rounded-lg dark:border-gray-700 mt-4">
@@ -49,7 +50,7 @@ const Appoinments_Request = () => {
                     View Profile
                   </Link>
                 </span>
-                <div className="flex">
+                <div className={`${role === "admin" ?'hidden':'flex'}`}>
                   <button
                     onClick={() => cancelRequest(d.id)}
                     type="button"
