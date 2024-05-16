@@ -7,22 +7,27 @@ import Admin_Navbar from "../Admin_Navbar";
 const Manage_Users = () => {
   const [data, setData] = useState([]);
   const [records, setRecords] = useState([]);
+  const [roleRecords, setRoleRecords] = useState([]);
   const [hideLawyerTable, setHideLawyerTable] = useState(false);
+
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/users?role=${"lawyer"}`)
+      .get(`http://localhost:8000/users`)
       .then((res) => {
         let array = res.data;
         array.reverse();
+        setRecords(array.filter((f) => f.role === "lawyer"));
+        setRoleRecords(array.filter((f) => f.role === "lawyer"));
         setData(array);
-        setRecords(array);
       })
       .catch((err) => console.log(err));
   }, []);
-
+  
   const searchFilter = (event) => {
     setRecords(
-      data.filter((f) => f.username.toLowerCase().includes(event.target.value))
+      roleRecords.filter((f) =>
+        f.username.toLowerCase().includes(event.target.value)
+      )
     );
   };
 
@@ -38,16 +43,9 @@ const Manage_Users = () => {
     }
   };
   const handleRoleFilter = (e) => {
-    axios
-      .get(`http://localhost:8000/users?role=${e.target.value}`)
-      .then((res) => {
-        let array = res.data;
-        array.reverse();
-        setData(array);
-        setRecords(array);
-        setHideLawyerTable(!hideLawyerTable);
-      })
-      .catch((err) => console.log(err));
+    setRecords(data.filter((f) => f.role === e.target.value));
+    setRoleRecords(data.filter((f) => f.role === e.target.value));
+    setHideLawyerTable(!hideLawyerTable);
   };
   return (
     <div>
@@ -150,7 +148,7 @@ const Manage_Users = () => {
                         <td className="px-4 py-3">{d.username}</td>
                         <td className="px-4 py-3">{d.email}</td>
                         <td className="px-4 py-3">{d.role}</td>
-                        <td className='px-4 py-3 flex items-center justify-end space-x-3'>
+                        <td className="px-4 py-3 flex items-center justify-end space-x-3">
                           <Link
                             title="View Profile"
                             to={`/Lawyer_Profile/${d.username}`}

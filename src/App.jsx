@@ -26,6 +26,8 @@ import Appoinments_request from "./Pages/Lawyer_Portal/Appoinments_Request/Appoi
 import Protected from "./Protected";
 import Manage_Users from "./Pages/Admin/Admin_Dashbord/Manage_Users";
 import Lawyer_Profile from "./Pages/Admin/Admin_Dashbord/Lawyer_Profile";
+import Manage_License from "./Pages/Admin/Lawyer_License/Manage_License";
+import Add_License from "./Pages/Admin/Lawyer_License/Add_License";
 const App = () => {
   return (
     <div>
@@ -147,6 +149,17 @@ const App = () => {
             path="/Lawyer_Profile/:username"
             element={<  Protected Page={Lawyer_Profile} Role='admin'/>}
           />
+          <Route
+            exact
+            path="/Admin/:username/Lawyer_License"
+            element={<  Protected Page={Manage_License} Role='admin'/>}
+          />
+          <Route
+            exact
+            path="/Admin/:username/Add_License"
+            element={<  Protected Page={Add_License} Role='admin'/>}
+          />
+          
         </Routes>
       </BrowserRouter>
     </div>

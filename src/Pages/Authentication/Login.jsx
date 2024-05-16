@@ -68,7 +68,7 @@ useEffect(()=>{
               } else if (user[0].role === "client") {
                 navigate(`/Client/${user[0].username}/Explore`);
               } else if (user[0].role === "admin") {
-                navigate(`/Admin/${user[0].username}/Dashbord`);
+                navigate(`/Admin/${user[0].username}/Manage_Users`);
               }
             } else {
               isValid = false;
