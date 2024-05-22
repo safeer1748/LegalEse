@@ -55,27 +55,27 @@ const Edit_Case = () => {
     // Case Number Validation
     if (formData.case_number === "" || formData.case_number === null) {
       isValid = false;
-      validationErrors.case_number = "case number required";
+      validationErrors.case_number = "Case number required";
     }
     // Case Type Validation
     if (formData.case_type === "" || formData.case_type === null) {
       isValid = false;
-      validationErrors.case_type = "case type required";
+      validationErrors.case_type = "Case type required";
     }
     // Court Branch Validation
     if (formData.court_branch === "" || formData.court_branch === null) {
       isValid = false;
-      validationErrors.court_branch = "court branch required";
+      validationErrors.court_branch = "Court branch required";
     }
     // Court Number Validation
     if (formData.court_number === "" || formData.court_number === null) {
       isValid = false;
-      validationErrors.court_number = "court number required";
+      validationErrors.court_number = "Court number required";
     }
     // Judge Name Validation
     if (formData.judge_name === "" || formData.judge_name === null) {
       isValid = false;
-      validationErrors.judge_name = "judge name required";
+      validationErrors.judge_name = "Judge name required";
     }
 
     setErrors(validationErrors);

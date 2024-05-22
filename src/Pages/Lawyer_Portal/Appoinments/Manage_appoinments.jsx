@@ -134,7 +134,7 @@ const Manage_appoinments = () => {
                     className={`${role==='admin'?'hidden':''} w-full md:w-auto flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800 py-2 px-4 text-sm font-medium focus:outline-none rounded-lg focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700`}
                     type="button"
                   >
-                    delete all
+                    Delete all
                   </button>
                   <div className="flex flex-col space-y-12 relative">
                     <button

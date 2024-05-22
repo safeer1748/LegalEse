@@ -16,10 +16,10 @@ const ForgotPassword = () => {
     // email Validation
     if (formData.email === "" || formData.email === null) {
       isValid = false;
-      validationErrors.email = "email required";
+      validationErrors.email = "Email required";
     } else if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(formData.email)) {
       isValid = false;
-      validationErrors.email = "email is not valid";
+      validationErrors.email = "Email is not valid";
     }
 
     // check user is avalaible or not (fetch from DataBase)
@@ -32,7 +32,7 @@ const ForgotPassword = () => {
             alert("Check your email");
           } else {
             isValid = false;
-            validationErrors.email = "wrong email";
+            validationErrors.email = "Wrong email";
           }
         })
         .catch((err) => console.log(err));
@@ -68,7 +68,7 @@ const ForgotPassword = () => {
                   htmlFor="email"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
-                  Your email
+                  Email
                 </label>
                 <input
                   type="text"

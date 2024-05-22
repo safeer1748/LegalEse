@@ -29,7 +29,7 @@ const Signup = () => {
     if (userRole === "lawyer") {
       if (formData.license_num === "" || formData.license_num === null) {
         isValid = false;
-        validationErrors.license_num = "license number required";
+        validationErrors.license_num = "License number required";
       } else {
         await axios
           .get(
@@ -39,7 +39,7 @@ const Signup = () => {
             let user = response.data;
             if (Object.keys(user).length === 0) {
               isValid = false;
-              validationErrors.license_num = "wrong license number";
+              validationErrors.license_num = "Wrong license number";
             }
           })
           .catch((err) => console.log(err));
@@ -53,7 +53,7 @@ const Signup = () => {
             if (Object.keys(user).length !== 0) {
               isValid = false;
               validationErrors.license_num =
-                "account is already created by this license number";
+                "Account is already created by this license number";
             }
           })
           .catch((err) => console.log(err));
@@ -62,10 +62,10 @@ const Signup = () => {
     // username Validation
     if (formData.username === "" || formData.username === null) {
       isValid = false;
-      validationErrors.username = "username required";
+      validationErrors.username = "Username required";
     } else if (formData.username.length < 6) {
       isValid = false;
-      validationErrors.username = "username must be at least 6 characters";
+      validationErrors.username = "Username must be at least 6 characters";
     } else {
       await axios
         .get(`http://localhost:8000/users?username=${formData.username}`)
@@ -73,7 +73,7 @@ const Signup = () => {
           let user = response.data;
           if (Object.keys(user).length !== 0) {
             isValid = false;
-            validationErrors.username = "username already taken";
+            validationErrors.username = "Username already taken";
           }
         })
         .catch((err) => console.log(err));
@@ -82,12 +82,12 @@ const Signup = () => {
     // email Validation
     if (formData.email === "" || formData.email === null) {
       isValid = false;
-      validationErrors.email = "email required";
+      validationErrors.email = "Email required";
     } else if (
       !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(formData.email)
     ) {
       isValid = false;
-      validationErrors.email = "email is not valid";
+      validationErrors.email = "Email is not valid";
     } else {
       await axios
         .get(`http://localhost:8000/users?email=${formData.email}`)
@@ -95,7 +95,7 @@ const Signup = () => {
           let user = response.data;
           if (Object.keys(user).length !== 0) {
             isValid = false;
-            validationErrors.email = "account is already created by this email";
+            validationErrors.email = "Account is already created by this email";
           }
         })
         .catch((err) => console.log(err));
@@ -104,16 +104,16 @@ const Signup = () => {
     // password Validation
     if (formData.password === "" || formData.password === null) {
       isValid = false;
-      validationErrors.password = "password required";
+      validationErrors.password = "Password required";
     } else if (formData.password.length < 6) {
       isValid = false;
-      validationErrors.password = "password must be at least 6 characters";
+      validationErrors.password = "Password must be at least 6 characters";
     }
 
     // confirm password Validation
     if (confirmPassword !== formData.password) {
       isValid = false;
-      validationErrors.confirmPassword = "confirm password not match";
+      validationErrors.confirmPassword = "Confirm password not match";
     }
 
     setErrors(validationErrors);
@@ -211,7 +211,7 @@ const Signup = () => {
                     htmlFor="userName"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    User name
+                    Username
                   </label>
                   <input
                     type="text"
@@ -233,7 +233,7 @@ const Signup = () => {
                     htmlFor="email"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Your email
+                    Email
                   </label>
                   <input
                     type="text"

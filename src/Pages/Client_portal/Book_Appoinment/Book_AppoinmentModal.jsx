@@ -39,7 +39,7 @@ const Book_AppoinmentModal = ({ toggleModal, handleToggleModal, email }) => {
     // description Validation
     if (formData.description === "" || formData.description === null) {
       isValid = false;
-      validationErrors.description = "description required";
+      validationErrors.description = "Description required";
     }
     setErrors(validationErrors);
     setValid(isValid);
@@ -107,7 +107,7 @@ const Book_AppoinmentModal = ({ toggleModal, handleToggleModal, email }) => {
                     htmlFor="email"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Your email
+                    Email
                   </label>
                   <h3
                     name="email"
@@ -122,7 +122,7 @@ const Book_AppoinmentModal = ({ toggleModal, handleToggleModal, email }) => {
                     htmlFor="name"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Your Name
+                    Name
                   </label>
                   <input
                     type="text"
@@ -143,7 +143,7 @@ const Book_AppoinmentModal = ({ toggleModal, handleToggleModal, email }) => {
                     htmlFor="phoneNo"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    phone Number
+                    Phone Number
                   </label>
                   <input
                     type="text"

@@ -32,21 +32,21 @@ useEffect(()=>{
     // email Validation
     if (formData.email === "" || formData.email === null) {
       isValid = false;
-      validationErrors.email = "email required";
+      validationErrors.email = "Email required";
     } else if (
       !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(formData.email)
     ) {
       isValid = false;
-      validationErrors.email = "email is not valid";
+      validationErrors.email = "Email is not valid";
     }
 
     // password Validation
     if (formData.password === "" || formData.password === null) {
       isValid = false;
-      validationErrors.password = "password required";
+      validationErrors.password = "Password required";
     } else if (formData.password.length < 6) {
       isValid = false;
-      validationErrors.password = "password must be at least 6 characters";
+      validationErrors.password = "Password must be at least 6 characters";
     }
 
     // check user is avalaible or not (fetch from DataBase)
@@ -110,7 +110,7 @@ useEffect(()=>{
                     htmlFor="email"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Your email
+                    Email
                   </label>
                   <input
                     type="text"
@@ -161,7 +161,7 @@ useEffect(()=>{
                   type="submit"
                   className="w-full text-white bg-black hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                 >
-                  Log in
+                  Login
                 </button>
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                   Don’t have an account yet?{" "}
@@ -170,7 +170,7 @@ useEffect(()=>{
                     onClick={()=>sessionStorage.setItem("userRole","client")}
                     className="font-medium text-blue-600 hover:underline dark:text-primary-500"
                   >
-                    Sign up
+                    Signup
                   </Link>
                 </p>
               </form>

@@ -48,7 +48,7 @@ const Add_appoinment = () => {
     // mobile number Validation
      if (formData.mobile === "" || formData.mobile === null) {
       isValid = false;
-      validationErrors.mobile = "Mobile Number required";
+      validationErrors.mobile = "Mobile number required";
     } else if (
       !/^03\d{9}$/.test(formData.mobile)
     ) {
@@ -60,12 +60,12 @@ const Add_appoinment = () => {
     // email Validation
     if (formData.email === "" || formData.email === null) {
       isValid = false;
-      validationErrors.email = "email required";
+      validationErrors.email = "Email required";
     } else if (
       !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(formData.email)
     ) {
       isValid = false;
-      validationErrors.email = "email is not valid";
+      validationErrors.email = "Email is not valid";
     }
 
     setErrors(validationErrors);

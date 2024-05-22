@@ -17,22 +17,22 @@ const ChangePassword = () => {
 
     if (formData.currentPassword === "" || formData.currentPassword === null) {
       isValid = false;
-      validationErrors.currentPassword = "current password required";
+      validationErrors.currentPassword = "Current password required";
     }
 
     // new password Validation
     if (formData.newPassword === "" || formData.newPassword === null) {
       isValid = false;
-      validationErrors.newPassword = "new password required";
+      validationErrors.newPassword = "New password required";
     } else if (formData.newPassword.length < 6) {
       isValid = false;
-      validationErrors.newPassword = "password must be at least 6 characters";
+      validationErrors.newPassword = "Password must be at least 6 characters";
     }
 
     // confirm password Validation
     if (formData.confirmPassword !== formData.newPassword) {
       isValid = false;
-      validationErrors.confirmPassword = "confirm password not match";
+      validationErrors.confirmPassword = "Confirm password not match";
     }
     setErrors(validationErrors);
     setValid(isValid);
@@ -44,7 +44,7 @@ const ChangePassword = () => {
           let data = res.data[0];
           if(data.password!==formData.currentPassword){
             isValid = false;
-            validationErrors.currentPassword = "incorrect password";
+            validationErrors.currentPassword = "Incorrect password";
             setErrors(validationErrors);
             setValid(isValid);
           }else{
@@ -52,7 +52,7 @@ const ChangePassword = () => {
             axios
             .put("http://localhost:8000/users/" + data.id, data)
             .then((response) => {
-              alert('password change successfully')
+              alert('Password change successfully')
               location.reload()
             })
             .catch((err) => console.log(err));

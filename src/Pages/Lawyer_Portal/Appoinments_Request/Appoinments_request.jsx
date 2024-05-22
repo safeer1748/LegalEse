@@ -63,7 +63,7 @@ const Appoinments_request = () => {
         <div className=" border-2 border-gray-300 border-dashed rounded-lg dark:border-gray-700">
           {data.length === 0 ? (
             <div className="flex justify-center my-6 font-semibold">
-              <span>NO Request Found</span>
+              <span>No Request Found</span>
             </div>
           ) : (
             <section className="bg-gray-50 shadow-md dark:bg-gray-900 m-4">
@@ -88,7 +88,7 @@ const Appoinments_request = () => {
                       className="text-blue-700 hover:underline cursor-pointer"
                       onClick={() => seeDetail(d.id)}
                     >
-                      see details
+                      View details
                     </a>
                   </span>
                   <div className="flex gap-3">

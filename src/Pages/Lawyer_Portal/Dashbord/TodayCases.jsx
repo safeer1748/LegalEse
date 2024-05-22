@@ -82,11 +82,11 @@ const TodayCases = ({ data, selectedDate }) => {
                       <div className="font-normal text-gray-500">
                         <p>{d.client_email}</p>
                         <p>
-                          case no:{" "}
+                          Case no:{" "}
                           <span className="font-medium">{d.case_number}</span>
                         </p>
                         <p>
-                          case type :{" "}
+                          Case type :{" "}
                           <span className="font-medium">{d.case_type}</span>
                         </p>
                       </div>
@@ -94,15 +94,15 @@ const TodayCases = ({ data, selectedDate }) => {
                     <td className="px-4 py-3 whitespace-nowrap">
                       <div className="font-normal text-gray-500">
                         <p>
-                          court:{" "}
+                          Court:{" "}
                           <span className="font-medium">{d.court_branch}</span>
                         </p>
                         <p>
-                          court no :{" "}
+                          Court no :{" "}
                           <span className="font-medium">{d.court_number}</span>
                         </p>
                         <p>
-                          judge:{" "}
+                          Judge:{" "}
                           <span className="font-medium">{d.judge_name}</span>
                         </p>
                       </div>

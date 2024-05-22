@@ -27,7 +27,7 @@ const Appoinments_Request = () => {
   return (
     <div className="p-6 w-full mt-6">
       <h1 className="font-medium text-xl text-gray-900">
-        Sent Appoinments Request
+      Appoinments Request
       </h1>
       <div className=" border-2 border-gray-300 border-dashed rounded-lg dark:border-gray-700 mt-4">
         {data.length === 0 ? (

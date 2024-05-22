@@ -38,7 +38,7 @@ const Edit_Client = () => {
     // mobile number Validation
     if (formData.mobile === "" || formData.mobile === null) {
       isValid = false;
-      validationErrors.mobile = "Mobile Number required";
+      validationErrors.mobile = "Mobile number required";
     } else if (!/^[0-9]{11}$/.test(formData.mobile)) {
       isValid = false;
       validationErrors.mobile = "Mobile number must be 11 digits";
@@ -112,7 +112,7 @@ const Edit_Client = () => {
                   htmlFor="name"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
-                  Client Name
+                  Name
                 </label>
                 <input
                   type="text"

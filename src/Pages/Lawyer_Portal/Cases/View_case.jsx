@@ -105,7 +105,7 @@ const View_Case = () => {
                     <span className="ml-3">{data.court_number}</span>
                   </p>
                   <p className="text-base leading-relaxed font-medium text-gray-800 dark:text-gray-400">
-                    judge Name :<span className="ml-3">{data.judge_name}</span>
+                    Judge Name :<span className="ml-3">{data.judge_name}</span>
                   </p>
                   <p className="text-base leading-relaxed font-medium text-gray-800 dark:text-gray-400">
                     Date :<span className="ml-3">{data.date}</span>
