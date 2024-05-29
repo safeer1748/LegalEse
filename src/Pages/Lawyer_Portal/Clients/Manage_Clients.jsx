@@ -1,8 +1,9 @@
-import axios from "axios";
 import Lawyer_Bars from "../Lawyer_Bars";
 import React, { useEffect, useState } from "react";
 import { FaRegEye, FaRegEdit, FaRegTrashAlt } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
+import { collection, deleteDoc, doc, getDocs, orderBy, query, where } from "firebase/firestore";
+import { db } from "../../../firestore";
 const Manage_Clients = () => {
   const{username}=useParams()
   const role = localStorage.getItem("role");
@@ -14,16 +15,21 @@ const Manage_Clients = () => {
     setGenderDropdown(!genderDropdown);
   };
 
+  const getClients=async ()=>{
+    try {
+      const collectionRef=collection(db, "clients")
+      const q = query(collectionRef, where("userId", "==", username, orderBy("timestamp", "desc")));
+      const querySnapshot = await getDocs(q);
+      const clients = querySnapshot.docs.map((doc) => ({id: doc.id,...doc.data(),
+      }));
+      setData(clients);
+        setRecords(clients);
+    } catch (error) {
+      console.log(error)
+    }
+  }
   useEffect(() => {
-    axios
-      .get(`http://localhost:8000/clients?userId=${username}`)
-      .then((res) => {
-        let array = res.data;
-        array.reverse();
-        setData(array);
-        setRecords(array);
-      })
-      .catch((err) => console.log(err));
+    getClients()
   }, []);
 
   const searchFilter = (event) => {
@@ -43,29 +49,29 @@ const Manage_Clients = () => {
   const showBoth = () => {
     setRecords(data);
   };
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     const confirm = window.confirm("Click OK to Delete");
     if (confirm) {
-      axios
-        .delete("http://localhost:8000/clients/" + id)
-        .then((res) => {
-          location.reload();
-        })
-        .catch((err) => console.log(err));
+      try {
+        await deleteDoc(doc(db, "clients", id));
+        location.reload();
+      } catch (error) {
+        console.log(error)
+      }
     }
   };
 
   const handleDeleteAll = () => {
     const confirm = window.confirm("Click OK to Delete All");
     if (confirm) {
-      records.map((d, i) =>
-        axios
-          .delete("http://localhost:8000/clients/" + d.id)
-          .then((res) => {
-            location.reload();
-          })
-          .catch((err) => console.log(err))
-      );
+      records.map(async (d, i) =>{
+        try {
+          await deleteDoc(doc(db, "clients", d.id));
+          location.reload();
+        } catch (error) {
+          console.log(error)
+        }
+      });
     }
   };
   return (

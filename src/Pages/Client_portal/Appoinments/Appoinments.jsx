@@ -1,30 +1,48 @@
 import React, { useEffect, useState } from "react";
 import Client_Navbar from "../Client_Navbar";
-import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import Appoinments_Request from "./Appoinments_Request";
 import Admin_Navbar from "../../Admin/Admin_Navbar";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  orderBy,
+  deleteDoc,
+  doc
+} from "firebase/firestore";
+import { db } from "../../../firestore";
 const Appoinments = () => {
   const { username } = useParams();
   const role = localStorage.getItem("role");
   const [data, setData] = useState([]);
+
+  const getAppoinments=async()=>{
+    try {
+      const collectionRef=collection(db, "appoinments")
+      const q = query(collectionRef, where("clientId", "==", username, orderBy("timestamp", "desc")));
+      const querySnapshot = await getDocs(q);
+      const records = querySnapshot.docs.map((doc) => ({id: doc.id,...doc.data(),
+    }));
+    setData(records);
+    } catch (error) {
+      console.log(error)
+    }
+  }
   useEffect(() => {
-    axios
-      .get(`http://localhost:8000/appoinments?clientId=${username}`)
-      .then((res) => {
-        setData(res.data);
-      })
-      .catch((err) => console.log(err));
+    getAppoinments()
   }, []);
-  const cancelAppoinment = (id) => {
+
+  const cancelAppoinment = async (id) => {
     let confirmCancel = confirm("Click OK to cancel the Appoinment");
     if (confirmCancel === true) {
-      axios
-        .delete("http://localhost:8000/appoinments/" + id)
-        .then((res) => {
-          location.reload();
-        })
-        .catch((err) => console.log(err));
+      try {
+        await deleteDoc(doc(db, "appoinments", id));
+        location.reload();
+      } catch (error) {
+        console.log(error)
+      }
     }
   };
   return (

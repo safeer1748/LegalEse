@@ -1,22 +1,36 @@
 import React, { useState, useEffect } from "react";
 import Client_Navbar from "../Client_Navbar";
 import Profile_Card from "./Profile_Card";
-import axios from "axios";
 import Specialization_List from "../../../Array_json_Files/Specialization_List.json";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
+import { db } from "../../../firestore";
+
 const Explore_Profile = () => {
   const [profileData, setProfileData] = useState([]);
   const [records, setRecords] = useState([]);
   const [showAvaliable, setShowAvaliable] = useState(true);
   const [toggleDropdown, setToggleDropdown] = useState(false);
+
+  const getLawyerProfile = async () => {
+    try {
+      const q = query(collection(db, "users"), where("role", "==", "lawyer"));
+      const querySnapshot = await getDocs(q);
+      const data = querySnapshot.docs.map((doc) => ({id: doc.id,...doc.data(),}));
+      setProfileData(data.filter((obj) => obj.hasOwnProperty("profile")));
+      setRecords(data.filter((obj) => obj.hasOwnProperty("profile")));
+    } catch (error) {
+      console.log(error)
+    }
+   
+  }
+ 
   useEffect(() => {
-    axios
-      .get(`http://localhost:8000/users?role=lawyer`)
-      .then((res) => {
-        let data = res.data;
-        setProfileData(data.filter((obj) => obj.hasOwnProperty("profile")));
-        setRecords(data.filter((obj) => obj.hasOwnProperty("profile")));
-      })
-      .catch((err) => console.log(err));
+    getLawyerProfile()
   }, []);
 
   const handleShowAvaliable = () => {

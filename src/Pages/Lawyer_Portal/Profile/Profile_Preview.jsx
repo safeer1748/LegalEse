@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useParams } from "react-router-dom";
 import Client_Navbar from "../../Client_portal/Client_Navbar";
 import Book_AppoinmentModal from "../../Client_portal/Book_Appoinment/Book_AppoinmentModal";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
+import { db } from "../../../firestore";
 const Profile_Preview = () => {
   const [data, setData] = useState({});
   const [toggleModal, setToggleModal] = useState(false);
@@ -10,29 +16,44 @@ const Profile_Preview = () => {
   let role = localStorage.getItem("role");
   let userId = localStorage.getItem("username");
   const [email, setEmail] = useState("");
-  useEffect(() => {
-    axios
-      .get(`http://localhost:8000/users?username=${username}`)
-      .then((res) => {
-        let record = res.data[0];
-        if (record.profile) {
-          setData(record.profile);
+  
+  const getUserDetails = async () => {
+    try {
+      const q = query(collection(db, "users"), where("username", "==", username));
+    const querySnapshot = await getDocs(q);
+    const userDetails = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    const data = userDetails[0];
+        if (data.profile) {
+          setData(data.profile);
         }
-      })
-      .catch((err) => console.log(err));
+    } catch (error) {
+      console.log(error)
+    }
+    
+  };
+  useEffect(() => {
+    getUserDetails()
   }, []);
   const handleToggleModal = () => {
     setToggleModal(!toggleModal);
   };
-  const getEmail = () => {
+  const getEmail = async() => {
     if (email === null || email === "") {
-      axios
-        .get(`http://localhost:8000/users?username=${userId}`)
-        .then((res) => {
-          let record = res.data[0];
-          setEmail(record.email);
-        })
-        .catch((err) => console.log(err));
+          try {
+            const q = query(collection(db, "users"), where("username", "==", userId));
+            const querySnapshot = await getDocs(q);
+            const userDetails = querySnapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }));
+                  const record = userDetails[0];
+                  setEmail(record.email);
+          } catch (error) {
+            console.log(error)
+          }
     }
   };
   return (
@@ -45,7 +66,7 @@ const Profile_Preview = () => {
           email={email}
         />
       </div>
-      <section className={`w-full pt-6 px-6 md:flex justify-between`}>
+      <section className={`w-full py-6 px-6 md:flex justify-between`}>
         <div className="md:w-3/4 w-full">
           <div className="flex flex-col md:flex-row gap-5 items-center relative">
             {data.profile_img ? (

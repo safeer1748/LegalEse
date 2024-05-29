@@ -1,22 +1,23 @@
 import React from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import { FaRegEye, FaRegEdit, FaRegTrashAlt } from "react-icons/fa";
 import dayjs from "dayjs";
+import { deleteDoc, doc} from "firebase/firestore";
+import { db } from "../../../firestore";
 const TodayAppoinments = ({ data, selectedDate }) => {
   let records = data.filter((f) =>
     f.date.includes(dayjs(selectedDate).format("DD-MMM-YYYY"))
   );
   let username = localStorage.getItem("username");
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     const confirm = window.confirm("Click OK to Delete");
     if (confirm) {
-      axios
-        .delete("http://localhost:8000/appoinments/" + id)
-        .then((res) => {
-          location.reload();
-        })
-        .catch((err) => console.log(err));
+      try {
+        await deleteDoc(doc(db, "appoinments", id));
+        location.reload();
+      } catch (error) {
+        console.log(error)
+      }
     }
   };
   return (

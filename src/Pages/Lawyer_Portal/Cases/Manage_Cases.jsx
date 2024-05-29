@@ -1,9 +1,11 @@
-import axios from "axios";
 import React, { useState, useEffect } from "react";
 import Lawyer_Bars from "../Lawyer_Bars";
 import { Link, useParams } from "react-router-dom";
 import { FaRegEye, FaRegEdit, FaRegTrashAlt } from "react-icons/fa";
 import { RiExpandUpDownFill } from "react-icons/ri";
+import { collection, deleteDoc, doc, getDocs,setDoc, orderBy, query, where } from "firebase/firestore";
+import { db } from "../../../firestore";
+
 const Manage_Cases = () => {
   const { username } = useParams();
   const role = localStorage.getItem("role");
@@ -11,16 +13,21 @@ const Manage_Cases = () => {
   const [data, setData] = useState([]);
   const [records, setRecords] = useState([]);
 
+  const getCases=async ()=>{
+    try {
+      const collectionRef=collection(db, "cases")
+      const q = query(collectionRef, where("userId", "==", username, orderBy("timestamp", "desc")));
+      const querySnapshot = await getDocs(q);
+      const cases = querySnapshot.docs.map((doc) => ({id: doc.id,...doc.data(),
+      }));
+      setData(cases);
+        setRecords(cases);
+    } catch (error) {
+      console.log(error)
+    }
+  }
   useEffect(() => {
-    axios
-      .get(`http://localhost:8000/cases?userId=${username}`)
-      .then((res) => {
-        let array = res.data;
-        array.reverse();
-        setData(array);
-        setRecords(array);
-      })
-      .catch((err) => console.log(err));
+    getCases()
   }, []);
 
   const handleStatusDropdown = () => {
@@ -48,43 +55,42 @@ const Manage_Cases = () => {
 
   const handleStatus = async (id) => {
     let selected = records.find((f) => f.id === id);
-    console.log(selected);
     if (selected.status === "open") {
       selected.status = "closed";
     } else if (selected.status === "closed") {
       selected.status = "open";
     }
-    await axios
-      .put("http://localhost:8000/cases/" + id, selected)
-      .then((res) => {
-        location.reload();
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const handleDelete = (id) => {
-    const confirm = window.confirm("Click OK to Delete");
-    if (confirm) {
-      axios
-        .delete("http://localhost:8000/cases/" + id)
-        .then((res) => {
-          location.reload();
-        })
-        .catch((err) => console.log(err));
+    try {
+      await setDoc(doc(db, "cases", id), { ...selected });
+      location.reload();
+    } catch (error) {
+      console.log(error)
     }
   };
 
-  const handleDeleteAll = () => {
+  const handleDelete = async (id) => {
+    const confirm = window.confirm("Click OK to Delete");
+    if (confirm) {
+      try {
+        await deleteDoc(doc(db, "cases", id));
+        location.reload();
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  };
+
+  const handleDeleteAll = async () => {
     const confirm = window.confirm("Click OK to Delete All");
     if (confirm) {
-      records.map((d, i) =>
-        axios
-          .delete("http://localhost:8000/cases/" + d.id)
-          .then((res) => {
-            location.reload();
-          })
-          .catch((err) => console.log(err))
-      );
+      records.map(async (d, i) =>{
+        try {
+          await deleteDoc(doc(db, "cases", d.id));
+          location.reload();
+        } catch (error) {
+          console.log(error)
+        }
+      });
     }
   };
   return (

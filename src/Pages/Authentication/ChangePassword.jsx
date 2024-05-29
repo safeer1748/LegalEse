@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { collection, doc, getDocs,setDoc, query, where } from "firebase/firestore";
+import {db} from "../../firestore";
 const ChangePassword = () => {
   let username = localStorage.getItem("username");
   const [errors, setErrors] = useState({});
@@ -38,10 +39,11 @@ const ChangePassword = () => {
     setValid(isValid);
 
     if (Object.keys(validationErrors).length === 0) {
-        await axios
-        .get(`http://localhost:8000/users?username=${username}`)
-        .then((res) => {
-          let data = res.data[0];
+      try {
+        const q = query(collection(db, "users"), where("username","==",username))
+      const querySnapshot = await getDocs(q);
+      const user = querySnapshot.docs.map((doc) => ({id: doc.id, ...doc.data(),}));
+      let data = user[0];
           if(data.password!==formData.currentPassword){
             isValid = false;
             validationErrors.currentPassword = "Incorrect password";
@@ -49,17 +51,18 @@ const ChangePassword = () => {
             setValid(isValid);
           }else{
             data={...data,password:formData.newPassword}
-            axios
-            .put("http://localhost:8000/users/" + data.id, data)
-            .then((response) => {
+            try {
+              await setDoc(doc(db, "users", data.id), { ...data });
               alert('Password change successfully')
               location.reload()
-            })
-            .catch((err) => console.log(err));
+            } catch (error) {
+              console.log(error)
+            }
           }
-        })
-        .catch((err) => console.log(err));
+      } catch (error) {
+        console.log(error)
       }
+    }
   };
   return (
     <div>

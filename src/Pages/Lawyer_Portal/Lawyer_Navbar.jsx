@@ -1,7 +1,13 @@
 import React, { useEffect,useState } from "react";
 import { HiOutlineMenuAlt2 } from "react-icons/hi";
 import { Link } from "react-router-dom";
-import  axios  from "axios";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
+import { db } from "../../firestore";
 const Lawyer_Navbar = ({handleToggleSidebar }) => {
   let username = localStorage.getItem("username");
   const [toggleProfileDropdown, setToggleProfileDropdown] = useState(true);
@@ -14,16 +20,20 @@ const Lawyer_Navbar = ({handleToggleSidebar }) => {
     localStorage.removeItem("role");
     localStorage.removeItem("login");
   };
+
+  const getUserDetails = async () => {
+    const q = query(collection(db, "users"), where("username", "==", username));
+    const querySnapshot = await getDocs(q);
+    const userDetails = querySnapshot.docs.map((doc) => ({id: doc.id,...doc.data(),
+    }));
+
+    const data = userDetails[0];
+    if (data.profile.profile_img) {
+      setUserImg(data.profile.profile_img);
+    }
+  };
   useEffect(() => {
-    axios
-      .get(`http://localhost:8000/users?username=${username}`)
-      .then((res) => {
-        const data = res.data[0];
-        if (data.profile.profile_img) {
-          setUserImg(data.profile.profile_img);
-        }
-      })
-      .catch((err) => console.log(err));
+    getUserDetails()
   }, []);
   return (
     <div>

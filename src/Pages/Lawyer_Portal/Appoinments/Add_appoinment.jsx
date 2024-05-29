@@ -1,17 +1,17 @@
-import axios from "axios";
 import Lawyer_Bars from "../Lawyer_Bars";
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import dayjs from 'dayjs';
-
+import { addDoc, getDocs,query, where,orderBy, collection, serverTimestamp } from "firebase/firestore";
+import { db } from "../../../firestore";
 const Add_appoinment = () => {
   let username = localStorage.getItem("username");
   const navigate = useNavigate();
   const [clientType, setClientType] = useState("existing client");
   const [datePickerValue, setDatePickerValue] = useState(new Date());
-  const [existingClient, setexistingClient] = useState([]);
+  const [existingClient, setExistingClient] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
     mobile: "",
@@ -23,6 +23,24 @@ const Add_appoinment = () => {
   });
   const [errors, setErrors] = useState({});
   const [valid, setValid] = useState(true);
+
+  const getClients=async ()=>{
+    try {
+      const collectionRef=collection(db, "clients")
+      const q = query(collectionRef, where("userId", "==", username, orderBy("timestamp", "desc")));
+      const querySnapshot = await getDocs(q);
+      const clients = querySnapshot.docs.map((doc) => ({id: doc.id,...doc.data(),
+      }));
+      setExistingClient(clients);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  
+  useEffect(() => {
+    getClients()
+  }, []);
+
 
   // Set Date and Time
   const handleDateTime = async () => {
@@ -72,25 +90,14 @@ const Add_appoinment = () => {
     setValid(isValid);
     if (Object.keys(validationErrors).length === 0) {
       await handleDateTime();
-      await axios
-        .post(`http://localhost:8000/appoinments`, formData)
-        .then((res) => {
-          navigate(`/Lawyer/${username}/Manage_appoinments`);
-        })
-        .catch((err) => console.log(err));
+      try {
+        await addDoc(collection(db,"appoinments"),{...formData, timestamp:serverTimestamp()});
+        navigate(`/Lawyer/${username}/Manage_appoinments`);
+      } catch (error) {
+        console.log(error)
+      }
     }
   };
-
-  useEffect(() => {
-    axios
-      .get(`http://localhost:8000/clients?userId=${username}`)
-      .then((res) => {
-        let array = res.data;
-        array.reverse();
-        setexistingClient(res.data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
 
   //get the name, mobile number and email of existing client
   const getSelectedClient = (e) => {

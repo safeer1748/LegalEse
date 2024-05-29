@@ -1,31 +1,37 @@
-import axios from "axios";
 import Lawyer_Bars from "../Lawyer_Bars";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { deleteDoc, doc, getDoc} from "firebase/firestore";
+import { db } from "../../../firestore";
 const View_appoinment = () => {
   let { id } = useParams();
   const navigate = useNavigate();
   let username = localStorage.getItem("username");
   const [data, setData] = useState([]);
+
+  const getAppoinment= async ()=>{
+    try {
+      const docRef = doc(db, "appoinments", id);
+      const docSnap = await getDoc(docRef);
+      setData({id:docSnap.id,...docSnap.data()})
+    } catch (error) {
+      console.log(error)
+    }
+  }
   useEffect(() => {
-    axios
-      .get(`http://localhost:8000/appoinments/` + id)
-      .then((res) => {
-        setData(res.data);
-      })
-      .catch((err) => console.log(err));
+    getAppoinment()
   }, []);
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     console.log(id);
     const confirm = window.confirm("Would you like to Delete?");
     if (confirm) {
-      axios
-        .delete("http://localhost:8000/appoinments/" + id)
-        .then((res) => {
-          navigate(`/Lawyer/${username}/Manage_appoinments`);
-        })
-        .catch((err) => console.log(err));
+      try {
+        await deleteDoc(doc(db, "appoinments", id));
+        navigate(`/Lawyer/${username}/Manage_appoinments`);
+      } catch (error) {
+        console.log(error)
+      }
     }
   };
   return (

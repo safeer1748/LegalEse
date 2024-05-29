@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
+import { collection,getDocs,query, where } from "firebase/firestore";
+import {db} from "../../firestore";
 const ForgotPassword = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -24,18 +25,19 @@ const ForgotPassword = () => {
 
     // check user is avalaible or not (fetch from DataBase)
     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(formData.email)) {
-      await axios
-        .get(`http://localhost:8000/users?email=${formData.email}`)
-        .then((response) => {
-          let user = response.data;
-          if (Object.keys(user).length !== 0) {
-            alert("Check your email");
-          } else {
-            isValid = false;
-            validationErrors.email = "Wrong email";
-          }
-        })
-        .catch((err) => console.log(err));
+      try {
+        const q = query(collection(db, "users"), where("email","==",formData.email))
+      const querySnapshot = await getDocs(q);
+      const user = querySnapshot.docs.map((doc) => ({id: doc.id, ...doc.data(),}));
+      if (Object.keys(user).length !== 0) {
+        alert("Check your email");
+      } else {
+        isValid = false;
+        validationErrors.email = "Wrong email";
+      }
+      } catch (error) {
+        console.log(error)
+      }
     }
     setErrors(validationErrors);
     setValid(isValid);

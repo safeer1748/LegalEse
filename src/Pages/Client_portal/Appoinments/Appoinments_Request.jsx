@@ -1,27 +1,45 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { Link, useParams } from "react-router-dom";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  orderBy,
+  deleteDoc,
+  doc
+} from "firebase/firestore";
+import { db } from "../../../firestore";
 const Appoinments_Request = () => {
   const {username}=useParams()
   let role=localStorage.getItem('role')
   const [data, setData] = useState([]);
+
+  const getAppoinments_request=async()=>{
+    try {
+      const collectionRef=collection(db, "appoinments_request")
+      const q = query(collectionRef, where("clientId", "==", username, orderBy("timestamp", "desc")));
+    const querySnapshot = await getDocs(q);
+    const records = querySnapshot.docs.map((doc) => ({id: doc.id,...doc.data(),
+    }));
+    setData(records);
+    } catch (error) {
+      console.log(error)
+    }
+  }
   useEffect(() => {
-    axios
-      .get(`http://localhost:8000/appoinments_request?clientId=${username}`)
-      .then((res) => {
-        setData(res.data);
-      })
-      .catch((err) => console.log(err));
+    getAppoinments_request()
   }, []);
-  const cancelRequest = (id) => {
+  
+  const cancelRequest = async (id) => {
     let confirmCancel = confirm("Click OK to cancel the request");
     if (confirmCancel === true) {
-      axios
-        .delete("http://localhost:8000/appoinments_request/" + id)
-        .then((res) => {
-          location.reload();
-        })
-        .catch((err) => console.log(err));
+      try {
+        await deleteDoc(doc(db, "appoinments_request", id));
+        location.reload();
+      } catch (error) {
+        console.log(error)
+      }
     }
   };
   return (

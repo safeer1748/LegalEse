@@ -1,6 +1,7 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { db } from '../../firestore'
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -54,32 +55,33 @@ useEffect(()=>{
       /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(formData.email) &&
       formData.password.length >= 6
     ) {
-      await axios
-        .get(`http://localhost:8000/users?email=${formData.email}`)
-        .then((response) => {
-          let user = response.data;
-          if (Object.keys(user).length !== 0) {
-            if (user[0].password === formData.password) {
-              localStorage.setItem("username", user[0].username);
-              localStorage.setItem("role", user[0].role);
-              localStorage.setItem("login", true);
-              if (user[0].role === "lawyer") {
-                navigate(`/Lawyer/${user[0].username}/Dashbord`);
-              } else if (user[0].role === "client") {
-                navigate(`/Client/${user[0].username}/Explore`);
-              } else if (user[0].role === "admin") {
-                navigate(`/Admin/${user[0].username}/Manage_Users`);
-              }
-            } else {
-              isValid = false;
-              validationErrors.password = "wrong password";
+      try {
+        const q = query(collection(db, "users"), where("email", "==", formData.email));
+        const querySnapshot = await getDocs(q);
+        const user = querySnapshot.docs.map(doc => ({id: doc.id, ...doc.data()}))
+        if (Object.keys(user).length !== 0) {
+          if (user[0].password === formData.password) {
+            localStorage.setItem("username", user[0].username);
+            localStorage.setItem("role", user[0].role);
+            localStorage.setItem("login", true);
+            if (user[0].role === "lawyer") {
+              navigate(`/Lawyer/${user[0].username}/Dashbord`);
+            } else if (user[0].role === "client") {
+              navigate(`/Client/${user[0].username}/Explore`);
+            } else if (user[0].role === "admin") {
+              navigate(`/Admin/${user[0].username}/Manage_Users`);
             }
           } else {
             isValid = false;
-            validationErrors.email = "wrong email";
+            validationErrors.password = "wrong password";
           }
-        })
-        .catch((err) => console.log(err));
+        } else {
+          isValid = false;
+          validationErrors.email = "wrong email";
+        }
+      } catch (error) {
+        console.log(error)
+      }
     }
     setErrors(validationErrors);
     setValid(isValid);

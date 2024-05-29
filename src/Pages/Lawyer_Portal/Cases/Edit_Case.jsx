@@ -1,10 +1,15 @@
-import axios from "axios";
 import Lawyer_Bars from "../Lawyer_Bars";
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import dayjs from 'dayjs';
+import {
+  doc,
+  getDoc,
+  setDoc,
+} from "firebase/firestore";
+import { db } from "../../../firestore";
 const Edit_Case = () => {
   let username = localStorage.getItem("username");
   let { id } = useParams();
@@ -28,13 +33,17 @@ const Edit_Case = () => {
   const [errors, setErrors] = useState({});
   const [valid, setValid] = useState(true);
 
+  const getCase= async ()=>{
+    try {
+      const docRef = doc(db, "cases", id);
+      const docSnap = await getDoc(docRef);
+      setFormData(docSnap.data())
+    } catch (error) {
+      console.log(error)
+    }
+  }
   useEffect(() => {
-    axios
-      .get("http://localhost:8000/cases/" + id)
-      .then((res) => {
-        setFormData(res.data);
-      })
-      .catch((err) => console.log(err));
+    getCase()
   }, []);
 
   // Set Date and Time
@@ -84,12 +93,12 @@ const Edit_Case = () => {
       if (!datePickerDisabled) {
         await handleDateTime();
       }
-      await axios
-        .put("http://localhost:8000/cases/" + id, formData)
-        .then((res) => {
+      try {
+        await setDoc(doc(db, "cases", id), { ...formData });
           navigate(`/Lawyer/${username}/Manage_Cases`);
-        })
-        .catch((err) => console.log(err));
+      } catch (error) {
+        console.log(error)
+      }
     }
   };
   return (

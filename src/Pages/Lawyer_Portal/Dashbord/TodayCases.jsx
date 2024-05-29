@@ -1,8 +1,10 @@
 import React from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import { FaRegEye, FaRegEdit, FaRegTrashAlt } from "react-icons/fa";
 import { RiExpandUpDownFill } from "react-icons/ri";
+import { deleteDoc, doc, setDoc} from "firebase/firestore";
+import { db } from "../../../firestore";
+
 import dayjs from "dayjs";
 const TodayCases = ({ data, selectedDate }) => {
   let records = data.filter((f) =>
@@ -17,23 +19,23 @@ const TodayCases = ({ data, selectedDate }) => {
     } else if (selected.status === "closed") {
       selected.status = "open";
     }
-    await axios
-      .put("http://localhost:8000/cases/" + id, selected)
-      .then((res) => {
-        location.reload();
-      })
-      .catch((err) => console.log(err));
+    try {
+      await setDoc(doc(db, "cases", id), { ...selected });
+      location.reload();
+    } catch (error) {
+      console.log(error)
+    }
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async(id) => {
     const confirm = window.confirm("Click OK to Delete");
     if (confirm) {
-      axios
-        .delete("http://localhost:8000/cases/" + id)
-        .then((res) => {
-          location.reload();
-        })
-        .catch((err) => console.log(err));
+      try {
+        await deleteDoc(doc(db, "cases", id));
+        location.reload();
+      } catch (error) {
+        console.log(error)
+      }
     }
   };
   return (

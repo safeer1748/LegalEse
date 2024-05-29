@@ -1,26 +1,31 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { FaRegTrashAlt, FaUser } from "react-icons/fa";
 import { LuCalendarDays } from "react-icons/lu";
 import { Link } from "react-router-dom";
 import Admin_Navbar from "../Admin_Navbar";
+import { collection, doc, getDocs, deleteDoc, orderBy, query } from "firebase/firestore";
+import {db} from "../../../firestore";
 const Manage_Users = () => {
   const [data, setData] = useState([]);
   const [records, setRecords] = useState([]);
   const [roleRecords, setRoleRecords] = useState([]);
   const [hideLawyerTable, setHideLawyerTable] = useState(false);
 
+  const getUsers= async ()=>{
+    try {
+      const q = query(collection(db, "users"), orderBy( "timestamp", "desc" ) )
+      const querySnapshot = await getDocs(q);
+      const users = querySnapshot.docs.map((doc) => ({id: doc.id, ...doc.data(),
+      }));
+      setRecords(users.filter((f) => f.role === "lawyer"));
+      setRoleRecords(users.filter((f) => f.role === "lawyer"));
+      setData(users);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   useEffect(() => {
-    axios
-      .get(`http://localhost:8000/users`)
-      .then((res) => {
-        let array = res.data;
-        array.reverse();
-        setRecords(array.filter((f) => f.role === "lawyer"));
-        setRoleRecords(array.filter((f) => f.role === "lawyer"));
-        setData(array);
-      })
-      .catch((err) => console.log(err));
+    getUsers()
   }, []);
   
   const searchFilter = (event) => {
@@ -31,15 +36,15 @@ const Manage_Users = () => {
     );
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     const confirm = window.confirm("Click OK to Delete");
     if (confirm) {
-      axios
-        .delete("http://localhost:8000/users/" + id)
-        .then((res) => {
-          location.reload();
-        })
-        .catch((err) => console.log(err));
+      try {
+        await deleteDoc(doc(db, "users", id));
+        location.reload();
+      } catch (error) {
+        console.log(error)
+      }
     }
   };
   const handleRoleFilter = (e) => {

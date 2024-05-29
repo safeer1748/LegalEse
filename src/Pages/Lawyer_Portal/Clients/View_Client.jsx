@@ -1,33 +1,36 @@
-import axios from "axios";
 import Lawyer_Bars from '../Lawyer_Bars'
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-
+import { deleteDoc, doc, getDoc} from "firebase/firestore";
+import { db } from "../../../firestore";
 const View_Client = () => {
     let {id}= useParams()
     const navigate=useNavigate()
   let username = localStorage.getItem("username");
   const [data, setData] = useState([]);
+
+  const getClients= async ()=>{
+    try {
+      const docRef = doc(db, "clients", id);
+      const docSnap = await getDoc(docRef);
+      setData({id:docSnap.id,...docSnap.data()})
+    } catch (error) {
+      console.log(error)
+    }
+  }
   useEffect(() => {
-    axios
-      .get(`http://localhost:8000/clients/` + id)
-      .then((res) => {
-        setData(res.data);
-      })
-      .catch((err) => console.log(err));
+    getClients()
   }, []);
 
-  const handleDelete = (id) => {
-    
-    console.log(id)
+  const handleDelete = async (id) => {
     const confirm = window.confirm("Would you like to Delete?");
     if (confirm) {
-      axios
-        .delete('http://localhost:8000/clients/' + id)
-        .then((res) => {
-            navigate(`/Lawyer/${username}/Manage_Clients`)
-        })
-        .catch((err) => console.log(err));
+      try {
+        await deleteDoc(doc(db, "clients", id));
+        navigate(`/Lawyer/${username}/Manage_Clients`)
+      } catch (error) {
+        console.log(error)
+      }
     }
   };
   return (

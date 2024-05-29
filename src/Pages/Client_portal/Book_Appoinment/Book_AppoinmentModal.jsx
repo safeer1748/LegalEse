@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useParams } from "react-router-dom";
+import { collection, addDoc, serverTimestamp} from "firebase/firestore"; 
+import {db} from "../../../firestore";
 const Book_AppoinmentModal = ({ toggleModal, handleToggleModal, email }) => {
   let clientId = localStorage.getItem("username");
   let { username } = useParams();
@@ -44,13 +45,13 @@ const Book_AppoinmentModal = ({ toggleModal, handleToggleModal, email }) => {
     setErrors(validationErrors);
     setValid(isValid);
     if (Object.keys(validationErrors).length === 0) {
-      await axios
-        .post(`http://localhost:8000/appoinments_request`, formData)
-        .then((res) => {
-          alert("Request sent successfully");
+      try {
+        await addDoc(collection(db, "appoinments_request"), {...formData, timestamp: serverTimestamp()});
+        alert("Request sent successfully");
           handleToggleModal();
-        })
-        .catch((err) => console.log(err));
+      } catch (error) {
+        console.log(error)
+      }
     }
   };
   return (

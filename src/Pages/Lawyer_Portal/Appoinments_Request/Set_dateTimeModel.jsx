@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import dayjs from "dayjs";
+import { addDoc,deleteDoc, doc, serverTimestamp } from "firebase/firestore";
+import { db } from "../../../firestore";
 const Set_dateTimeModel = ({ handleToggleModal, data }) => {
   const [datePickerValue, setDatePickerValue] = useState(new Date());
   const [formData, setFormData] = useState({
@@ -32,19 +33,18 @@ const Set_dateTimeModel = ({ handleToggleModal, data }) => {
     formData.userId = data.lawyerId;
     formData.clientId = data.clientId;
     await handleDateTime();
-    await axios
-      .post(`http://localhost:8000/appoinments`, formData)
-      .then((res) => {
-        alert("Appoinment Save Successfully");
-      })
-      .then((res)=>{
-        axios.delete("http://localhost:8000/appoinments_request/" + data.id)
-        .then((res) => {
-          location.reload();
-        })
-        .catch((err) => console.log(err));
-      })
-      .catch((err) => console.log(err));
+    try {
+      await addDoc(collection(db,"appoinments"),{...formData, timestamp:serverTimestamp()});
+      alert("Appoinment Save Successfully");
+      try {
+        await deleteDoc(doc(db, "appoinments_request", data.id));
+        location.reload();
+      } catch (error) {
+        console.log(error)
+      }
+    } catch (error) {
+      console.log(error)
+    }
   };
   return (
     <div>

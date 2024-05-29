@@ -1,7 +1,8 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Lawyer_Bars from "../Lawyer_Bars";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { db } from "../../../firestore";
 const Add_Client = () => {
   const navigate = useNavigate();
   let username = localStorage.getItem("username");
@@ -51,12 +52,12 @@ const Add_Client = () => {
     setErrors(validationErrors);
     setValid(isValid);
     if (Object.keys(validationErrors).length === 0) {
-      await axios
-        .post(`http://localhost:8000/clients`, formData)
-        .then((res) => {
-          navigate(`/Lawyer/${username}/Manage_Clients`);
-        })
-        .catch((err) => console.log(err));
+      try {
+        await addDoc(collection(db,"clients"),{...formData, timestamp:serverTimestamp()});
+        navigate(`/Lawyer/${username}/Manage_Clients`);
+      } catch (error) {
+        console.log(error)
+      }
     }
   };
   return (

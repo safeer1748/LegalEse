@@ -5,6 +5,13 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import dayjs from 'dayjs';
+import {
+  doc,
+  getDoc,
+  setDoc,
+} from "firebase/firestore";
+import { db } from "../../../firestore";
+
 const Edit_appoinment = () => {
   let { id } = useParams();
   const navigate = useNavigate();
@@ -20,6 +27,19 @@ const Edit_appoinment = () => {
     userId: username,
   });
 
+  const getAppoinment= async ()=>{
+    try {
+      const docRef = doc(db, "appoinments", id);
+      const docSnap = await getDoc(docRef);
+      setFormData(docSnap.data())
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    getAppoinment()
+  }, []);
 
   // Set Date and Time
   const handleDateTime = async () => {
@@ -31,28 +51,18 @@ const Edit_appoinment = () => {
     formData.time = time;
   };
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:8000/appoinments/" + id)
-      .then((res) => {
-        setFormData(res.data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!datePickerDisabled) {
       await handleDateTime();
     }
-
-    await axios
-      .put("http://localhost:8000/appoinments/" + id, formData)
-      .then((res) => {
-        navigate(`/Lawyer/${username}/Manage_appoinments`);
-      })
-      .catch((err) => console.log(err));
+    try {
+      await setDoc(doc(db, "appoinments", id), { ...formData });
+      navigate(`/Lawyer/${username}/Manage_appoinments`);
+    } catch (error) {
+      console.log(error)
+    }
   };
   return (
     <div>

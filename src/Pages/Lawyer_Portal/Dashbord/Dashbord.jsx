@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import Lawyer_Bars from "../Lawyer_Bars";
 import DashbordCards from "./DashbordCards";
 import TodayCases from "./TodayCases";
@@ -7,6 +6,8 @@ import TodayAppoinments from "./TodayAppoinments";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import dayjs from "dayjs";
+import { collection, doc, getDocs, orderBy, query, setDoc, where } from "firebase/firestore";
+import { db } from "../../../firestore";
 const Dashbord = () => {
   let username = localStorage.getItem("username");
   const [caseDatePickerValue, setCaseDatePickerValue] = useState(
@@ -18,51 +19,71 @@ const Dashbord = () => {
   const [clientRecords, setClientRecords] = useState([]);
   const [caseRecords, setCaseRecords] = useState([]);
   const [appoinmentRecords, setAppoinmentRecords] = useState([]);
+
+  const getCases=async ()=>{
+    try {
+      const collectionRef=collection(db, "cases")
+      const q = query(collectionRef, where("userId", "==", username, orderBy("timestamp", "desc")));
+      const querySnapshot = await getDocs(q);
+      const cases = querySnapshot.docs.map((doc) => ({id: doc.id,...doc.data(),
+      }));
+      setCaseRecords(cases);
+    } catch (error) {
+      console.log(error)
+    }
+  }
   useEffect(() => {
     sessionStorage.removeItem("userRole");
-    axios
-      .get(`http://localhost:8000/cases?userId=${username}`)
-      .then((res) => {
-        let array = res.data;
-        array.reverse();
-        setCaseRecords(array);
-      })
-      .catch((err) => console.log(err));
+    getCases()
   }, []);
 
+  
   const changeAppoinmentStatus=async (data)=>{
     await data.map(async (d,i)=>{
       if(dayjs().isAfter(d.date,'day')){
         d.status='closed'
-        await axios
-        .put("http://localhost:8000/appoinments/" + d.id, data[i])
-        .then((res) => {})
-        .catch((err) => console.log(err));
+        try {
+          await setDoc(doc(db, "appoinments", d.id), { ...data[i] });
+        } catch (error) {
+          console.log(error)
+        }
       }
     })
     setAppoinmentRecords(data)
   }
 
-  useEffect(() => {
-    axios
-      .get(`http://localhost:8000/appoinments?userId=${username}`)
-      .then((res) => {
-        let array = res.data;
-        array.reverse();
-        changeAppoinmentStatus(array)
-      })
-      .catch((err) => console.log(err));
-  }, []);
+  const getAppoinments=async ()=>{
+    try {
+      const collectionRef=collection(db, "appoinments")
+      const q = query(collectionRef, where("userId", "==", username, orderBy("timestamp", "desc")));
+      const querySnapshot = await getDocs(q);
+      const appoinments = querySnapshot.docs.map((doc) => ({id: doc.id,...doc.data(),
+      }));
+      changeAppoinmentStatus(appoinments)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:8000/clients?userId=${username}`)
-      .then((res) => {
-        let array = res.data;
-        array.reverse();
-        setClientRecords(array);
-      })
-      .catch((err) => console.log(err));
+    getAppoinments()
+  }, []);
+
+  const getClients=async ()=>{
+    try {
+      const collectionRef=collection(db, "clients")
+      const q = query(collectionRef, where("userId", "==", username, orderBy("timestamp", "desc")));
+      const querySnapshot = await getDocs(q);
+      const clients = querySnapshot.docs.map((doc) => ({id: doc.id,...doc.data(),
+      }));
+      setClientRecords(clients);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    getClients()
   }, []);
   return (
     <div>

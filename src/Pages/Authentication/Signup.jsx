@@ -1,6 +1,8 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { collection, addDoc, getDocs, query, where,serverTimestamp} from "firebase/firestore"; 
+import {db} from "../../firestore";
+
 const Signup = () => {
   const [userRole, setUserRole] = useState();
   const navigate = useNavigate();
@@ -20,6 +22,7 @@ const Signup = () => {
       setFormData({ ...formData, license_num: "" });
     }
   }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     let isValid = true;
@@ -31,32 +34,31 @@ const Signup = () => {
         isValid = false;
         validationErrors.license_num = "License number required";
       } else {
-        await axios
-          .get(
-            `http://localhost:8000/lawyer_license?license=${formData.license_num}`
-          )
-          .then((response) => {
-            let user = response.data;
-            if (Object.keys(user).length === 0) {
-              isValid = false;
-              validationErrors.license_num = "Wrong license number";
-            }
-          })
-          .catch((err) => console.log(err));
-
-        await axios
-          .get(
-            `http://localhost:8000/users?license_num=${formData.license_num}`
-          )
-          .then((response) => {
-            let user = response.data;
+        try {
+          const q = query(collection(db, "lawyer_license"), where("license","==", formData.license_num))
+          const querySnapshot = await getDocs(q);
+          const user = querySnapshot.docs.map(doc => ({id: doc.id, ...doc.data()}))
+          if (Object.keys(user).length === 0) {
+          isValid = false;
+          validationErrors.license_num = "Wrong license number";
+        } else  {
+          try {
+            const q = query(collection(db, "users"), where("license_num","==", formData.license_num))
+            const querySnapshot = await getDocs(q);
+            const user = querySnapshot.docs.map(doc => ({id: doc.id, ...doc.data()}))
             if (Object.keys(user).length !== 0) {
               isValid = false;
               validationErrors.license_num =
                 "Account is already created by this license number";
             }
-          })
-          .catch((err) => console.log(err));
+
+          } catch (error) {
+            
+          }
+        }
+        } catch (error) {
+          console.log(error)
+        }
       }
     }
     // username Validation
@@ -67,16 +69,18 @@ const Signup = () => {
       isValid = false;
       validationErrors.username = "Username must be at least 6 characters";
     } else {
-      await axios
-        .get(`http://localhost:8000/users?username=${formData.username}`)
-        .then((response) => {
-          let user = response.data;
-          if (Object.keys(user).length !== 0) {
-            isValid = false;
-            validationErrors.username = "Username already taken";
-          }
-        })
-        .catch((err) => console.log(err));
+      try {
+        const q = query(collection(db, "users"), where("username","==", formData.username))
+        const querySnapshot = await getDocs(q);
+        const user = querySnapshot.docs.map(doc => ({id: doc.id, ...doc.data()}))
+        if (Object.keys(user).length !== 0) {
+          isValid = false;
+          validationErrors.username = "Username already taken";
+        }
+      } catch (error) {
+        console.log(error)
+      }
+     
     }
 
     // email Validation
@@ -89,16 +93,17 @@ const Signup = () => {
       isValid = false;
       validationErrors.email = "Email is not valid";
     } else {
-      await axios
-        .get(`http://localhost:8000/users?email=${formData.email}`)
-        .then((response) => {
-          let user = response.data;
-          if (Object.keys(user).length !== 0) {
-            isValid = false;
-            validationErrors.email = "Account is already created by this email";
-          }
-        })
-        .catch((err) => console.log(err));
+      try {
+        const q = query(collection(db, "users"), where("email","==", formData.email))
+        const querySnapshot = await getDocs(q);
+        const user = querySnapshot.docs.map(doc => ({id: doc.id, ...doc.data()}))
+        if (Object.keys(user).length !== 0) {
+          isValid = false;
+          validationErrors.email = "Account is already created by this email";
+        }
+      } catch (error) {
+        console.log(error)
+      }
     }
 
     // password Validation
@@ -123,12 +128,12 @@ const Signup = () => {
     if (Object.keys(validationErrors).length === 0) {
       formData.role = userRole;
       sessionStorage.removeItem("userRole");
-      await axios
-        .post("http://localhost:8000/users", formData)
-        .then((response) => {
-          navigate("/Login");
-        })
-        .catch((err) => console.log(err));
+      try {
+        await addDoc(collection(db, "users"), {...formData, timestamp: serverTimestamp()});
+        navigate("/Login");
+      } catch (error) {
+        console.log(error)
+      }
     }
   };
   return (

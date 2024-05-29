@@ -1,7 +1,16 @@
-import axios from "axios";
 import Lawyer_Bars from "../Lawyer_Bars";
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+  query,
+  where,
+} from "firebase/firestore";
+import { db } from "../../../firestore";
 const Edit_Client = () => {
   let { id } = useParams();
   const navigate = useNavigate();
@@ -15,13 +24,18 @@ const Edit_Client = () => {
   });
   const [errors, setErrors] = useState({});
   const [valid, setValid] = useState(true);
+  
+  const getClients= async ()=>{
+    try {
+      const docRef = doc(db, "clients", id);
+      const docSnap = await getDoc(docRef);
+      setFormData(docSnap.data())
+    } catch (error) {
+      console.log(error)
+    }
+  }
   useEffect(() => {
-    axios
-      .get("http://localhost:8000/clients/" + id)
-      .then((res) => {
-        setFormData(res.data);
-      })
-      .catch((err) => console.log(err));
+    getClients()
   }, []);
 
   const handleSubmit = async (e) => {
@@ -48,54 +62,65 @@ const Edit_Client = () => {
     setValid(isValid);
 
     if (Object.keys(validationErrors).length === 0) {
-      await axios
-        .put("http://localhost:8000/clients/" + id, formData)
-        .then((res) => {
-          updateAppoinmentModule();
+      try {
+        await setDoc(doc(db, "clients", id), { ...formData });
+        updateAppoinmentModule();
           updateCaseModule();
           navigate(`/Lawyer/${username}/Manage_Clients`);
-        })
-        .catch((err) => console.log(err));
+      } catch (error) {
+        console.log(error)
+      }
     }
   };
 
   const updateAppoinmentModule = async () => {
-    await axios
-      .get(
-        `http://localhost:8000/appoinments?userId=${username}&email=${formData.email}`
-      )
-      .then((res) => {
-        let update = res.data[0];
+    try {
+      const collectionRef=collection(db,"appoinments")
+    const q=query(collectionRef,where("userId","==",username),where("email","==",formData.email))
+    const querySnapshot = await getDocs(q);
+      const appoinments = querySnapshot.docs.map((doc) => ({id: doc.id,...doc.data(),
+      }));
+      appoinments.map((d,i)=>{
+        let update = appoinments[i];
         update = { ...update, name: formData.name };
         update = { ...update, mobile: formData.mobile };
-        console.log(Object.keys(update).length);
         if (Object.keys(update).length > 2) {
-          axios
-            .put("http://localhost:8000/appoinments/" + update.id, update)
-            .then((res) => {})
-            .catch((err) => console.log(err));
+          try {
+            setDoc(doc(db, "appoinments", update.id), { ...update });
+          } catch (error) {
+            console.log(error)
+          }
         }
       })
-      .catch((err) => console.log(err));
+    } catch (error) {
+      console.log(error)
+    }
+    
   };
 
   const updateCaseModule = async () => {
-    await axios
-      .get(
-        `http://localhost:8000/cases?userId=${username}&client_email=${formData.email}`
-      )
-      .then((res) => {
-        let update = res.data[0];
-        update = { ...update, client_name: formData.name };
-        console.log(Object.keys(update).length);
+    try {
+      const collectionRef=collection(db,"cases")
+    const q=query(collectionRef,where("userId","==",username),where("client_email","==",formData.email))
+    const querySnapshot = await getDocs(q);
+      const cases = querySnapshot.docs.map((doc) => ({id: doc.id,...doc.data(),
+      }));
+      cases.map((d,i)=>{
+        let update = cases[i];
+      update = { ...update, client_name: formData.name };
         if (Object.keys(update).length > 1) {
-          axios
-            .put("http://localhost:8000/cases/" + update.id, update)
-            .then((res) => {})
-            .catch((err) => console.log(err));
+          try {
+            setDoc(doc(db, "cases", update.id), { ...update });
+          } catch (error) {
+            console.log(error)
+          }
         }
       })
-      .catch((err) => console.log(err));
+      
+    } catch (error) {
+      console.log(error)
+    }
+    
   };
   return (
     <div>

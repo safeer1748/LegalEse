@@ -1,10 +1,10 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Admin_Navbar from "../Admin_Navbar";
+import { collection, addDoc, getDocs, query, serverTimestamp} from "firebase/firestore"; 
+import {db} from "../../../firestore";
 
 const Add_License = () => {
-    
   const navigate = useNavigate();
   let username = localStorage.getItem("username");
   const [formData, setFormData] = useState({
@@ -33,34 +33,33 @@ const Add_License = () => {
     }
 
     if (Object.keys(validationErrors).length === 0) {
-      axios
-        .get(`http://localhost:8000/lawyer_license?`)
-        .then((res) => {
-          let records = res.data;
-          let isCnicExist = records.filter((f) => f.cnic === formData.cnic);
-          let isLicenseExist = records.filter(
-            (f) => f.license === formData.license
-          );
-          if (isCnicExist.length !== 0) {
-            isValid = false;
-            validationErrors.cnic = "CNIC is already taken";
+      try {
+        const q = query(collection(db, "lawyer_license"))
+        const querySnapshot = await getDocs(q);
+        const records = querySnapshot.docs.map(doc => ({id: doc.id, ...doc.data()}))
+        let isCnicExist = records.filter((f) => f.cnic === formData.cnic);
+        let isLicenseExist = records.filter((f) => f.license === formData.license);
+        if (isCnicExist.length !== 0) {
+          isValid = false;
+          validationErrors.cnic = "CNIC is already taken";
+        }
+        if (isLicenseExist.length !== 0) {
+          isValid = false;
+          validationErrors.license = "License Number is already taken";
+        }
+        if (Object.keys(validationErrors).length === 0) {
+          try {
+           await addDoc(collection(db, "lawyer_license"), {...formData, timestamp: serverTimestamp()});
+           navigate(`/Admin/${username}/Lawyer_License`);
+          } catch (error) {
+            console.log(error)
           }
-          if (isLicenseExist.length !== 0) {
-            isValid = false;
-            validationErrors.license = "License Number is already taken";
-          }
-          if (Object.keys(validationErrors).length === 0) {
-            axios
-              .post(`http://localhost:8000/lawyer_license`, formData)
-              .then((res) => {
-                navigate(`/Admin/${username}/Lawyer_License`);
-              })
-              .catch((err) => console.log(err));
-          }
-          setErrors(validationErrors);
-          setValid(isValid);
-        })
-        .catch((err) => console.log(err));
+        }
+        setErrors(validationErrors);
+        setValid(isValid);
+      } catch (error) {
+        console.log(error)
+      }
     }
     setErrors(validationErrors);
     setValid(isValid);

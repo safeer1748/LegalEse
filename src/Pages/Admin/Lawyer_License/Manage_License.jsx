@@ -1,22 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
-import axios from "axios";
 import Admin_Navbar from "../Admin_Navbar";
+import { collection, doc, getDocs, deleteDoc, orderBy, query } from "firebase/firestore";
+import {db} from "../../../firestore";
 const Manage_License = () => {
   const { username } = useParams();
   const [data, setData] = useState([]);
   const [records, setRecords] = useState([]);
+
+  // get license from firestore
+  const getLicense_num = async () => {
+    try {
+      const q = query(collection(db, "lawyer_license"), orderBy( "timestamp", "desc" ) )
+      const querySnapshot = await getDocs(q);
+      const license = querySnapshot.docs.map((doc) => ({id: doc.id, ...doc.data(),
+      }));
+      setData(license);
+      setRecords(license);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
-    axios
-      .get(`http://localhost:8000/lawyer_license?`)
-      .then((res) => {
-        let array = res.data;
-        array.reverse();
-        setData(array);
-        setRecords(array);
-      })
-      .catch((err) => console.log(err));
+    getLicense_num();
   }, []);
 
   const searchByLicenseFilter = (event) => {
@@ -30,15 +37,15 @@ const Manage_License = () => {
     );
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     const confirm = window.confirm("Click OK to Delete");
     if (confirm) {
-      axios
-        .delete("http://localhost:8000/lawyer_license/" + id)
-        .then((res) => {
-          location.reload();
-        })
-        .catch((err) => console.log(err));
+      try {
+        await deleteDoc(doc(db, "lawyer_license", id));
+        location.reload();
+      } catch (error) {
+        console.log(error)
+      }
     }
   };
   return (
@@ -76,7 +83,7 @@ const Manage_License = () => {
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         placeholder="Search by License Number"
                         required=""
-                          onChange={searchByLicenseFilter}
+                        onChange={searchByLicenseFilter}
                       />
                     </div>
                   </form>

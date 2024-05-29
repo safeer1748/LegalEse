@@ -1,14 +1,32 @@
-import axios from "axios";
 import Lawyer_Bars from "../Lawyer_Bars";
 import React, { useEffect, useState } from "react";
 import { FaRegEye, FaRegEdit, FaRegTrashAlt } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
+import { collection, deleteDoc, doc, getDocs, orderBy, query, where } from "firebase/firestore";
+import { db } from "../../../firestore";
 const Manage_appoinments = () => {
   const {username}=useParams()
   const role=localStorage.getItem('role')
   const [data, setData] = useState([]);
   const [records, setRecords] = useState([]);
   const [statusDropdown, setStatusDropdown] = useState(false);
+
+  const getAppoinments=async ()=>{
+    try {
+      const collectionRef=collection(db, "appoinments")
+      const q = query(collectionRef, where("userId", "==", username, orderBy("timestamp", "desc")));
+      const querySnapshot = await getDocs(q);
+      const appoinments = querySnapshot.docs.map((doc) => ({id: doc.id,...doc.data(),
+      }));
+      setData(appoinments);
+        setRecords(appoinments);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    getAppoinments()
+  }, []);
 
   const handleStatusDropdown = () => {
     setStatusDropdown(!statusDropdown);
@@ -25,47 +43,35 @@ const Manage_appoinments = () => {
     setRecords(data);
   };
 
-  useEffect(() => {
-    axios
-      .get(`http://localhost:8000/appoinments?userId=${username}`)
-      .then((res) => {
-        let array = res.data;
-        array.reverse();
-        setData(array);
-        setRecords(array);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
   const searchFilter = (event) => {
     setRecords(
       data.filter((f) => f.name.toLowerCase().includes(event.target.value))
     );
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async(id) => {
     const confirm = window.confirm("Click OK to Delete");
     if (confirm) {
-      axios
-        .delete("http://localhost:8000/appoinments/" + id)
-        .then((res) => {
-          location.reload();
-        })
-        .catch((err) => console.log(err));
+      try {
+        await deleteDoc(doc(db, "appoinments", id));
+        location.reload();
+      } catch (error) {
+        console.log(error)
+      }
     }
   };
 
   const handleDeleteAll = () => {
     const confirm = window.confirm("Click OK to Delete All");
     if (confirm) {
-      records.map((d, i) =>
-        axios
-          .delete("http://localhost:8000/appoinments/" + d.id)
-          .then((res) => {
-            location.reload();
-          })
-          .catch((err) => console.log(err))
-      );
+      records.map(async (d, i) =>{
+        try {
+          await deleteDoc(doc(db, "appoinments", d.id));
+          location.reload();
+        } catch (error) {
+          console.log(error)
+        }
+      });
     }
   };
   return (

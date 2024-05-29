@@ -317,7 +317,7 @@
       "email": "client1@gmail.com",
       "date": "22-May-2024",
       "time": "12:12pm",
-      "status": "open",
+      "status": "closed",
       "userId": "lawyer2",
       "clientId": "client1"
     }

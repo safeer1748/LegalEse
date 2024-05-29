@@ -3,59 +3,70 @@ import React, { useEffect, useState } from "react";
 import Lawyer_Bars from "../Lawyer_Bars";
 import See_detailsModal from "./See_detailsModal";
 import Set_dateTimeModel from "./Set_dateTimeModel";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  orderBy,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
+import { db } from "../../../firestore";
 const Appoinments_request = () => {
   let lawyerId = localStorage.getItem("username");
   const [toggleDetailModal, setToggleDetailModal] = useState(false);
   const [toggleDateTimeModal, setToggleDateTimeModal] = useState(false);
   const [data, setData] = useState([]);
   const [detail, setDetail] = useState({});
+
+  const getAppoinments_request = async () => {
+    try {
+      const collectionRef = collection(db, "appoinments_request");
+      const q = query(
+        collectionRef,
+        where("lawyerId", "==", lawyerId, orderBy("timestamp", "desc"))
+      );
+      const querySnapshot = await getDocs(q);
+      const records = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setData(records);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
-    axios
-      .get(`http://localhost:8000/appoinments_request?lawyerId=${lawyerId}`)
-      .then((res) => {
-        setData(res.data);
-      })
-      .catch((err) => console.log(err));
+    getAppoinments_request();
   }, []);
   const handleToggleDetailModal = () => {
     setToggleDetailModal(!toggleDetailModal);
   };
   const seeDetail = (id) => {
-    axios
-      .get(`http://localhost:8000/appoinments_request?id=${id}`)
-      .then((res) => {
-        setDetail(res.data[0]);
-      })
-      .then(() => {
-        handleToggleDetailModal();
-      })
-      .catch((err) => console.log(err));
+    const record = data.filter((f) => f.id === id);
+    setDetail(record[0]);
+    handleToggleDetailModal();
   };
   const handleToggleDateTimeModal = () => {
     setToggleDateTimeModal(!toggleDateTimeModal);
   };
   const acceptRequest = (id) => {
-
-    axios
-      .get(`http://localhost:8000/appoinments_request?id=${id}`)
-      .then((res) => {
-        setDetail(res.data[0]);
-      })
-      .then(() => {
-        handleToggleDateTimeModal();
-      })
-      .catch((err) => console.log(err));
+    const record = data.filter((f) => f.id === id);
+    setDetail(record[0]);
+    handleToggleDateTimeModal();
   };
-  const rejectRequest=(id)=>{
-    let confirmReject=confirm("Click OK to reject the request")
-    if(confirmReject===true){
-      axios.delete("http://localhost:8000/appoinments_request/" + id)
-        .then((res) => {
-          location.reload();
-        })
-        .catch((err) => console.log(err));
+  const rejectRequest = async (id) => {
+    let confirmReject = confirm("Click OK to reject the request");
+    if (confirmReject === true) {
+      try {
+        await deleteDoc(doc(db, "appoinments_request", id));
+        location.reload();
+      } catch (error) {
+        console.log(error)
+      }
     }
-  }
+  };
   return (
     <div>
       <Lawyer_Bars />
@@ -110,7 +121,7 @@ const Appoinments_request = () => {
                       Accept
                     </button>
                     <button
-                    onClick={()=>rejectRequest(d.id)}
+                      onClick={() => rejectRequest(d.id)}
                       type="button"
                       className=" text-white text-xs inline-flex items-center bg-red-600 hover:bg-red-700 px-3 py-1 rounded-md"
                     >
