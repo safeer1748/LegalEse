@@ -12,7 +12,7 @@ const Manage_Cases = () => {
   const [statusDropdown, setStatusDropdown] = useState(false);
   const [data, setData] = useState([]);
   const [records, setRecords] = useState([]);
-
+  const [loading, setLoading] = useState(true);
   const getCases=async ()=>{
     try {
       const collectionRef=collection(db, "cases")
@@ -22,6 +22,7 @@ const Manage_Cases = () => {
       }));
       setData(cases);
         setRecords(cases);
+        setLoading(false)
     } catch (error) {
       console.log(error)
     }
@@ -94,6 +95,12 @@ const Manage_Cases = () => {
     }
   };
   return (
+    <>
+    {loading ? (
+      <h1 className="w-full h-screen flex justify-center items-center">
+        loading...
+      </h1>
+    ) : (
     <div>
       {role === "admin" ? "" : <Lawyer_Bars />}
       <div
@@ -386,6 +393,8 @@ const Manage_Cases = () => {
         </div>
       </div>
     </div>
+    )}
+    </>
   );
 };
 

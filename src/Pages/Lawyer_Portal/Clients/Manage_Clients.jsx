@@ -10,7 +10,7 @@ const Manage_Clients = () => {
   const [genderDropdown, setGenderDropdown] = useState(false);
   const [data, setData] = useState([]);
   const [records, setRecords] = useState([]);
-
+  const [loading, setLoading] = useState(true);
   const handleGenderDropdown = () => {
     setGenderDropdown(!genderDropdown);
   };
@@ -24,6 +24,7 @@ const Manage_Clients = () => {
       }));
       setData(clients);
         setRecords(clients);
+        setLoading(false)
     } catch (error) {
       console.log(error)
     }
@@ -75,6 +76,12 @@ const Manage_Clients = () => {
     }
   };
   return (
+    <>
+    {loading ? (
+      <h1 className="w-full h-screen flex justify-center items-center">
+        loading...
+      </h1>
+    ) : (
     <div>
       {role === "admin" ? "" : <Lawyer_Bars />}
       <div className={`${role==='admin'?"":" xl:ml-64 pt-24 p-4 "}bg-white`}>
@@ -300,6 +307,8 @@ const Manage_Clients = () => {
         </div>
       </div>
     </div>
+    )}
+    </>
   );
 };
 

@@ -10,27 +10,10 @@ import {
   doc
 } from "firebase/firestore";
 import { db } from "../../../firestore";
-const Appoinments_Request = () => {
+const Appoinments_Request = ({appoinmentRequestData}) => {
+  const data=appoinmentRequestData
   const {username}=useParams()
   let role=localStorage.getItem('role')
-  const [data, setData] = useState([]);
-
-  const getAppoinments_request=async()=>{
-    try {
-      const collectionRef=collection(db, "appoinments_request")
-      const q = query(collectionRef, where("clientId", "==", username, orderBy("timestamp", "desc")));
-    const querySnapshot = await getDocs(q);
-    const records = querySnapshot.docs.map((doc) => ({id: doc.id,...doc.data(),
-    }));
-    setData(records);
-    } catch (error) {
-      console.log(error)
-    }
-  }
-  useEffect(() => {
-    getAppoinments_request()
-  }, []);
-  
   const cancelRequest = async (id) => {
     let confirmCancel = confirm("Click OK to cancel the request");
     if (confirmCancel === true) {

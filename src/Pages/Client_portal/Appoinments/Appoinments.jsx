@@ -17,7 +17,8 @@ const Appoinments = () => {
   const { username } = useParams();
   const role = localStorage.getItem("role");
   const [data, setData] = useState([]);
-
+  const [appoinmentRequestData,setAppoinmentRequestData]=useState([])
+  const [loading,setLoading]=useState(true)
   const getAppoinments=async()=>{
     try {
       const collectionRef=collection(db, "appoinments")
@@ -30,8 +31,24 @@ const Appoinments = () => {
       console.log(error)
     }
   }
+
+  const getAppoinments_request=async()=>{
+    try {
+      const collectionRef=collection(db, "appoinments_request")
+      const q = query(collectionRef, where("clientId", "==", username, orderBy("timestamp", "desc")));
+    const querySnapshot = await getDocs(q);
+    const records = querySnapshot.docs.map((doc) => ({id: doc.id,...doc.data(),
+    }));
+    setAppoinmentRequestData(records);
+    setLoading(false)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   useEffect(() => {
     getAppoinments()
+    getAppoinments_request()
   }, []);
 
   const cancelAppoinment = async (id) => {
@@ -46,9 +63,12 @@ const Appoinments = () => {
     }
   };
   return (
-    <div>
+    <>
+     {loading ? (
+        <h1 className="w-full h-screen flex justify-center items-center">loading...</h1>
+      ) : (
+      <div>
       {role === "admin" ? <Admin_Navbar/> : <Client_Navbar />}
-
       <div className="p-6 w-full mt-6">
         <h1 className="font-medium text-xl text-gray-900 ">Appoinments</h1>
         <div className=" border-2 border-gray-300 border-dashed rounded-lg dark:border-gray-700 mt-4">
@@ -104,8 +124,10 @@ const Appoinments = () => {
           )}
         </div>
       </div>
-      <Appoinments_Request />
+      <Appoinments_Request appoinmentRequestData={appoinmentRequestData} />
     </div>
+    )}
+    </>
   );
 };
 
