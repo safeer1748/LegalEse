@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { collection,getDocs,query, where } from "firebase/firestore";
 import {db} from "../../firestore";
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 const ForgotPassword = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -30,7 +31,16 @@ const ForgotPassword = () => {
       const querySnapshot = await getDocs(q);
       const user = querySnapshot.docs.map((doc) => ({id: doc.id, ...doc.data(),}));
       if (Object.keys(user).length !== 0) {
-        alert("Check your email");
+        const auth = getAuth();
+        sendPasswordResetEmail(auth, formData.email)
+        .then(() => {
+          // Password reset email sent!
+          alert("Check your email");
+        })
+        .catch((error) => {
+          console.log(error.code)
+          console.log(error.message)
+        });
       } else {
         isValid = false;
         validationErrors.email = "Wrong email";

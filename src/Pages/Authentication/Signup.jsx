@@ -1,7 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { collection, addDoc, getDocs, query, where,serverTimestamp} from "firebase/firestore"; 
-import {db} from "../../firestore";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  where,
+  serverTimestamp,
+} from "firebase/firestore";
+import { db } from "../../firestore";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
 
 const Signup = () => {
   const [userRole, setUserRole] = useState();
@@ -9,10 +21,9 @@ const Signup = () => {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
-    password: "",
     role: "",
   });
-
+  const [password, setPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState();
   const [errors, setErrors] = useState({});
   const [valid, setValid] = useState(true);
@@ -35,29 +46,38 @@ const Signup = () => {
         validationErrors.license_num = "License number required";
       } else {
         try {
-          const q = query(collection(db, "lawyer_license"), where("license","==", formData.license_num))
+          const q = query(
+            collection(db, "lawyer_license"),
+            where("license", "==", formData.license_num)
+          );
           const querySnapshot = await getDocs(q);
-          const user = querySnapshot.docs.map(doc => ({id: doc.id, ...doc.data()}))
+          const user = querySnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
           if (Object.keys(user).length === 0) {
-          isValid = false;
-          validationErrors.license_num = "Wrong license number";
-        } else  {
-          try {
-            const q = query(collection(db, "users"), where("license_num","==", formData.license_num))
-            const querySnapshot = await getDocs(q);
-            const user = querySnapshot.docs.map(doc => ({id: doc.id, ...doc.data()}))
-            if (Object.keys(user).length !== 0) {
-              isValid = false;
-              validationErrors.license_num =
-                "Account is already created by this license number";
-            }
-
-          } catch (error) {
-            
+            isValid = false;
+            validationErrors.license_num = "Wrong license number";
+          } else {
+            try {
+              const q = query(
+                collection(db, "users"),
+                where("license_num", "==", formData.license_num)
+              );
+              const querySnapshot = await getDocs(q);
+              const user = querySnapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+              }));
+              if (Object.keys(user).length !== 0) {
+                isValid = false;
+                validationErrors.license_num =
+                  "Account is already created by this license number";
+              }
+            } catch (error) {}
           }
-        }
         } catch (error) {
-          console.log(error)
+          console.log(error);
         }
       }
     }
@@ -70,17 +90,22 @@ const Signup = () => {
       validationErrors.username = "Username must be at least 6 characters";
     } else {
       try {
-        const q = query(collection(db, "users"), where("username","==", formData.username))
+        const q = query(
+          collection(db, "users"),
+          where("username", "==", formData.username)
+        );
         const querySnapshot = await getDocs(q);
-        const user = querySnapshot.docs.map(doc => ({id: doc.id, ...doc.data()}))
+        const user = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
         if (Object.keys(user).length !== 0) {
           isValid = false;
           validationErrors.username = "Username already taken";
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-     
     }
 
     // email Validation
@@ -94,29 +119,35 @@ const Signup = () => {
       validationErrors.email = "Email is not valid";
     } else {
       try {
-        const q = query(collection(db, "users"), where("email","==", formData.email))
+        const q = query(
+          collection(db, "users"),
+          where("email", "==", formData.email)
+        );
         const querySnapshot = await getDocs(q);
-        const user = querySnapshot.docs.map(doc => ({id: doc.id, ...doc.data()}))
+        const user = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
         if (Object.keys(user).length !== 0) {
           isValid = false;
           validationErrors.email = "Account is already created by this email";
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     }
 
     // password Validation
-    if (formData.password === "" || formData.password === null) {
+    if (password === "" || password === null) {
       isValid = false;
       validationErrors.password = "Password required";
-    } else if (formData.password.length < 6) {
+    } else if (password.length < 6) {
       isValid = false;
       validationErrors.password = "Password must be at least 6 characters";
     }
 
     // confirm password Validation
-    if (confirmPassword !== formData.password) {
+    if (confirmPassword !== password) {
       isValid = false;
       validationErrors.confirmPassword = "Confirm password not match";
     }
@@ -129,10 +160,36 @@ const Signup = () => {
       formData.role = userRole;
       sessionStorage.removeItem("userRole");
       try {
-        await addDoc(collection(db, "users"), {...formData, timestamp: serverTimestamp()});
-        navigate("/Login");
+        const auth = getAuth();
+        await createUserWithEmailAndPassword(auth, formData.email, password)
+          .then(async (userCredential) => {
+            // Signed up
+            const user = userCredential.user;
+            // ...
+            await sendEmailVerification(user)
+              .then(async () => {
+                await addDoc(collection(db, "users"), {
+                  ...formData,
+                  timestamp: serverTimestamp(),
+                });
+                navigate("/Login");
+              })
+              .catch((error) => {
+                console.log(error.code);
+                console.log(error.message);
+                // const errorCode = error.code;
+                // const errorMessage = error.message;
+                // ...
+              });
+          })
+          .catch((error) => {
+            isValid = false;
+            validationErrors.email = error.message;
+            setErrors(validationErrors);
+            setValid(isValid);
+          });
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     }
   };
@@ -269,9 +326,7 @@ const Signup = () => {
                     placeholder="••••••••"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     required=""
-                    onChange={(e) =>
-                      setFormData({ ...formData, password: e.target.value })
-                    }
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                   <div className="text-red-600 text-sm">
                     {valid ? <></> : <span>{errors.password}</span>}

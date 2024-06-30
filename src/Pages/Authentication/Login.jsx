@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { collection, query, where, getDocs } from "firebase/firestore";
-import { db } from '../../firestore'
+import { db } from "../../firestore";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -10,20 +11,20 @@ const Login = () => {
   const [errors, setErrors] = useState({});
   const [valid, setValid] = useState(true);
   const navigate = useNavigate();
-useEffect(()=>{
-  let login=localStorage.getItem('login')
-  let role=localStorage.getItem('role')
-  let username=localStorage.getItem('username')
-  if(login){
-    if(role==='lawyer'){
-      navigate(`/Lawyer/${username}/Dashbord`)
-    } else if(role==='client'){
-      navigate(`/Client/${username}/Explore`)
-    } else if(role==='admin'){
-      navigate(`/Admin/${username}/Manage_Users`)
+  useEffect(() => {
+    let login = localStorage.getItem("login");
+    let role = localStorage.getItem("role");
+    let username = localStorage.getItem("username");
+    if (login) {
+      if (role === "lawyer") {
+        navigate(`/Lawyer/${username}/Dashbord`);
+      } else if (role === "client") {
+        navigate(`/Client/${username}/Explore`);
+      } else if (role === "admin") {
+        navigate(`/Admin/${username}/Manage_Users`);
+      }
     }
-  }
-},[])
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -55,33 +56,47 @@ useEffect(()=>{
       /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(formData.email) &&
       formData.password.length >= 6
     ) {
-      try {
-        const q = query(collection(db, "users"), where("email", "==", formData.email));
-        const querySnapshot = await getDocs(q);
-        const user = querySnapshot.docs.map(doc => ({id: doc.id, ...doc.data()}))
-        if (Object.keys(user).length !== 0) {
-          if (user[0].password === formData.password) {
-            localStorage.setItem("username", user[0].username);
-            localStorage.setItem("role", user[0].role);
-            localStorage.setItem("login", true);
-            if (user[0].role === "lawyer") {
-              navigate(`/Lawyer/${user[0].username}/Dashbord`);
-            } else if (user[0].role === "client") {
-              navigate(`/Client/${user[0].username}/Explore`);
-            } else if (user[0].role === "admin") {
-              navigate(`/Admin/${user[0].username}/Manage_Users`);
+      const auth = getAuth();
+      signInWithEmailAndPassword(auth, formData.email, formData.password)
+        .then((userCredential) => {
+          // Signed in
+          auth.onAuthStateChanged(async (userCredential) => {
+            const { email, emailVerified } = userCredential;
+            // console.log(email,emailVerified)
+            if (emailVerified) {
+              const q = query(
+                collection(db, "users"),
+                where("email", "==", formData.email)
+              );
+              const querySnapshot = await getDocs(q);
+              const user = querySnapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+              }));
+              localStorage.setItem("username", user[0].username);
+              localStorage.setItem("role", user[0].role);
+              localStorage.setItem("login", true);
+              if (user[0].role === "lawyer") {
+                navigate(`/Lawyer/${user[0].username}/Dashbord`);
+              } else if (user[0].role === "client") {
+                navigate(`/Client/${user[0].username}/Explore`);
+              } else if (user[0].role === "admin") {
+                navigate(`/Admin/${user[0].username}/Manage_Users`);
+              }
+            } else {
+              isValid = false;
+              validationErrors.email = "Email is not verified";
             }
-          } else {
-            isValid = false;
-            validationErrors.password = "wrong password";
-          }
-        } else {
+            setErrors(validationErrors);
+            setValid(isValid);
+          });
+        })
+        .catch((error) => {
           isValid = false;
-          validationErrors.email = "wrong email";
-        }
-      } catch (error) {
-        console.log(error)
-      }
+          validationErrors.password = "Password and Email is not match";
+          setErrors(validationErrors);
+          setValid(isValid);
+        });
     }
     setErrors(validationErrors);
     setValid(isValid);
@@ -169,7 +184,7 @@ useEffect(()=>{
                   Don’t have an account yet?{" "}
                   <Link
                     to="/Signup"
-                    onClick={()=>sessionStorage.setItem("userRole","client")}
+                    onClick={() => sessionStorage.setItem("userRole", "client")}
                     className="font-medium text-blue-600 hover:underline dark:text-primary-500"
                   >
                     Signup

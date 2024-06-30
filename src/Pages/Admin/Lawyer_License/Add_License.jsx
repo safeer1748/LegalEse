@@ -90,7 +90,7 @@ const Add_License = () => {
                     setFormData({ ...formData, cnic: e.target.value })
                   }
                 />
-                <div className="text-red-600">
+                <div className="text-red-600 text-sm">
                   {valid ? <></> : <span>{errors.cnic}</span>}
                 </div>
               </div>
@@ -110,7 +110,7 @@ const Add_License = () => {
                     setFormData({ ...formData, license: e.target.value })
                   }
                 />
-                <div className="text-red-600">
+                <div className="text-red-600 text-sm">
                   {valid ? <></> : <span>{errors.license}</span>}
                 </div>
               </div>

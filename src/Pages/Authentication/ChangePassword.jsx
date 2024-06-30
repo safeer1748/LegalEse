@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { collection, doc, getDocs,setDoc, query, where } from "firebase/firestore";
-import {db} from "../../firestore";
+import { getAuth,onAuthStateChanged, updatePassword } from "firebase/auth";
 const ChangePassword = () => {
   let username = localStorage.getItem("username");
   const [errors, setErrors] = useState({});
   const [valid, setValid] = useState(true);
   const [formData, setFormData] = useState({
-    currentPassword: "",
     newPassword: "",
     confirmPassword: "",
   });
@@ -16,11 +14,7 @@ const ChangePassword = () => {
     let isValid = true;
     let validationErrors = {};
 
-    if (formData.currentPassword === "" || formData.currentPassword === null) {
-      isValid = false;
-      validationErrors.currentPassword = "Current password required";
-    }
-
+    
     // new password Validation
     if (formData.newPassword === "" || formData.newPassword === null) {
       isValid = false;
@@ -40,25 +34,17 @@ const ChangePassword = () => {
 
     if (Object.keys(validationErrors).length === 0) {
       try {
-        const q = query(collection(db, "users"), where("username","==",username))
-      const querySnapshot = await getDocs(q);
-      const user = querySnapshot.docs.map((doc) => ({id: doc.id, ...doc.data(),}));
-      let data = user[0];
-          if(data.password!==formData.currentPassword){
-            isValid = false;
-            validationErrors.currentPassword = "Incorrect password";
-            setErrors(validationErrors);
-            setValid(isValid);
-          }else{
-            data={...data,password:formData.newPassword}
-            try {
-              await setDoc(doc(db, "users", data.id), { ...data });
-              alert('Password change successfully')
+          const auth = getAuth();
+          onAuthStateChanged(auth, (user) => {
+            console.log(user)
+            updatePassword(user, formData.newPassword).then(() => {
+              alert("Password change successfully")
               location.reload()
-            } catch (error) {
-              console.log(error)
-            }
-          }
+              }).catch((error) => {
+                alert(error.message)
+                 });
+          })
+          
       } catch (error) {
         console.log(error)
       }
@@ -87,29 +73,6 @@ const ChangePassword = () => {
               onSubmit={handleSubmit}
               className="mt-4 space-y-2 lg:mt-5 md:space-y-4"
             >
-              <div>
-                <label
-                  htmlFor="currentPassword"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Current Password
-                </label>
-                <input
-                  type="password"
-                  name="currentPassword"
-                  id="currentPassword"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      currentPassword: e.target.value,
-                    })
-                  }
-                />
-                <div className="text-red-600 text-sm">
-                  {valid ? <></> : <span>{errors.currentPassword}</span>}
-                </div>
-              </div>
               <div>
                 <label
                   htmlFor="newPassword"
