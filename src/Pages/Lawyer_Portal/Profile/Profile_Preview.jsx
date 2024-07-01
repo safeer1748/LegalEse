@@ -60,10 +60,12 @@ const Profile_Preview = () => {
   return (
     <div>
       {loading ? (
-        <h1 className="w-full h-screen flex justify-center items-center">loading...</h1>
+        <div className="w-full h-screen flex justify-center items-center">
+          <img className="w-12" src="/src/assets/blockspinner.svg" alt="" />
+        </div>
       ) : (
         <div>
-      {role === "client" ? <Client_Navbar /> : ""}
+          {role === "client" ? <Client_Navbar /> : ""}
           <div>
             <Book_AppoinmentModal
               toggleModal={toggleModal}

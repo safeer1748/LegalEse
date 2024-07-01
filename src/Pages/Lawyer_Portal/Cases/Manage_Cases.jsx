@@ -97,9 +97,9 @@ const Manage_Cases = () => {
   return (
     <>
     {loading ? (
-      <h1 className="w-full h-screen flex justify-center items-center">
-        loading...
-      </h1>
+       <div className="w-full h-screen flex justify-center items-center">
+       <img className="w-12" src="/src/assets/blockspinner.svg" alt="" />
+     </div>
     ) : (
     <div>
       {role === "admin" ? "" : <Lawyer_Bars />}

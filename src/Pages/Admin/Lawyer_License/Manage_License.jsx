@@ -30,7 +30,7 @@ const Manage_License = () => {
       }));
       setData(license);
       setRecords(license);
-      setLoading(false)
+      setLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -64,9 +64,9 @@ const Manage_License = () => {
   return (
     <>
       {loading ? (
-        <h1 className="w-full h-screen flex justify-center items-center">
-          loading...
-        </h1>
+        <div className="w-full h-screen flex justify-center items-center">
+          <img className="w-12" src="/src/assets/blockspinner.svg" alt="" />
+        </div>
       ) : (
         <div>
           <Admin_Navbar />
