@@ -3,12 +3,13 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { deleteDoc, doc, getDoc} from "firebase/firestore";
 import { db } from "../../../firestore";
+import Remarks_modal from "./Remarks_modal";
 const View_Case = () => {
   let { id } = useParams();
   const navigate = useNavigate();
   let username = localStorage.getItem("username");
   const [data, setData] = useState([]);
-  
+  const[showModal,setShowModal]=useState(false)
   const getCase= async ()=>{
     try {
       const docRef = doc(db, "cases", id);
@@ -34,10 +35,17 @@ const View_Case = () => {
       }
     }
   };
+  const handleModal=()=>{
+    setShowModal(!showModal)
+  }
   return (
     <div>
+      <div className={`${!showModal?'hidden':''} w-full h-screen fixed z-50 bg-black/75`}>
+      <Remarks_modal handleModal={handleModal} data={data}/>
+      </div>
+     
       <Lawyer_Bars />
-      <div className="h-screen my-10 sm:my-0 w-full flex items-center justify-center ">
+      <div className="h-screen my-10 sm:my-0 pt-8 w-full flex items-center justify-center">
         {/* <!-- Main modal --> */}
         <div
           id="default-modal"
@@ -79,7 +87,7 @@ const View_Case = () => {
                 </Link>
               </div>
               {/* <!-- Modal body --> */}
-              <div className=" grid sm:grid-cols-2">
+              <div className=" grid md:grid-cols-2">
                 <div className="p-4 md:p-5 space-y-4">
                   <p className="text-base leading-relaxed font-medium text-gray-800 dark:text-gray-400">
                     Client Role :
@@ -122,6 +130,13 @@ const View_Case = () => {
                   <p className="text-base leading-relaxed font-medium text-gray-800 dark:text-gray-400">
                     Status :<span className="ml-3">{data.status}</span>
                   </p>
+                </div>
+                <div className="md:col-span-2 px-4 md:px-5 text-end text-xl font-medium">
+                  <button
+                  onClick={handleModal}
+                   className="text-blue-600 hover:underline">
+                    JUDGE REMARKS
+                  </button>
                 </div>
               </div>
               {/* <!-- Modal footer --> */}

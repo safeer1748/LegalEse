@@ -1,6 +1,11 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link,useNavigate } from 'react-router-dom'
 const Hero = ({handleSignupModal}) => {
+  const navigate=useNavigate()
+  const setRole=()=>{
+    sessionStorage.setItem("userRole", "client");
+    navigate('/signup')
+  }
   return (
     <div>
       <section className="bg-white dark:bg-gray-900">
@@ -14,14 +19,15 @@ const Hero = ({handleSignupModal}) => {
               Cases, Clients, Appointments and much more. It also help the
               Client to book Appointment with lawyer.{" "}
             </p>
-            <Link to="/signup">
+            
               <button
+              onClick={setRole}
                 type="button"
                 className="text-white sm:hidden bg-black hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
                 Signup
               </button>
-              </Link>
+              
           </div>
           <div className="hidden lg:mt-0 lg:col-span-5 lg:flex">
             <img src="src\assets\heroimage.svg" alt="mockup" />

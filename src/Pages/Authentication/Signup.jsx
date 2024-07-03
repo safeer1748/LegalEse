@@ -23,64 +23,62 @@ const Signup = () => {
     email: "",
     role: "",
   });
-  const [password, setPassword] = useState();
-  const [confirmPassword, setConfirmPassword] = useState();
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [errors, setErrors] = useState({});
   const [valid, setValid] = useState(true);
   useEffect(() => {
-    setUserRole(sessionStorage.getItem("userRole"));
-    if (userRole === "lawyer") {
+    let role= sessionStorage.getItem("userRole")
+    setUserRole(role);
+    if (role === "lawyer") {
       setFormData({ ...formData, license_num: "" });
     }
   }, []);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     let isValid = true;
     let validationErrors = {};
-
+    console.log(userRole);
+    console.log(formData)
     // Licence Number Validation
     if (userRole === "lawyer") {
       if (formData.license_num === "" || formData.license_num === null) {
         isValid = false;
         validationErrors.license_num = "License number required";
       } else {
-        try {
+        const q = query(
+          collection(db, "lawyer_license"),
+          where("license", "==", formData.license_num)
+        );
+        const querySnapshot = await getDocs(q);
+        const user = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        if (Object.keys(user).length === 0) {
+          isValid = false;
+          validationErrors.license_num = "Wrong license number";
+        } else {
           const q = query(
-            collection(db, "lawyer_license"),
-            where("license", "==", formData.license_num)
+            collection(db, "users"),
+            where("license_num", "==", formData.license_num)
           );
           const querySnapshot = await getDocs(q);
           const user = querySnapshot.docs.map((doc) => ({
             id: doc.id,
             ...doc.data(),
           }));
-          if (Object.keys(user).length === 0) {
+          if (Object.keys(user).length !== 0) {
             isValid = false;
-            validationErrors.license_num = "Wrong license number";
-          } else {
-            try {
-              const q = query(
-                collection(db, "users"),
-                where("license_num", "==", formData.license_num)
-              );
-              const querySnapshot = await getDocs(q);
-              const user = querySnapshot.docs.map((doc) => ({
-                id: doc.id,
-                ...doc.data(),
-              }));
-              if (Object.keys(user).length !== 0) {
-                isValid = false;
-                validationErrors.license_num =
-                  "Account is already created by this license number";
-              }
-            } catch (error) {}
+            validationErrors.license_num =
+              "Account is already created by this license number";
           }
-        } catch (error) {
-          console.log(error);
         }
       }
+      setErrors(validationErrors);
+      setValid(isValid);
     }
+
     // username Validation
     if (formData.username === "" || formData.username === null) {
       isValid = false;
@@ -89,22 +87,18 @@ const Signup = () => {
       isValid = false;
       validationErrors.username = "Username must be at least 6 characters";
     } else {
-      try {
-        const q = query(
-          collection(db, "users"),
-          where("username", "==", formData.username)
-        );
-        const querySnapshot = await getDocs(q);
-        const user = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        if (Object.keys(user).length !== 0) {
-          isValid = false;
-          validationErrors.username = "Username already taken";
-        }
-      } catch (error) {
-        console.log(error);
+      const q = query(
+        collection(db, "users"),
+        where("username", "==", formData.username)
+      );
+      const querySnapshot = await getDocs(q);
+      const user = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      if (Object.keys(user).length !== 0) {
+        isValid = false;
+        validationErrors.username = "Username already taken";
       }
     }
 
@@ -118,22 +112,18 @@ const Signup = () => {
       isValid = false;
       validationErrors.email = "Email is not valid";
     } else {
-      try {
-        const q = query(
-          collection(db, "users"),
-          where("email", "==", formData.email)
-        );
-        const querySnapshot = await getDocs(q);
-        const user = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        if (Object.keys(user).length !== 0) {
-          isValid = false;
-          validationErrors.email = "Account is already created by this email";
-        }
-      } catch (error) {
-        console.log(error);
+      const q = query(
+        collection(db, "users"),
+        where("email", "==", formData.email)
+      );
+      const querySnapshot = await getDocs(q);
+      const user = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      if (Object.keys(user).length !== 0) {
+        isValid = false;
+        validationErrors.email = "Account is already created by this email";
       }
     }
 
@@ -141,7 +131,8 @@ const Signup = () => {
     if (password === "" || password === null) {
       isValid = false;
       validationErrors.password = "Password required";
-    } else if (password.length < 6) {
+    } 
+    else if (password.length < 6) {
       isValid = false;
       validationErrors.password = "Password must be at least 6 characters";
     }
@@ -151,7 +142,6 @@ const Signup = () => {
       isValid = false;
       validationErrors.confirmPassword = "Confirm password not match";
     }
-
     setErrors(validationErrors);
     setValid(isValid);
 
