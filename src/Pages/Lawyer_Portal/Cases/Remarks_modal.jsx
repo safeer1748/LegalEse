@@ -2,14 +2,15 @@ import React, { useState } from "react";
 import AddNewRemarks_modal from "./AddNewRemarks_modal";
 
 const Remarks_modal = ({handleModal,data}) => {
+  let role = localStorage.getItem("role");
     const[showAddNewModal,setShowAddNewModal]=useState(false)
     const handleAddNewModal=()=>{
         setShowAddNewModal(!showAddNewModal)
     }
   return (
     <>
-     <div className={`${!showAddNewModal?'hidden':''} w-full h-screen fixed z-50 bg-black/75`}>
-      <AddNewRemarks_modal handleAddNewModal={handleAddNewModal} data={data}/>
+     <div className={`${!showAddNewModal?'hidden':''} w-full h-full fixed z-50 bg-black/75`}>
+     {role==='lawyer'? <AddNewRemarks_modal handleAddNewModal={handleAddNewModal} data={data}/>:''}
       </div>
       {/* <!-- Main modal --> */}
       <div
@@ -82,7 +83,7 @@ const Remarks_modal = ({handleModal,data}) => {
                 </table>
             </div>
              {/* <!-- Modal footer --> */}
-            <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+            <div className={`${role==='lawyer'?'':'hidden'} flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600`}>
               <button
               onClick={handleAddNewModal}
                 data-modal-hide="default-modal"

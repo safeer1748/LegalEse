@@ -28,6 +28,7 @@ import Manage_Users from "./Pages/Admin/Admin_Dashbord/Manage_Users";
 import Lawyer_Profile from "./Pages/Admin/Admin_Dashbord/Lawyer_Profile";
 import Manage_License from "./Pages/Admin/Lawyer_License/Manage_License";
 import Add_License from "./Pages/Admin/Lawyer_License/Add_License";
+import Cases from "./Pages/Client_portal/Cases/Cases";
 const App = () => {
   return (
     <div>
@@ -137,6 +138,11 @@ const App = () => {
             exact
             path="/Client/:username/Appoinments"
             element={<  Protected Page={Appoinments} Role='client' />}
+          />
+          <Route
+            exact
+            path="/Client/:username/Cases"
+            element={<  Protected Page={Cases} Role='client' />}
           />
           {/* Admin Portal */}
           <Route
