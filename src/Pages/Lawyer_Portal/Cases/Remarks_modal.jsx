@@ -24,7 +24,7 @@ const Remarks_modal = ({handleModal,data}) => {
             {/* <!-- Modal header --> */}
             <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
               <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                Judge Remarks
+                Case Remarks
               </h3>
               <button
               onClick={handleModal}
@@ -52,18 +52,34 @@ const Remarks_modal = ({handleModal,data}) => {
             </div>
             {/* <!-- Modal body --> */}
             <div class="p-4 md:p-5 space-y-4">
-              <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                With less than a month to go before the European Union enacts
-                new consumer privacy laws for its citizens, companies around the
-                world are updating their terms of service agreements to comply.
-              </p>
-              <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                The European Union’s General Data Protection Regulation
-                (G.D.P.R.) goes into effect on May 25 and is meant to ensure a
-                common set of data rights in the European Union. It requires
-                organizations to notify users as soon as possible of high-risk
-                data breaches that could personally affect them.
-              </p>
+            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                  <thead className="text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400 ">
+                    <tr>
+                      <th scope="col" className="px-4 py-3">
+                        Date
+                      </th>
+                      <th scope="col" className="px-4 py-3">
+                        Judge
+                      </th>
+                      <th scope="col" className="px-4 py-3">
+                        Remarks
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {data.remarks && data.remarks.map((d, i) => (
+                      <tr
+                        key={i}
+                        className="border-b border-gray-300 align-top"
+                      >
+                        
+                        <td className="px-4 py-3 whitespace-nowrap">{d.date}</td>
+                        <td className="px-4 py-3 whitespace-nowrap">{d.judge_name}</td>
+                        <td className="px-4 py-3">{d.case_remarks}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
             </div>
              {/* <!-- Modal footer --> */}
             <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">

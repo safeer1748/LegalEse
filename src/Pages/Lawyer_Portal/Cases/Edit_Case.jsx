@@ -28,6 +28,7 @@ const Edit_Case = () => {
     date: "",
     time: "",
     status: "open",
+     remarks:[],
     userId: username,
   });
   const [errors, setErrors] = useState({});

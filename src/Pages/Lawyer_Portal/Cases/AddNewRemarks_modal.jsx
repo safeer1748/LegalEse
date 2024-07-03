@@ -1,6 +1,65 @@
-import React from 'react'
+import React, { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import dayjs from "dayjs";
+import {
+  doc,
+  setDoc,
+} from "firebase/firestore";
+import { db } from "../../../firestore";
+import { useNavigate } from "react-router-dom";
+const AddNewRemarks_modal = ({ handleAddNewModal, data }) => {
+  let username = localStorage.getItem("username");
+  const [datePickerValue, setDatePickerValue] = useState(new Date());
+  const [caseClosedChecked, setCaseClosedChecked] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [valid, setValid] = useState(true);
+  const navigate=useNavigate()
+  const handleCaseClosedChecked = () => {
+    setCaseClosedChecked(!caseClosedChecked);
+  };
+  const [formData, setFormData] = useState({
+    date: "",
+    judge_name: "",
+    case_remarks: "",
+  });
 
-const AddNewRemarks_modal = ({handleAddNewModal,data}) => {
+  // Set Date and Time
+  const handleDateTime = async () => {
+    let dateTime= dayjs(datePickerValue).format('DD-MMM-YYYY hh:mma')
+    let result = dateTime.split(" ");
+    let date=result[0]
+    let time=result[1]
+    data.date = date;
+    data.time = time;
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    let isValid = true;
+    let validationErrors = {};
+    formData.date = data.date;
+    formData.judge_name = data.judge_name;
+    if (formData.case_remarks === "" || formData.case_remarks === null) {
+      isValid = false;
+      validationErrors.case_remarks = "Enter remarks";
+    }
+    if (Object.keys(validationErrors).length === 0) {
+      data.remarks.unshift(formData)
+      if(!caseClosedChecked){
+        await handleDateTime();
+      }if(caseClosedChecked){
+        data.status='closed'
+      }
+      try {
+        await setDoc(doc(db, "cases", data.id), { ...data});
+          navigate(`/Lawyer/${username}/Manage_Cases`);
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    setErrors(validationErrors);
+    setValid(isValid);
+  };
   return (
     <>
       {/* <!-- Main modal --> */}
@@ -19,7 +78,7 @@ const AddNewRemarks_modal = ({handleAddNewModal,data}) => {
                 Add New Remarks
               </h3>
               <button
-              onClick={handleAddNewModal}
+                onClick={handleAddNewModal}
                 type="button"
                 class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
                 data-modal-hide="default-modal"
@@ -44,14 +103,74 @@ const AddNewRemarks_modal = ({handleAddNewModal,data}) => {
             </div>
             {/* <!-- Modal body --> */}
             <div class="p-4 md:p-5 space-y-4">
-                <div className='grid md:grid-cols-2'>
-                    <label className='font-medium'>Date: <label className='text-gray-700 font-normal'>{data.date}</label></label>
-                    <label className='font-medium'>Judge Name: <label className='text-gray-700 font-normal'>{data.judge_name}</label></label>
+              <div className="grid md:grid-cols-2 gap-y-5">
+                <label className="font-medium text-sm">
+                  Date: <label className="font-normal">{data.date}</label>
+                </label>
+                <label className="font-medium text-sm ">
+                  Judge Name:{" "}
+                  <label className="font-normal">{data.judge_name}</label>
+                </label>
+                <textarea
+                  className="col-span-2 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-400 focus:ring-blue-500 focus:border-blue-500"
+                  rows={5}
+                  name="remarks"
+                  id="remarks"
+                  placeholder="Write Judge Remarks"
+                  onChange={(e) =>
+                    setFormData({ ...formData, case_remarks: e.target.value })
+                  }
+                >
+                </textarea>
+                <div className="text-red-600 text-sm">
+                  {valid ? <></> : <span>{errors.case_remarks}</span>}
                 </div>
+              </div>
             </div>
-             {/* <!-- Modal footer --> */}
+
+            <div className="p-4 md:p-5 border-t">
+              <div className="flex items-center">
+                <input
+                  onClick={handleCaseClosedChecked}
+                  checked={caseClosedChecked}
+                  id="checked-checkbox"
+                  type="checkbox"
+                  value=""
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-400 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                />
+                <label
+                  for="checked-checkbox"
+                  className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                >
+                  Case is Closed
+                </label>
+              </div>
+              <div className={`${caseClosedChecked ? "hidden" : ""} pt-5`}>
+                <label
+                  htmlFor="date"
+                  className=" block text-sm font-medium text-gray-900 dark:text-white pb-2"
+                >
+                  Case Next Date
+                </label>
+                <DatePicker
+                  showIcon
+                  toggleCalendarOnIconClick
+                  dateFormat="dd-MMM-yyyy hh:mma"
+                  timeInputLabel="Time:"
+                  showTimeInput
+                  minDate={new Date()}
+                  showMonthDropdown
+                  shouldCloseOnSelect={false}
+                  className="bg-gray-50 z-50 border border-gray-400 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  selected={datePickerValue}
+                  onChange={(dateTime) => setDatePickerValue(dateTime)}
+                />
+              </div>
+            </div>
+            {/* <!-- Modal footer --> */}
             <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
               <button
+                onClick={handleSubmit}
                 data-modal-hide="default-modal"
                 type="button"
                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -63,7 +182,7 @@ const AddNewRemarks_modal = ({handleAddNewModal,data}) => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default AddNewRemarks_modal
+export default AddNewRemarks_modal;

@@ -1,7 +1,7 @@
 import Lawyer_Bars from "../Lawyer_Bars";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { deleteDoc, doc, getDoc} from "firebase/firestore";
+import { deleteDoc, doc, getDoc } from "firebase/firestore";
 import { db } from "../../../firestore";
 import Remarks_modal from "./Remarks_modal";
 const View_Case = () => {
@@ -9,21 +9,21 @@ const View_Case = () => {
   const navigate = useNavigate();
   let username = localStorage.getItem("username");
   const [data, setData] = useState([]);
-  const[showModal,setShowModal]=useState(false)
-  const getCase= async ()=>{
+  const [showModal, setShowModal] = useState(false);
+  const getCase = async () => {
     try {
       const docRef = doc(db, "cases", id);
       const docSnap = await getDoc(docRef);
-      setData({id:docSnap.id,...docSnap.data()})
+      setData({ id: docSnap.id, ...docSnap.data() });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
   useEffect(() => {
-    getCase()
+    getCase();
   }, []);
 
-  const handleDelete = async(id) => {
+  const handleDelete = async (id) => {
     console.log(id);
     const confirm = window.confirm("Would you like to Delete?");
     if (confirm) {
@@ -31,19 +31,23 @@ const View_Case = () => {
         await deleteDoc(doc(db, "cases", id));
         navigate(`/Lawyer/${username}/Manage_Cases`);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     }
   };
-  const handleModal=()=>{
-    setShowModal(!showModal)
-  }
+  const handleModal = () => {
+    setShowModal(!showModal);
+  };
   return (
     <div>
-      <div className={`${!showModal?'hidden':''} w-full h-screen fixed z-50 bg-black/75`}>
-      <Remarks_modal handleModal={handleModal} data={data}/>
+      <div
+        className={`${
+          !showModal ? "hidden" : ""
+        } w-full h-screen fixed z-50 bg-black/75`}
+      >
+        <Remarks_modal handleModal={handleModal} data={data} />
       </div>
-     
+
       <Lawyer_Bars />
       <div className="h-screen my-10 sm:my-0 pt-8 w-full flex items-center justify-center">
         {/* <!-- Main modal --> */}
@@ -131,16 +135,16 @@ const View_Case = () => {
                     Status :<span className="ml-3">{data.status}</span>
                   </p>
                 </div>
-                <div className="md:col-span-2 px-4 md:px-5 text-end text-xl font-medium">
-                  <button
-                  onClick={handleModal}
-                   className="text-blue-600 hover:underline">
-                    JUDGE REMARKS
-                  </button>
-                </div>
               </div>
               {/* <!-- Modal footer --> */}
-              <div className="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600 gap-3">
+              <div className="flex items-center justify-between p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600 gap-3">
+                <button
+                  onClick={handleModal}
+                  className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-gray-900 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-gray-700"
+                >
+                  Case Remarks
+                </button>
+                <div className="flex gap-3">
                 <Link to={`/Lawyer/${username}/Edit_Case/${data.id}`}>
                   <button
                     type="submit"
@@ -155,6 +159,7 @@ const View_Case = () => {
                 >
                   Delete
                 </button>
+                </div>
               </div>
             </div>
           </div>
