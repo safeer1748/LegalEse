@@ -52,7 +52,24 @@ const AddNewRemarks_modal = ({ handleAddNewModal, data }) => {
       }
       try {
         await setDoc(doc(db, "cases", data.id), { ...data});
-          navigate(`/Lawyer/${username}/Manage_Cases`);
+        navigate(`/Lawyer/${username}/Manage_Cases`);
+        if(!caseClosedChecked){
+          let dataSend = {
+            email: data.client_email,
+            subject: "Next hearing date",
+            message: `${data.userId} has set case hearing date on ${data.date} at ${data.time} `,
+          };
+          const res = await fetch("http://localhost:8004/register", {
+            method: "POST",
+            body: JSON.stringify(dataSend),
+            headers: {
+                "Content-Type": "application/json"
+            },
+        });
+        const respond = await res.json();
+        console.log(respond);
+        }
+          
       } catch (error) {
         console.log(error)
       }
@@ -150,7 +167,7 @@ const AddNewRemarks_modal = ({ handleAddNewModal, data }) => {
                   htmlFor="date"
                   className=" block text-sm font-medium text-gray-900 dark:text-white pb-2"
                 >
-                  Case Next Date
+                  Case Next hearing Date
                 </label>
                 <DatePicker
                   showIcon

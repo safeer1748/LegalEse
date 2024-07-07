@@ -8,7 +8,6 @@ const Cases = () => {
     <div className="w-full p-6 mt-6">
     <Manage_Cases/>
     </div>
-    
     </>
   )
 }
