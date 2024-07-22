@@ -32,7 +32,7 @@ const Appoinments_request = () => {
         ...doc.data(),
       }));
       setData(records);
-      setLoading(false)
+      setLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -51,16 +51,32 @@ const Appoinments_request = () => {
   const handleToggleDateTimeModal = () => {
     setToggleDateTimeModal(!toggleDateTimeModal);
   };
-  const acceptRequest = (id) => {
+  const acceptRequest = async (id) => {
     const record = data.filter((f) => f.id === id);
     setDetail(record[0]);
     handleToggleDateTimeModal();
   };
   const rejectRequest = async (id) => {
+    const record = data.filter((f) => f.id === id);
+    setDetail(record[0]);
     let confirmReject = confirm("Click OK to reject the request");
     if (confirmReject === true) {
       try {
         await deleteDoc(doc(db, "appoinments_request", id));
+        let dataSend = {
+          email: detail.email,
+          subject: "Appoinment Request",
+          message: `${lawyerId} reject your appoinment request`,
+        };
+        const res = await fetch("http://localhost:8004/sendEmail", {
+          method: "POST",
+          body: JSON.stringify(dataSend),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const respond = await res.json();
+        console.log(respond);
         location.reload();
       } catch (error) {
         console.log(error);
@@ -70,9 +86,9 @@ const Appoinments_request = () => {
   return (
     <>
       {loading ? (
-         <div className="w-full h-screen flex justify-center items-center">
-         <img className="w-12" src="/src/assets/blockspinner.svg" alt="" />
-       </div>
+        <div className="w-full h-screen flex justify-center items-center">
+          <img className="w-12" src="/src/assets/blockspinner.svg" alt="" />
+        </div>
       ) : (
         <div>
           <Lawyer_Bars />

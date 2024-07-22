@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import dayjs from "dayjs";
-import { addDoc,deleteDoc, doc, serverTimestamp,collection } from "firebase/firestore";
+import {
+  addDoc,
+  deleteDoc,
+  doc,
+  serverTimestamp,
+  collection,
+} from "firebase/firestore";
 import { db } from "../../../firestore";
 const Set_dateTimeModel = ({ handleToggleModal, data }) => {
   const [datePickerValue, setDatePickerValue] = useState(new Date());
@@ -14,7 +20,7 @@ const Set_dateTimeModel = ({ handleToggleModal, data }) => {
     time: "",
     status: "open",
     userId: "",
-    clientId:"",
+    clientId: "",
   });
   // Set Date and Time
   const handleDateTime = async () => {
@@ -34,16 +40,33 @@ const Set_dateTimeModel = ({ handleToggleModal, data }) => {
     formData.clientId = data.clientId;
     await handleDateTime();
     try {
-      await addDoc(collection(db,"appoinments"),{...formData, timestamp:serverTimestamp()});
+      await addDoc(collection(db, "appoinments"), {
+        ...formData,
+        timestamp: serverTimestamp(),
+      });
+      let dataSend = {
+        email: formData.email,
+        subject: "Appoinment Request",
+        message: `${formData.userId} accept your appoinment request`,
+      };
+      const res = await fetch("http://localhost:8004/sendEmail", {
+        method: "POST",
+        body: JSON.stringify(dataSend),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const respond = await res.json();
+      console.log(respond);
       alert("Appoinment Save Successfully");
       try {
         await deleteDoc(doc(db, "appoinments_request", data.id));
         location.reload();
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
   return (

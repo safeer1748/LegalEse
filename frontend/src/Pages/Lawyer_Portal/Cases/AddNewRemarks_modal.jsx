@@ -59,7 +59,7 @@ const AddNewRemarks_modal = ({ handleAddNewModal, data }) => {
             subject: "Next hearing date",
             message: `${data.userId} has set case hearing date on ${data.date} at ${data.time} `,
           };
-          const res = await fetch("http://localhost:8004/register", {
+          const res = await fetch("http://localhost:8004/sendEmail", {
             method: "POST",
             body: JSON.stringify(dataSend),
             headers: {

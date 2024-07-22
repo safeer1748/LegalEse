@@ -6,7 +6,7 @@ const nodemailer = require("nodemailer");
 
 
 // send mail
-router.post("/register",  (req, res) => {
+router.post("/sendEmail",  (req, res) => {
     const { email,subject,message} = req.body;
 
     try {
@@ -23,7 +23,7 @@ router.post("/register",  (req, res) => {
             from: process.env.EMAIL,
             to: email,
             subject: subject,
-            html: `<h1>${message}</h2>`
+            html: `<h3>${message}</h3>`
         };
 
         transporter.sendMail(mailOptions, (error, info) => {

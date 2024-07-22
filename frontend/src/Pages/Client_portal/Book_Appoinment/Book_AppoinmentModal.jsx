@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import { collection, addDoc, serverTimestamp} from "firebase/firestore"; 
+import { collection, addDoc, serverTimestamp, getDocs, query, where} from "firebase/firestore"; 
 import {db} from "../../../firestore";
 const Book_AppoinmentModal = ({ toggleModal, handleToggleModal, email }) => {
   let clientId = localStorage.getItem("username");
@@ -15,6 +15,35 @@ const Book_AppoinmentModal = ({ toggleModal, handleToggleModal, email }) => {
     clientId: clientId,
     lawyerId: username,
   });
+
+  const sendEmail=async()=>{
+    try {
+      const q = query(collection(db, "users"), where("username", "==", formData.lawyerId));
+      const querySnapshot = await getDocs(q);
+      const data = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      let dataSend = {
+        email: data[0].email,
+        subject: "Appoinment Request",
+        message: `${formData.clientId} sent you appoinment request`,
+      };
+      const res = await fetch("http://localhost:8004/sendEmail", {
+        method: "POST",
+        body: JSON.stringify(dataSend),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const respond = await res.json();
+      console.log(respond);
+    } catch (error) {
+      console.log(error);
+    }
+    
+  }
   const handleSubmit = async (e) => {
     e.preventDefault();
     formData.email = email;
@@ -47,8 +76,9 @@ const Book_AppoinmentModal = ({ toggleModal, handleToggleModal, email }) => {
     if (Object.keys(validationErrors).length === 0) {
       try {
         await addDoc(collection(db, "appoinments_request"), {...formData, timestamp: serverTimestamp()});
-        alert("Request sent successfully");
           handleToggleModal();
+          sendEmail();
+          alert("Request sent successfully");
       } catch (error) {
         console.log(error)
       }
